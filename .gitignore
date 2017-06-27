@@ -1,0 +1,13 @@
+*.log
+*.sublime-project
+*.sublime-settings
+*.sublime-workspace
+build.properties*
+build.xml
+config
+destructiveChanges.xml
+package.xml
+resource-bundles/
+raw/node_modules/
+raw/docs/
+src/applications/
