@@ -28,16 +28,20 @@ global with sharing class InvoiceItemAPI implements FieloCMS.DataInterface{
 
         //Calculate the offset from the Page Number
         Integer offset = Integer.valueOf(component.FieloCMS__Limit__c * (pageNumber - 1));
-        system.debug('***filters');
-        system.debug(filters);
+
+        Map<String, String> filtersMap = (Map<String, String>)JSON.deserialize(filters, Map<string,String>.class);
+
+        // Assemble Where Condition
         String whereCondition = '';
         whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + MemberService.getCurrentMemberId() + '\'';
-        Id invoiceId = component.FieloCMS__RecordId__c;
-        if(invoiceId != null){
-            whereCondition += ' AND FieloPRP__Invoice__c = \'' + invoiceId + '\'';
+        if (!filtersMap.isEmpty()){
+            if (filtersMap.containsKey('FieloPRP__Invoice__c')) {
+                whereCondition += ' AND FieloPRP__Invoice__c = \'' + filtersMap.get('FieloPRP__Invoice__c') + '\'';
+            }
         }
-        whereCondition += ' LIMIT ' + String.valueOf(offset);
-        whereCondition += ' OFFSET ' + String.valueOf(component.FieloCMS__Limit__c);
+        whereCondition += ' LIMIT ' + String.valueOf(component.FieloCMS__Limit__c);
+        whereCondition += ' OFFSET ' + String.valueOf(offset);
+
         String query = 'SELECT ';
         query += String.join(new List<String>(OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)), ',');
         query += ' FROM FieloPRP__InvoiceItem__c WHERE ';
@@ -45,5 +49,13 @@ global with sharing class InvoiceItemAPI implements FieloCMS.DataInterface{
         system.debug('***query');
         system.debug(query);
         return Database.query(query);
+    }
+
+    public class Field{
+        public String apiName {get;set;}
+        public String label {get;set;}
+        public String type {get;set;}
+        public Boolean showLabel {get;set;}
+        public Boolean multiLanguage {get;set;}
     }
 }

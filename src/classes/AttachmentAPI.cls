@@ -20,12 +20,11 @@ global with sharing class AttachmentAPI implements FieloCMS.DataInterface{
             // Workaround
             if(c.FieloCMS__ComponentLibrary__r.Name == 'Attachments View'){
 	            for(Attachment attachment: ((List<Attachment>) newMapData.get(c.Id))) {
-	            	String attachmentURL = '//c.';
-					attachmentURL += FieloCMS__OrganizationSettings__c.getInstance().FieloCMS__Instance__c;
-					attachmentURL += '.content.force.com/servlet/servlet.FileDownload?file=';
-					attachmentURL += attachment.Id;
-					attachmentURL += '&oid=';
-					attachmentURL += UserInfo.getOrganizationId();
+	            	String attachmentURL = URL.getSalesforceBaseUrl().toExternalForm();
+                    attachmentURL += '/servlet/servlet.FileDownload?file=';
+                    attachmentURL += attachment.Id;
+                    attachmentURL += '&oid=';
+                    attachmentURL += UserInfo.getOrganizationId();
 
 					attachment.Description = attachmentURL;
 	            }
@@ -42,20 +41,37 @@ global with sharing class AttachmentAPI implements FieloCMS.DataInterface{
         //Calculate the offset from the Page Number
         Integer offset = Integer.valueOf(component.FieloCMS__Limit__c * (pageNumber - 1));
 
+        Map<String, String> filtersMap = (Map<String, String>)JSON.deserialize(filters, Map<string,String>.class);
+
         system.debug('***filters');
         system.debug(filters);
 
+        // Assembles Where Condition
         String whereCondition = '';
-        // whereCondition += 'AND FieloPRP__Invoice__r.FieloPLT__Member__c = \'' + MemberService.getCurrentMemberId() + '\'';
-        Id parentId = component.FieloCMS__RecordId__c;
-        if(parentId != null){
-            whereCondition += ' ParentId = \'' + parentId + '\'';
-        } else {
-        	whereCondition = ' ParentId = != null ';
+
+        if (!filtersMap.isEmpty()){
+            if (filtersMap.containsKey('FieloPRP__Invoice__c')) {
+                whereCondition += ' ParentId = \'' + filtersMap.get('FieloPRP__Invoice__c') + '\'';
+            }
         }
 
-        whereCondition += ' LIMIT ' + String.valueOf(offset);
-        whereCondition += ' OFFSET ' + String.valueOf(component.FieloCMS__Limit__c);
-        return Database.query('SELECT ' + String.join(new List<String>(OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)), ',') + ' FROM FieloPRP__InvoiceItem__c WHERE ' + whereCondition);
+        whereCondition += ' LIMIT ' + String.valueOf(component.FieloCMS__Limit__c);
+        whereCondition += ' OFFSET ' + String.valueOf(offset);
+        // Workaround
+        List<sObject> records = Database.query('SELECT ' + String.join(new List<String>(OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)), ',') + ' FROM Attachment WHERE ' + whereCondition);
+
+        if(component.FieloCMS__ComponentLibrary__r.Name == 'Attachments View'){
+            for(Attachment attachment: (List<Attachment>)records ) {
+                String attachmentURL = URL.getSalesforceBaseUrl().toExternalForm();
+                attachmentURL += '/servlet/servlet.FileDownload?file=';
+                attachmentURL += attachment.Id;
+                attachmentURL += '&oid=';
+                attachmentURL += UserInfo.getOrganizationId();
+
+                attachment.Description = attachmentURL;
+            }
+        }
+
+        return records;
     }
 }
