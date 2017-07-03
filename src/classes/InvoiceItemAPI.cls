@@ -23,14 +23,6 @@ global with sharing class InvoiceItemAPI implements FieloCMS.DataInterface{
     }
 
     global List<sObject> getData(FieloCMS__Component__c component, Integer pageNumber, String orderBy, String filters){        
-        system.debug('component:');
-        system.debug(component);
-        system.debug('Library:');
-        system.debug(component.FieloCMS__ComponentLibrary__r);
-        system.debug('invoiceId:');
-        system.debug(invoiceId);
-
-
         if(component.FieloCMS__Limit__c == null)
             component.FieloCMS__Limit__c = 5;
 
