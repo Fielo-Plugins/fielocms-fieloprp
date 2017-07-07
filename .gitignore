@@ -6,7 +6,6 @@ build.properties*
 build.xml
 config
 destructiveChanges.xml
-package.xml
 gulpfile.babel.js
 resource-bundles/
 raw/node_modules/
