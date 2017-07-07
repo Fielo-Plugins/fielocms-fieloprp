@@ -1,0 +1,89 @@
+
+.fielo-table {
+  margin-bottom: 20px;
+  border: none;
+  .fielo-field {
+    text-align: left;
+    display: table;
+    border: none;
+    &:first-of-type,
+    &:last-of-type {
+      padding: 10px;
+    }
+  }
+
+  .fielo-record-set__data {
+    .fielo-record {
+      &:nth-child(odd) {
+        background-color: $record-bg-color;
+      }
+      &:nth-child(even) {
+        background: #F9F9F9;
+      }
+    }
+
+    .fielo-field {
+      vertical-align: middle;
+    }
+  }
+}
+
+.fielo-table__head {
+  background: #8F9497;
+  color: #ffffff;
+  .fielo-field {
+    border-right: 1px solid #cccccc;
+    color: #FFF;
+    font-size:14px;
+    padding: 10px;
+  }
+}
+
+
+// table stacked
+.fielo-table {
+ tbody .fielo-field,
+ .fielo-field__value {
+  border-spacing: 10px 0;
+  border-collapse: separate;
+  }
+  tbody .fielo-field {
+    padding-left: 10px;
+  }
+}
+.fielo-table tbody .fielo-field:before {
+  content: attr(data-th);
+  display: table-row;
+  text-transform: uppercase;
+  color: #a9a9a9;
+}
+
+@media #{$bp-mobile-3} {
+  .fielo-table {
+    .fielo-field {
+      text-align: left;
+      display: table-cell;
+      padding: 10px;
+    }
+
+    tbody  .fielo-field,
+    .fielo-field__value {
+      border-spacing: 0;
+      border-collapse: collapse;
+    }
+
+    tbody .fielo-field:before {
+      display: none;
+    }
+
+    .fielo-record-set__data {
+      .fielo-record:nth-child(odd) .fielo-field {
+        border-right: 1px solid #F2F3F5;
+      }
+      .fielo-record:nth-child(even) .fielo-field {
+        border-right: 1px solid #ECECEC;
+      }
+    }
+  }
+
+}

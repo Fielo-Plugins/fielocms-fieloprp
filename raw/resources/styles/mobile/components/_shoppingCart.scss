@@ -1,0 +1,108 @@
+.fieloplt-shopping-cart {
+  .fielo-field--is-delete,
+  .fielo-field--is-ShoppingDelete {
+    .fielo-field__value{
+      display: inline-block;
+      padding: 0;
+      width:100%;
+    }
+    text-align: left;
+  }
+
+  .fielo-button__delete {
+    border: 1px solid;
+    color: $dangerColor;
+    background:none;
+    text-indent: 0;
+    text-align: center;
+    width: 70%;
+    margin: 0 auto;
+    &:hover {
+      background:none;
+    }
+    &::before {
+      font-size: 18px;
+      font-weight: bold;
+    }
+  }
+
+  .fielo-button__checkout {
+    background-image: url(../images/checkout.svg);
+    background-repeat: no-repeat;
+    padding-left: 37px;
+    width: 158px;
+    background-size: 72px;
+    background-position: -13px;
+  }
+
+  .fielo-icon--checkout {
+    fill:#FFF;
+  }
+
+  .fielo-button__empty-cart{
+    @include cartIcon;
+    width: 168px;
+  }
+
+  .fielo-icon--cart {
+    fill:#FFF;
+  }
+
+  .fielo-controls {
+    text-align: center;
+  }
+
+  .fielo-field--is-FieloAlpha__PointsCant__c{
+    .fielo-output__number{
+      font-weight: 700;
+    }
+    .fielo-field__value{
+      font-weight: 700;
+    }
+  }
+}
+
+.fieloplt-shopping-cart__quantity{
+  padding: 5px;
+}
+
+.fieloplt-shopping-cart__total{
+  font-weight: 700;
+}
+
+
+@media #{$bp-mobile-3} {
+  .fieloplt-shopping-cart {
+    .fielo-field--is-FieloAlpha__PointsCant__c,
+    .fielo-field--is-ShoppingTotal {
+      text-align: center;
+    }
+
+    .fielo-field--is-ShoppingQuantity,
+    .fielo-field--is-quantity {
+       text-align: center;
+    }
+
+    .fielo-field--is-delete,
+    .fielo-field--is-ShoppingDelete {
+      text-align: center;
+    }
+
+    .fielo-button__delete {
+      border: none;
+      color: $grey-color;
+      font-size: 0;
+      padding: 0;
+      height: 100%;
+      width: inherit;
+      &:hover {
+        color: $dangerColor;
+      }
+
+     &::before {
+        content: "×";
+        font-size: 46px;
+      }
+    }
+  }
+}

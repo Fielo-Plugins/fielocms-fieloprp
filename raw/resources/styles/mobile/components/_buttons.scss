@@ -1,0 +1,55 @@
+// Fielo Buttons
+.fielo-button{
+  border: none;
+  font-size: 1.2em;
+  text-transform: uppercase;
+  border-radius: 5px;
+  padding: 7px 20px;
+  margin: 5px 0;
+  background-color:#ddd;
+  &--safe {
+    background-color: $safeColor;
+    color: #FFF;
+  }
+  &--danger,
+  &__cancel {
+    color: #FFF;
+    background-color: $dangerColor;
+  }
+}
+
+.fielo-button__submit {
+  background-color: $safeColor;
+  color: #FFF;
+}
+
+.fielo-button__submit.fielo-button--danger {
+    background-color: $dangerColor;
+}
+
+
+
+.fielo-table {
+  .fielo-field--is-ToggleManager,
+  .fielo-field--is-BlockUnblock,
+  .fielo-field--is-HandleInvitations {
+    .fielo-button {
+      width: 100%;
+    }
+  }
+}
+
+@media #{$bp-mobile-3} {
+  .fielo-table {
+    .fielo-field--is-ToggleManager,
+    .fielo-field--is-BlockUnblock,
+    .fielo-field--is-HandleInvitations {
+      text-align: center;
+
+      .fielo-button {
+        width: auto;
+      }
+    }
+  }
+
+}
