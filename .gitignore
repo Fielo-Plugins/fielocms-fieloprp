@@ -7,9 +7,10 @@ build.xml
 config
 destructiveChanges.xml
 package.xml
-raw/install.md
+README.md
 gulpfile.babel.js
 resource-bundles/
 raw/node_modules/
 raw/docs/
+raw/install.md
 src/applications/
