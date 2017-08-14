@@ -16,22 +16,26 @@ global class InvoiceAPI implements FieloCMS.DataInterface{
                 query += ' OFFSET 0';
                 newMapData.put(c.Id, Database.query(query));
             }
-            if(c.FieloCMS__ComponentLibrary__r.Name == 'Invoice Detail'){
+            if(c.FieloCMS__ComponentLibrary__r.Name == 'Invoice Detail' || c.FieloCMS__ComponentLibrary__r.Name == 'Invoice Form'){
                 Id memberId = MemberService.getCurrentMemberId();
-                String recordId;
-                if ( String.isBlank(c.FieloCMS__RecordId__c) ) {
-                    recordId = ApexPages.CurrentPage().getParameters().get( c.FieloCMS__DetailParameter__c );
+                String recordId = ApexPages.CurrentPage().getParameters().get( c.FieloCMS__DetailParameter__c );
+
+                if (c.FieloCMS__ComponentLibrary__r.Name == 'Invoice Form' && (recordId == null || recordId == '')) {
+                    FieloPRP__Invoice__c invoice = new FieloPRP__Invoice__c();
+                    for(String field: new List<String>(OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c))){
+                        invoice.put(field,null);
+                    }
+                    newMapData.put(c.Id, (sObject)invoice);
                 } else {
-                    recordId = c.FieloCMS__RecordId__c;
+                    String query = 'SELECT ';
+                    query += String.join(new List<String>(OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)), ',');
+                    query += ' FROM FieloPRP__Invoice__c';
+                    query += ' WHERE Id = :recordId ';
+                    query += ' AND FieloPRP__Member__c =: memberId';
+                    query += ' LIMIT ' + String.valueOf(c.FieloCMS__Limit__c);
+                    query += ' OFFSET 0';
+                    newMapData.put(c.Id, Database.query(query));
                 }
-                String query = 'SELECT ';
-                query += String.join(new List<String>(OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)), ',');
-                query += ' FROM FieloPRP__Invoice__c';
-                query += ' WHERE Id = :recordId ';
-                query += ' AND FieloPRP__Member__c =: memberId';
-                query += ' LIMIT ' + String.valueOf(c.FieloCMS__Limit__c);
-                query += ' OFFSET 0';
-                newMapData.put(c.Id, Database.query(query));
             }
         }
         return newMapData;

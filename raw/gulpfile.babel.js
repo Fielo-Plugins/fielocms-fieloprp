@@ -66,7 +66,10 @@ var cmsThemeJs = [
     src: [
       // Utilidades
       'resources/scripts/core.js',
-      'resources/scripts/invoiceFilter.js'
+      'resources/scripts/invoiceFilter.js',
+      'resources/scripts/multiFileUploader.js',
+      'resources/scripts/formInvoice.js',
+      'resources/scripts/invoiceItems.js'
       ],
     name: 'mobile.min.js',
     dest: 'resource-bundles/FieloPlugin_PrpPlugin.resource/scripts'
@@ -74,7 +77,10 @@ var cmsThemeJs = [
   {
     src: [
       'resources/scripts/core.js',
-      'resources/scripts/invoiceFilter.js'
+      'resources/scripts/invoiceFilter.js',
+      'resources/scripts/multiFileUploader.js',
+      'resources/scripts/formInvoice.js',
+      'resources/scripts/invoiceItems.js'
     ],
     name: 'tablet.min.js',
     dest: 'resource-bundles/FieloPlugin_PrpPlugin.resource/scripts'
@@ -82,7 +88,10 @@ var cmsThemeJs = [
   {
     src: [
       'resources/scripts/core.js',
-      'resources/scripts/invoiceFilter.js'
+      'resources/scripts/invoiceFilter.js',
+      'resources/scripts/multiFileUploader.js',
+      'resources/scripts/formInvoice.js',
+      'resources/scripts/invoiceItems.js'
     ],
     name: 'desktop.min.js',
     dest: 'resource-bundles/FieloPlugin_PrpPlugin.resource/scripts'
