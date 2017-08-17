@@ -1,0 +1,22 @@
+<apex:component controller="LookupFieldController">
+	<apex:attribute name="config" type="SObject" description="" />
+	<apex:attribute name="field" type="Field" description="" />
+	<apex:attribute name="sObject" type="String" description="" />
+
+	<div class="cms-prp-lookup">
+		<input class="fielo-input fielo-js-upgrade cms-prp-lookup__field" data-required="{!field.attributes['required']}"  autocomplete="{!field.attributes['autocomplete']}" placeholder="{!field.attributes['placeholder']}" data-type="{!field.type}"  id="{! config['Id'] }-{!field.apiName}" data-object-name="{!sObject}" data-field-name="{!field.apiName}"  value="" list="{!sObject + '.' + field.apiName}-datalist"/>
+		<datalist id="{!sObject + '.' + field.apiName}-datalist">
+	    	<select class="cms-prp-lookup__select" required="true">
+	    	</select>
+	  	</datalist>
+	
+	</div>
+	<script type="text/javascript">
+		if(typeof FrontEndJSSettings == 'undefined') {
+		var FrontEndJSSettings = {};
+		}
+		if(typeof FrontEndJSSettings.LABELS == 'undefined') {
+		 	FrontEndJSSettings.LOOKUPS = {};
+		}
+	</script>
+</apex:component>
