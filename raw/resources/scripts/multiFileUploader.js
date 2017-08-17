@@ -190,20 +190,22 @@
     var attachments = [];
     var attachmentObject = {};
     var file;
-    [].forEach.call(Object.keys(this.fileList), function(fileIndex) {
-      file = this.fileList[fileIndex];
-      if (file) {
-        var fr = new FileReader();
-        fr.onloadend = function() {
-          attachmentObject.Body = window.btoa(fr.result);
-          attachmentObject.Name = file.name;
-        };
-        fr.readAsBinaryString(file);
-      }
-      attachments.push(attachmentObject);
-    },
-      this
-    );
+    if (this.fileList) {
+      [].forEach.call(Object.keys(this.fileList), function(fileIndex) {
+        file = this.fileList[fileIndex];
+        if (file) {
+          var fr = new FileReader();
+          fr.onloadend = function() {
+            attachmentObject.Body = window.btoa(fr.result);
+            attachmentObject.Name = file.name;
+          };
+          fr.readAsBinaryString(file);
+        }
+        attachments.push(attachmentObject);
+      },
+        this
+      );
+    }
     return attachments;
   };
 

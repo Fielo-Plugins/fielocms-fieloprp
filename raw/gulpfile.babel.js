@@ -69,6 +69,7 @@ var cmsThemeJs = [
       'resources/scripts/invoiceFilter.js',
       'resources/scripts/multiFileUploader.js',
       'resources/scripts/formInvoice.js',
+      'resources/scripts/lookupField.js',
       'resources/scripts/invoiceItems.js'
       ],
     name: 'mobile.min.js',
@@ -80,6 +81,7 @@ var cmsThemeJs = [
       'resources/scripts/invoiceFilter.js',
       'resources/scripts/multiFileUploader.js',
       'resources/scripts/formInvoice.js',
+      'resources/scripts/lookupField.js',
       'resources/scripts/invoiceItems.js'
     ],
     name: 'tablet.min.js',
@@ -91,6 +93,7 @@ var cmsThemeJs = [
       'resources/scripts/invoiceFilter.js',
       'resources/scripts/multiFileUploader.js',
       'resources/scripts/formInvoice.js',
+      'resources/scripts/lookupField.js',
       'resources/scripts/invoiceItems.js'
     ],
     name: 'desktop.min.js',

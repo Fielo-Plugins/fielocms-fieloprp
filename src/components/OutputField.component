@@ -1,0 +1,14 @@
+<apex:component layout="none">
+	<apex:attribute name="sObject" type="string" description="" />
+    <apex:attribute name="field" type="string" description="" />
+    <apex:attribute name="record" type="SObject" description="" />
+    <apex:attribute name="value" type="string" description="" />
+    <apex:variable var="type" value="$ObjectType[sObject].fields[field].type" />
+    <apex:variable var="fieldType" value="{!CASE( $ObjectType[sObject].fields[field].type, 'number','number', 'percent','number', 'double','number', 'integer','number', 'decimal','number', 'currency', 'number', 'boolean', 'boolean', 'date','date', 'reference','reference', 'text')}" />
+
+    <span class="fielo-output fielo-output__{!fieldType}"  data-type="{!fieldType}" data-currencyIsoCode="{!IF(type='currency','USD','')}" data-value="{!record[field]}" ><apex:outputField value="{!record[field]}" />
+    	<apex:panelGroup rendered="{! fieldType='date' }" layout="none" >
+    		<time class="fielo-time" datetime="{!TEXT(record[field])}">{!record[field]}</time>
+    	</apex:panelGroup>
+    </span>
+</apex:component>

@@ -10,13 +10,26 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
 
         FieloCMS__Component__c mainComponent = Database.query(query + ' Where Id = \'' + c.MainSourceComponent__c + '\'');
         FieloCMS__Component__c secondaryComponent = Database.query(query + ' Where Id = \'' + c.SecondarySourceComponent__c + '\'');
+        FieloCMS__Component__c productComponent = Database.query(query + ' Where Id = \'' + c.ProductSourceComponent__c + '\'');
         List<Field> invoiceFieldSet = getFieldsStructure(mainComponent, mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
-		List<Field> invoiceItemFieldSet = getFieldsStructure(secondaryComponent, secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
+        List<Field> invoiceItemFieldSet = getFieldsStructure(secondaryComponent, secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
+		List<Field> productFieldSet = getFieldsStructure(productComponent, productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
         Component.Widget1 formInvoice = new Component.Widget1(config = c);
+        formInvoice.mainObject = mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
+        formInvoice.secondaryObject = secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
+        formInvoice.productObject = productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
         formInvoice.invoiceFieldSet = invoiceFieldSet;
         formInvoice.invoiceItemFieldSet = invoiceItemFieldSet;
+        formInvoice.productFieldSet = productFieldSet;
         formInvoice.record = new FieloPRP__Invoice__c();
         formInvoice.itemRecord = new FieloPRP__InvoiceItem__c(FieloPRP__Quantity__c=0);
+
+        Set<String> productFields = new Set<String>();
+        for(Field productField: productFieldSet) {
+            productFields.add(productField.apiName);
+        }
+
+        formInvoice.recentProducts = Database.query('Select ' + String.join(new List<String>(productFields),',') + ' From ' + formInvoice.productObject + ' ORDER BY LastModifiedDate LIMIT 10');
         return formInvoice;
     }
 
@@ -45,9 +58,24 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
     }
     
     @RemoteAction
-    global static FieloPRP__Invoice__c submit(FieloPRP__Invoice__c invoice, List<FieloPRP__InvoiceItem__c> items, List<Attachment> attachments) {
+    global static Map<String, Object> submit(FieloPRP__Invoice__c invoice, List<FieloPRP__InvoiceItem__c> items, List<Attachment> attachments, String submitMode) {
         invoice.FieloPRP__Member__c = MemberService.getCurrentMemberId();
-        return FieloPRP.InvoiceService.submitInvoice(invoice, items, attachments);
+        try{
+            FieloPRP__Invoice__c submittedInvoice = FieloPRP.InvoiceService.submitInvoice(invoice, items, attachments);
+            if (submitMode == 'Close') {
+                submittedInvoice = FieloPRP.InvoiceService.closeInvoice(submittedInvoice.Id);
+            }
+            return new Map<String, Object>{
+                'object' => submittedInvoice,
+                'status' => 'OK'
+            };
+        } catch (DmlException e) {
+            return new Map<String, Object>{
+                'result' => '',
+                'status' => 'NOK',
+                'message' => e.getDmlMessage(0)
+            };
+        }
     }
 
     public String currencyCode {get{
@@ -116,5 +144,43 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
             result = true;
         }
         return result;
+    }
+
+    @RemoteAction
+    global static List<sObject> queryRecords(String objectName, List<String> fields, String filter, Integer offSet, String injectQuery) {
+        String query = 'Select ' +
+            String.join(new List<String>(new Set<String>(fields)), ',') +
+            ' FROM ' +
+            objectName;
+        Map<String, String> filterMap;
+        if (filter != '') {
+            filterMap = (Map<String, String>) JSON.deserialize(filter, Map<String, String>.class);
+        }
+        String whereClause = '';
+        List<String> statements = new List<String>();
+        for(String fieldName: filterMap.keySet()) {
+            if (filterMap.get(fieldName) != '') {
+                statements.add(fieldName + ' like \'%' + filterMap.get(fieldName) + '%\'');
+            }
+        }
+        if (!statements.isEmpty()) {
+            whereClause = String.join(statements, ' AND ');
+            if (injectQuery!='') {
+                whereClause += ' AND ' + injectQuery;
+            }
+        } else if (injectQuery!='') {
+            whereClause = injectQuery;
+        }
+        if (whereClause != '') {
+            query += ' WHERE ' + whereClause;
+        }
+        query += ' ORDER BY LastModifiedDate DESC ';
+        // query += ' LIMIT 30';
+        query += ' OFFSET ' + String.valueOf(offSet);
+
+        system.debug('query');
+        system.debug(query);
+
+        return Database.query(query);
     }
 }
