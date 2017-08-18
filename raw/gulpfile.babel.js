@@ -150,6 +150,12 @@ gulp.task('cmsBuildZip', ['cmsCopyResourcesFiles'], () => {
     .pipe(gulp.dest('resource-bundles'));
 });
 
+// Watch
+gulp.task('watch', () => {
+  gulp.watch(cmsThemeCssSources, ['cmsBuildSiteTheme']);
+  gulp.watch(cmsThemeJsSources, ['jsBuildSiteTheme']);
+});
+
 // Local server
 gulp.task('theme', ['cmsBuildSiteTheme', 'jsBuildSiteTheme'], () => {
   browserSync({

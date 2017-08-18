@@ -1,8 +1,0 @@
-<apex:component layout="none">
-	<apex:attribute name="config" type="SObject" description="" />
-	<div class="fielo-record fielo-form {!config['FieloCMS__ComponentLibrary__r']['FieloCMS__CSSClasses__c']} {!config['FieloCMS__CSSClasses__c']} fielo-js-component cms-prp-new-invoice" data-redirect-page="{!config['RedirectPage__c']}" data-componentid="{! config['Id'] }">
-	<c:HeaderComponent>
-		<a type="submit" class="fielo-button fielo-button__new-invoice cms-prp-section-header__right" href="{!'/FieloCMS__Page?pageId=' + config['RedirectPage__c']}">New</a>
-	</c:HeaderComponent>
-	</div>
-</apex:component>

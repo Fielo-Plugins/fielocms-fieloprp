@@ -61,23 +61,6 @@
       options;
   };
 
-  FieloLookupField.prototype.indexNames = function(object, name) {
-    var names = [];
-    [].forEach.call(Object.keys(object), function(key) {
-      names.push(object[key]);
-    });
-    var indexedName = name;
-    if (names.indexOf(indexedName) !== -1) {
-      var index = 1;
-      indexedName += ' (' + index + ')';
-      while (names.indexOf(indexedName) !== -1) {
-        index++;
-        indexedName = name + ' (' + index + ')';
-      }
-    }
-    return indexedName;
-  };
-
   FieloLookupField.prototype.renderOptions = function() {
     if (!this.isLoaded) {
       while (this.selectOptions.firstChild) {
@@ -105,7 +88,7 @@
       var options = this.selectOptions
         .querySelectorAll('option');
       [].forEach.call(options, function(option) {
-        if (option.selected) {
+        if (option.value === event.srcElement.value) {
           this.inputField.setAttribute('data-lookup-id',
             option.getAttribute('data-record-id'));
         }

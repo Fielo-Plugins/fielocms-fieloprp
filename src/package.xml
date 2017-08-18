@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
 	<types>
-		<members>AttachmentAPI</members>
-		<members>InvoiceAPI</members>
-		<members>InvoiceItemAPI</members>
-		<members>LookupFieldController</members>
+		<members>*</members>
 		<name>ApexClass</name>
 	</types>
 	<types>
@@ -13,9 +10,12 @@
 		<name>StaticResource</name>
 	</types>
 	<types>
-		<members>OutputField</members>
-		<members>LookupFieldController</members>
+		<members>*</members>
 		<name>ApexComponent</name>
+	</types>
+	<types>
+		<members>FieloCMS__Component__c</members>
+		<name>CustomObject</name>
 	</types>
 	<version>36.0</version>
 </Package>
