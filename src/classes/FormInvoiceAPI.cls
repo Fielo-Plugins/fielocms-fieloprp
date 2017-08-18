@@ -1,20 +1,19 @@
 global class FormInvoiceAPI implements FieloCMS.ViewInterface{
 	global ApexPages.Component getComponent(FieloCMS__Component__c c){
-        List<String> fields = new List<String>();
-        for (String field: c.getPopulatedFieldsAsMap().keySet()) {
-            if (field != 'FieloCMS__ComponentLibrary__r' && field != 'RecordType') {
-                fields.add(field);
-            }
-        }
-        String query = 'Select ' + String.join(fields, ',') + ', FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c FROM FieloCMS__Component__c';
+        String query = 'Select FieloCMS__FieldSet__c, FieloCMS__Layout__c, FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c FROM FieloCMS__Component__c ' +
+            ' WHERE Id in (\'' + c.MainSourceComponent__c + '\',\'' + c.SecondarySourceComponent__c + '\',\'' + c.ProductSourceComponent__c + '\')';
 
-        FieloCMS__Component__c mainComponent = Database.query(query + ' Where Id = \'' + c.MainSourceComponent__c + '\'');
-        FieloCMS__Component__c secondaryComponent = Database.query(query + ' Where Id = \'' + c.SecondarySourceComponent__c + '\'');
-        FieloCMS__Component__c productComponent = Database.query(query + ' Where Id = \'' + c.ProductSourceComponent__c + '\'');
+        Map<Id,FieloCMS__Component__c> components = new Map<Id,FieloCMS__Component__c>( (List<FieloCMS__Component__c>) Database.query(query));
+
+        FieloCMS__Component__c mainComponent = components.get(c.MainSourceComponent__c);
+        FieloCMS__Component__c secondaryComponent = components.get(c.SecondarySourceComponent__c);
+        FieloCMS__Component__c productComponent = components.get(c.ProductSourceComponent__c);
+
         List<Field> invoiceFieldSet = getFieldsStructure(mainComponent, mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
         List<Field> invoiceItemFieldSet = getFieldsStructure(secondaryComponent, secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
 		List<Field> productFieldSet = getFieldsStructure(productComponent, productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
-        Component.Widget1 formInvoice = new Component.Widget1(config = c);
+        
+        Component.Widget6 formInvoice = new Component.Widget6(config = c);
         formInvoice.mainObject = mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
         formInvoice.secondaryObject = secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
         formInvoice.productObject = productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
