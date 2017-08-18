@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ApexComponent xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>36.0</apiVersion>
+<<<<<<< HEAD:src/components/Widget6.component-meta.xml
     <label>Widget6</label>
     <packageVersions>
         <majorNumber>1</majorNumber>
@@ -22,4 +23,7 @@
         <minorNumber>7</minorNumber>
         <namespace>sf_com_apps</namespace>
     </packageVersions>
+=======
+    <label>Widget1</label>
+>>>>>>> 5572906e6d9ac18ed65a888fdaf0309f6ce68f1f:src/components/Widget1.component-meta.xml
 </ApexComponent>
