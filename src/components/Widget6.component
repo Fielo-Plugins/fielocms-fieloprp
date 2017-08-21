@@ -19,7 +19,7 @@
             <fieldset class="cms-prp-invoice-fieldset">
                 <input type="hidden" name="componentId" value="{! config['Id'] }" />
                 <input type="hidden" name="{! IF( record['Id'] <> '', 'SObject.id', 'SObject.sObjectType' ) }" value="{! IF( record['Id'] <> '', record['Id'], config['FieloCMS__ComponentLibrary__r']['FieloCMS__sobject__c']) }" />
-                
+
                 <apex:repeat value="{!invoiceFieldSet}" var="field">
                 	<apex:panelGroup layout="none" rendered="{!field.apiName == 'FieloPRP__Amount__c' && config['HasDetails__c']==false || field.apiName != 'FieloPRP__Amount__c'}">
 		                <div class="mdl-grid fielo-field fielo-field--is-{!field.apiName}" data-field-name="{!field.apiName}">
@@ -43,10 +43,10 @@
 					            	<textarea class="fielo-input fielo-js-upgrade" data-required="{!field.attributes['required']}" placeholder="{!field.attributes['placeholder']}" data-type="{!field.type}"  id="{! config['Id'] }-{!field.apiName}" name="SObject.{!field.apiName}" >{!record[field.apiName]}</textarea>
 					            </apex:panelGroup>
 					            <apex:panelGroup layout="none" rendered="{!field.type == 'REFERENCE'}">
-					            	<c:LookupField config="{!config}" field="{!field}" sObject="{!$ObjectType[mainObject].fields[field.apiName].referenceTo}"/>
+					            	<c:LookupField config="{!config}" field="{!field}" sObject="{!$ObjectType[mainObject].fields[field.apiName].referenceTo[0].Name}"/>
 					            </apex:panelGroup>
 					            <apex:panelGroup layout="none" rendered="{!field.type!='Picklist' && field.type!='TextArea' && field.type!='REFERENCE' }">
-					            	<input class="fielo-input fielo-js-upgrade disabled" data-required="{!field.attributes['required']}"  autocomplete="{!field.attributes['autocomplete']}" placeholder="{!field.attributes['placeholder']}" data-type="{!field.type}"  id="{! config['Id'] }-{!field.apiName}" name="SObject.{!field.apiName}"  value="{!record[field.apiName]}" /> 
+					            	<input class="fielo-input fielo-js-upgrade disabled" data-required="{!field.attributes['required']}"  autocomplete="{!field.attributes['autocomplete']}" placeholder="{!field.attributes['placeholder']}" data-type="{!field.type}"  id="{! config['Id'] }-{!field.apiName}" name="SObject.{!field.apiName}"  value="{!record[field.apiName]}" />
 					            </apex:panelGroup>
 					        </div>
 					    </div>
@@ -93,7 +93,7 @@
 							            	<textarea class="fielo-input fielo-js-upgrade" data-required="{!itemField.attributes['required']}" placeholder="{!itemField.attributes['placeholder']}" data-type="{!itemField.type}"  id="{! config['Id'] }-{!itemField.apiName}" name="SObject.{!itemField.apiName}" >{!itemRecord[itemField.apiName]}</textarea>
 							            </apex:panelGroup>
 							            <apex:panelGroup layout="none" rendered="{!itemField.type == 'REFERENCE'}">
-							            		<c:LookupField config="{!config}" field="{!itemField}" sObject="{!$ObjectType[secondaryObject].fields[itemField.apiName].referenceTo}"/>
+							            		<c:LookupField config="{!config}" field="{!itemField}" sObject="{!$ObjectType[secondaryObject].fields[itemField.apiName].referenceTo[0]}"/>
 							            </apex:panelGroup>
 							            <apex:panelGroup layout="none" rendered="{!itemField.type!='Picklist' && itemField.type!='TextArea' && itemField.type!='REFERENCE'}">
 							            	<input class="fielo-input fielo-js-upgrade" data-required="{!itemField.attributes['required']}"  autocomplete="{!itemField.attributes['autocomplete']}" placeholder="{!itemField.attributes['placeholder']}" data-type="{!itemField.type}"  id="{! config['Id'] }-{!itemField.apiName}" name="SObject.{!itemField.apiName}"  value="{!itemRecord[itemField.apiName]}" />
@@ -135,7 +135,7 @@
 				<input type="file" id="file-upload-input" style="display: none;"/>
 				<button type="submit" class="fielo-button fielo-button__new-attachment cms-prp-section-header__right" >New</button>
 			</c:HeaderComponent>
-			
+
 			<table class="fielo-table mdl-data-table">
 				<thead class="fielo-table__head">
 					<tr class="fielo-record"  data-order-by-type="list">
@@ -175,7 +175,7 @@
 				                </apex:panelGroup>
 				            </apex:panelGroup>
 				        </div>
-				        
+
 				        <div class="fielo-field__value">
 				            <apex:panelGroup layout="none" rendered="{!productField.type=='PICKLIST' }">
 							    <select class="fielo-input fielo-js-upgrade" data-value="" data-type="{!productField.type}" id="{! config['Id'] }-{!productField.apiName}" name="SObject.{!productField.apiName}" >
@@ -188,10 +188,10 @@
 				            	<textarea class="fielo-input fielo-js-upgrade" data-type="{!productField.type}"  id="{! config['Id'] }-{!productField.apiName}" name="SObject.{!productField.apiName}" ></textarea>
 				            </apex:panelGroup>
 				            <apex:panelGroup layout="none" rendered="{!productField.type == 'REFERENCE'}">
-				            	<c:LookupField config="{!config}" field="{!productField}" />
+				            	<c:LookupField config="{!config}" field="{!productField}" sObject="{!$ObjectType[productObject].fields[productField.apiName].referenceTo[0]}"/>
 				            </apex:panelGroup>
 				            <apex:panelGroup layout="none" rendered="{!productField.type!='PICKLIST' && productField.type!='TextArea' && productField.type!='REFERENCE' }">
-				            	<input class="fielo-input fielo-js-upgrade disabled" data-type="{!productField.type}"  id="{! config['Id'] }-{!productField.apiName}" name="SObject.{!productField.apiName}"  value="" /> 
+				            	<input class="fielo-input fielo-js-upgrade disabled" data-type="{!productField.type}"  id="{! config['Id'] }-{!productField.apiName}" name="SObject.{!productField.apiName}"  value="" />
 				            </apex:panelGroup>
 				        </div>
 					</div>
@@ -245,7 +245,7 @@
 		    do {
 		      i = matches.length;
 		      while (--i >= 0 && matches.item(i) !== el) {};
-		    } while ((i < 0) && (el = el.parentElement)); 
+		    } while ((i < 0) && (el = el.parentElement));
 		    return el;
 		  };
 		}
