@@ -90,13 +90,13 @@
 										    </select>
 							            </apex:panelGroup>
 							            <apex:panelGroup layout="none" rendered="{!itemField.type=='TextArea' }">
-							            	<textarea class="fielo-input fielo-js-upgrade" data-required="{!itemField.attributes['required']}" placeholder="{!itemField.attributes['placeholder']}" data-type="{!itemField.type}"  id="{! config['Id'] }-{!itemField.apiName}" name="SObject.{!itemField.apiName}" >{!itemRecord[itemField.apiName]}</textarea>
+							            	<textarea class="fielo-input fielo-js-upgrade" data-type="{!itemField.type}"  id="{! config['Id'] }-{!itemField.apiName}" name="SObject.{!itemField.apiName}" >{!itemRecord[itemField.apiName]}</textarea>
 							            </apex:panelGroup>
 							            <apex:panelGroup layout="none" rendered="{!itemField.type == 'REFERENCE'}">
 							            		<c:LookupField config="{!config}" field="{!itemField}" sObject="{!$ObjectType[secondaryObject].fields[itemField.apiName].referenceTo[0]}"/>
 							            </apex:panelGroup>
 							            <apex:panelGroup layout="none" rendered="{!itemField.type!='Picklist' && itemField.type!='TextArea' && itemField.type!='REFERENCE'}">
-							            	<input class="fielo-input fielo-js-upgrade" data-required="{!itemField.attributes['required']}"  autocomplete="{!itemField.attributes['autocomplete']}" placeholder="{!itemField.attributes['placeholder']}" data-type="{!itemField.type}"  id="{! config['Id'] }-{!itemField.apiName}" name="SObject.{!itemField.apiName}"  value="{!itemRecord[itemField.apiName]}" />
+							            	<input class="fielo-input fielo-js-upgrade" data-type="{!itemField.type}"  id="{! config['Id'] }-{!itemField.apiName}" name="SObject.{!itemField.apiName}"  value="{!itemRecord[itemField.apiName]}" />
 							            </apex:panelGroup>
 						            </span>
 					    		</td>
