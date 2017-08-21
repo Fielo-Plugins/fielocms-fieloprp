@@ -116,7 +116,7 @@
         'FieloPRP__Distributor__c') {
         this.invoiceObject[field.getAttribute('data-field-name')] =
         field.querySelector('input').getAttribute('data-lookup-id');
-      } else {
+      } else if (field.querySelector('input')) {
         this.invoiceObject[field.getAttribute('data-field-name')] =
         field.querySelector('input').value;
       }
