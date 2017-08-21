@@ -78,6 +78,14 @@
         this.refreshTotalPrice.bind(this)
       );
     }, this);
+    invoiceItem.setAttribute('data-upgraded', '');
+    componentHandler.upgradeElement(invoiceItem); // eslint-disable-line no-undef
+    var childElements = invoiceItem
+      .querySelectorAll('[' + this.Constant_.DATA_UPGRADED + ']');
+    [].forEach.call(childElements, function(child) {
+      child.setAttribute('data-upgraded', '');
+      componentHandler.upgradeElement(child); // eslint-disable-line no-undef
+    }, this);
   };
 
   FieloInvoiceItems.prototype.refreshTotalPrice = function(event) {
