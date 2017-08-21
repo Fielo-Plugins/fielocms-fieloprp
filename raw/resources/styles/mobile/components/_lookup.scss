@@ -1,0 +1,16 @@
+.cms-prp-lookup{
+  display: inline;
+  overflow-x: scroll;
+  white-space: nowrap;
+}
+.cms-prp-lookup-button {
+  background-color: $coldColor;
+  border-color: white;
+  border-width: 1px;
+  border: groove;
+}
+.cms-prp-lookup-button__icon{
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH4QgSEzYoeWWS9AAAAUlJREFUSMfdlrtKA0EUhj+3sjOFTyDYquw2FiJ5gDRprLYPPkLsfZJUW1lYKFZ23iUKdtqIIaAGtUhlMDb/wCC7OxcxhQeGH3bOmW8uZ84szMDmHP2rwBaQAQ1gDPSBfeD4t/AUuAemNW0EtGIBOyUDXgKHwElJXy8W8AVMgE6FXxt4t0BFyBYZwBMw7xFzYYFyH4g5g4knwNhQcZ94ZJGZUSdwizd8V7NrOcbYs2L3yjoTaSa9ioQcSVfqIA3payRkIF2sg4ylC5EQM/hHHaQvXY+ENKV3Lidz8O1AwLIVu+1yHsnxLRBya0ESl3PLcj73BBRWTNd3Vj0raKiLVrVFNz8K5VrIe1LoDTH2onswUBY1gaWK8TLg2ndFuWrR1NG6WoH9LQ1NzVyl4kF34BE4UBYlJRU8GhT6VPxP0Olf/gWlwBmwyazsGyU3fPCHB8zvAAAAAElFTkSuQmCC');
+  background-repeat: no-repeat;
+  background-position: center;
+}
