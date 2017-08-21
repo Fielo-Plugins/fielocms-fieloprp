@@ -6,7 +6,7 @@
 	<apex:variable var="fieldType" value="{!CASE($ObjectType[sObjectName].fields['Name'].type,'number','number','percent','number','double','number','integer','number','decimal','number','currency', 'number','boolean', 'boolean','date','date','reference','reference','text')}"/>
 
 	<div class="cms-prp-lookup">
-		<input class="fielo-input fielo-js-upgrade cms-prp-lookup__field" data-required="{!field.attributes['required']}" data-type="{!field.type}"  id="{! config['Id'] }-{!field.apiName}" data-object-name="{!sObject}" data-field-name="{!field.apiName}"  value="" list="{!sObject + '.' + field.apiName}-datalist"/> <button type="button" class="fielo-button cms-prp-lookup-button cms-prp-lookup-button__icon" >&nbsp;</button>
+		<input class="fielo-input fielo-js-upgrade cms-prp-lookup__field" data-type="{!field.type}" id="{! config['Id'] }-{!field.apiName}" data-object-name="{!sObject}" data-field-name="{!field.apiName}"  value="" list="{!sObject + '.' + field.apiName}-datalist"/> <button type="button" class="fielo-button cms-prp-lookup-button cms-prp-lookup-button__icon" >&nbsp;</button>
 		<datalist id="{!sObject + '.' + field.apiName}-datalist">
 	    	<select class="cms-prp-lookup__select" required="true">
 	    	</select>
