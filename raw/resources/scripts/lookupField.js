@@ -129,6 +129,7 @@
 
   FieloLookupField.prototype.preQuery = function(event) {
     if (event.key === 'Enter') {
+      event.preventDefault();
       var filteredItems =
         this.filterItems(FrontEndJSSettings.LOOKUPS[this.fieldFullName], // eslint-disable-line no-undef
           this.inputField.value);
