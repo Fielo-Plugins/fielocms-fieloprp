@@ -76,6 +76,7 @@
         this.redirect();
       }
     } else {
+      fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
       this.throwMessage(result.message, '#', 2, 'ERROR');
     }
   };
