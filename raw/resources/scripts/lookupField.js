@@ -121,8 +121,34 @@
     this.inputField.focus();
   };
 
+  FieloLookupField.prototype.filterItems = function(items, query) {
+    return items.filter(function(el) {
+      return el.Name.toLowerCase().indexOf(query.toLowerCase()) > -1;
+    });
+  };
+
+  FieloLookupField.prototype.preQuery = function(event) {
+    if (event.key === 'Enter') {
+      var filteredItems =
+        this.filterItems(FrontEndJSSettings.LOOKUPS[this.fieldFullName], // eslint-disable-line no-undef
+          this.inputField.value);
+      if (filteredItems.length === 1) {
+        this.inputField.setAttribute('data-lookup-id',
+          filteredItems[0].Id);
+        this.inputField.value =
+          filteredItems[0].Name;
+      } else {
+        this.inputField.setAttribute('data-lookup-id',
+          '');
+        this.showModal();
+      }
+    }
+  };
+
   FieloLookupField.prototype.showModal = function() {
     this.renderOptions();
+    this.lookupSearchInput.value =
+      this.inputField.value;
     var modal =
       document.querySelector('.' + this.CssClasses_.MODAL);
     var modalBody = modal
@@ -133,6 +159,7 @@
     modal.FieloModal.show();
     this.removeClass(this.lookupSearch, 'hidden');
     modalBody.appendChild(this.lookupSearch);
+    this.filterResults();
   };
 
   FieloLookupField.prototype.filterResults = function() {
@@ -204,11 +231,12 @@
       }
       if (FrontEndJSSettings.LOOKUPS[this.fieldFullName] === null || // eslint-disable-line no-undef
         FrontEndJSSettings.LOOKUPS[this.fieldFullName] === undefined) { // eslint-disable-line no-undef
-        console.log('getValues');
         this.getValues(); // eslint-disable-line no-undef
       }
       this.inputField
         .addEventListener('focus', this.renderOptions.bind(this));
+      this.inputField
+        .addEventListener('keypress', this.preQuery.bind(this));
       this.lookupBtn =
         this.element_.querySelector('.' + this.CssClasses_.SEARCH_BUTTON);
       this.lookupBtn
