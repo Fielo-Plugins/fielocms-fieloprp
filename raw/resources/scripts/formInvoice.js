@@ -124,7 +124,7 @@
     if (this.items) {
       this.invoiceItems = this.items.FieloInvoiceItems.get();
     } else {
-      this.invoiceItems = [];
+      this.invoiceItems = null;
     }
     this.attachmentsList =
       this.attachments.FieloMultiFileUploaderPRP.get();
