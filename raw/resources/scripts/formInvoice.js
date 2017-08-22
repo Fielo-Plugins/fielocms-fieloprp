@@ -136,6 +136,12 @@
       this.attachments.FieloMultiFileUploaderPRP.get();
   };
 
+  FieloFormInvoice.prototype.disableSubmit = function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+    }
+  };
+
   /**
    * Inicializa el elemento
    */
@@ -152,6 +158,10 @@
         'click',
         this.submit.bind(this)
       );
+      this.form_ =
+        this.element_.querySelector('form');
+      this.form_
+        .addEventListener('keypress', this.disableSubmit.bind(this));
     }
   };
 
