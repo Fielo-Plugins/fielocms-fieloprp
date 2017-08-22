@@ -46,7 +46,7 @@
 					            	<c:LookupField config="{!config}" field="{!field}" sObject="{!$ObjectType[mainObject].fields[field.apiName].referenceTo[0].Name}"/>
 					            </apex:panelGroup>
 					            <apex:panelGroup layout="none" rendered="{!field.type!='Picklist' && field.type!='TextArea' && field.type!='REFERENCE' }">
-					            	<input class="fielo-input fielo-js-upgrade disabled" data-required="{!field.attributes['required']}"  autocomplete="{!field.attributes['autocomplete']}" placeholder="{!field.attributes['placeholder']}" data-type="{!field.type}"  id="{! config['Id'] }-{!field.apiName}" name="SObject.{!field.apiName}"  value="{!record[field.apiName]}" />
+					            	<input class="fielo-input fielo-js-upgrade disabled" data-required="{!field.attributes['required']}"  autocomplete="{!field.attributes['autocomplete']}" placeholder="{!field.attributes['placeholder']}" data-type="{!field.type}"  id="{! config['Id'] }-{!field.apiName}" name="SObject.{!field.apiName}"  value="{!record[field.apiName]}" step="0.01"/>
 					            </apex:panelGroup>
 					        </div>
 					    </div>
