@@ -41,7 +41,9 @@
     LOOKUP_SEARCH: 'cms-prp-lookup-search__model',
     MODAL: 'fielo-modal',
     MODAL_CONTAINER: 'fielo-modal__body-container',
-    ROW_SELECTOR: 'cms-prp-lookup-row-selector'
+    ROW_SELECTOR: 'cms-prp-lookup-row-selector',
+    SEARCH_FIELD_CONTAINER: 'cms-prp-search-fields',
+    SEARCH_RECORDS_BUTTON: 'fielo-button__search'
   };
 
   FieloLookupField.prototype.getValues = function() {
@@ -116,6 +118,7 @@
     var modal =
       document.querySelector('.' + this.CssClasses_.MODAL);
     modal.FieloModal.hide();
+    this.inputField.focus();
   };
 
   FieloLookupField.prototype.showModal = function() {
@@ -130,6 +133,31 @@
     modal.FieloModal.show();
     this.removeClass(this.lookupSearch, 'hidden');
     modalBody.appendChild(this.lookupSearch);
+  };
+
+  FieloLookupField.prototype.filterResults = function() {
+    var records =
+      this.optionsContainer
+        .querySelectorAll('.' + this.CssClasses_.MODEL);
+    var anchor;
+    [].forEach.call(records, function(record) {
+      if (this.lookupSearchInput.value === '' ||
+        this.lookupSearchInput.value === null ||
+        this.lookupSearchInput.value === undefined) {
+        record.style.display = null;
+      } else {
+        anchor =
+          record.querySelector('[' + this.Constant_.FIELD + '="Name"]')
+            .querySelector('a');
+        if (anchor.innerHTML
+          .toLowerCase().indexOf(
+            this.lookupSearchInput.value.toLowerCase()) === -1) {
+          record.style.display = 'none';
+        } else {
+          record.style.display = null;
+        }
+      }
+    }, this);
   };
 
   FieloLookupField.prototype.addClass = function(element, className) {
@@ -185,6 +213,16 @@
         this.element_.querySelector('.' + this.CssClasses_.SEARCH_BUTTON);
       this.lookupBtn
         .addEventListener('click', this.showModal.bind(this));
+      this.lookupSearchInput =
+        this.lookupSearch
+          .querySelector('.' + this.CssClasses_.SEARCH_FIELD_CONTAINER)
+            .querySelector('[' + this.Constant_.FIELD + '="Name"]')
+              .querySelector('input');
+      this.lookupSearchBtn =
+        this.lookupSearch
+          .querySelector('.' + this.CssClasses_.SEARCH_RECORDS_BUTTON);
+      this.lookupSearchBtn
+        .addEventListener('click', this.filterResults.bind(this));
     }
   };
 

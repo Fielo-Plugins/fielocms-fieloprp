@@ -201,15 +201,18 @@
     var sObjectValue;
     [].forEach.call(this.invoiceItems_, function(item) {
       sObject = {};
-      [].forEach.call(item.querySelectorAll('input'), function(input) {
+      [].forEach.call(item.querySelectorAll('input:not(.disabled)'),
+      function(input) {
         if (input.closest('td').getAttribute('data-field-name') ===
           'FieloPRP__Product__c') {
           sObjectValue = input.getAttribute('data-lookup-id');
+          sObject[input.closest('td').getAttribute('data-field-name')] =
+            sObjectValue;
         } else {
           sObjectValue = input.value;
-        }
-        sObject[input.closest('td').getAttribute('data-field-name')] =
+          sObject[input.closest('td').getAttribute('data-field-name')] =
             sObjectValue;
+        }
       }, this);
       sObjectList.push(sObject);
     }, this);
