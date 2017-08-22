@@ -9,7 +9,7 @@
   window.FieloFormInvoice = FieloFormInvoice;
 
   /**
-   * Guarda las constantes en un lugar para que sean facilmente actualizadas
+   * Guarda las constantes en un lugar para que sean facilmente actualizadas©
    * @enum {string | number}
    * @private
    */
@@ -28,6 +28,7 @@
   FieloFormInvoice.prototype.CssClasses_ = {
     FIELDSET: 'cms-prp-invoice-fieldset',
     FIELD: 'fielo-field',
+    LOOKUP: 'cms-prp-lookup',
     ITEMS: 'cms-prp-invoice-items',
     ATTACHMENTS: 'cms-prp-multifileuploader',
     SUBMIT: 'fielo-button__submit'
@@ -37,6 +38,7 @@
   FieloFormInvoice.prototype.submit = function() {
     this.getValues();
     try {
+      fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
       Visualforce.remoting.Manager.invokeAction( // eslint-disable-line no-undef
         this.Constant_.SUBMIT_METHOD,
         this.invoiceObject,
@@ -79,7 +81,6 @@
   };
 
   FieloFormInvoice.prototype.redirect = function() {
-    fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
     var result = {message: 'The invoice was saved successfully'};
     this.throwMessage(result.message, 'success');
     if (window.redirectURL) {
@@ -117,8 +118,12 @@
         this.invoiceObject[field.getAttribute('data-field-name')] =
         field.querySelector('input').getAttribute('data-lookup-id');
       } else if (field.querySelector('input')) {
-        this.invoiceObject[field.getAttribute('data-field-name')] =
-        field.querySelector('input').value;
+        if (field.getAttribute('data-field-name')) {
+          if (field.querySelector('input')) {
+            this.invoiceObject[field.getAttribute('data-field-name')] =
+            field.querySelector('input').value;
+          }
+        }
       }
     }, this);
     if (this.items) {
