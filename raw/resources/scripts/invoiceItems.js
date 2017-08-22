@@ -59,7 +59,8 @@
     ROW_SELECTOR: 'fielo-field--is-row-selector',
     COL_SELECTOR: 'fielo-field--is-column-selector',
     SEARCH_BUTTON: 'fielo-button__search',
-    ADD_PRODUCTS_BUTTON: 'fielo-button__add-products'
+    ADD_PRODUCTS_BUTTON: 'fielo-button__add-products',
+    CLOSE_PRODUCTS_BUTTON: 'fielo-button__close-products'
 
   };
 
@@ -261,6 +262,16 @@
       this.products.querySelector('.' + this.CssClasses_.ADD_PRODUCTS_BUTTON);
     this.addProductsBtn_
       .addEventListener('click', this.addProducts.bind(this));
+    this.closeProductsBtn_ =
+      this.products.querySelector('.' + this.CssClasses_.CLOSE_PRODUCTS_BUTTON);
+    this.closeProductsBtn_
+      .addEventListener('click', this.closeModal.bind(this));
+  };
+
+  FieloInvoiceItems.prototype.closeModal = function() {
+    var modal =
+      document.querySelector('.' + this.CssClasses_.MODAL);
+    modal.FieloModal.hide();
   };
 
   FieloInvoiceItems.prototype.getFilter = function() {

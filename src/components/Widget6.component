@@ -229,6 +229,7 @@
 		    </table>
 		    <c:HeaderComponent >
             	<button type="button" class="fielo-button fielo-button__add-products cms-prp-section-header__right" >Add</button>
+            	<button type="button" class="fielo-button fielo-button--danger fielo-button__close-products cms-prp-section-header__right" >Cancel</button>
 			</c:HeaderComponent>
 		</div>
 
