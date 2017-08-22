@@ -121,7 +121,11 @@
         field.querySelector('input').value;
       }
     }, this);
-    this.invoiceItems = this.items.FieloInvoiceItems.get();
+    if (this.items) {
+      this.invoiceItems = this.items.FieloInvoiceItems.get();
+    } else {
+      this.invoiceItems = null;
+    }
     this.attachmentsList =
       this.attachments.FieloMultiFileUploaderPRP.get();
   };
@@ -163,4 +167,3 @@
     widget: true
   });
 })();
-

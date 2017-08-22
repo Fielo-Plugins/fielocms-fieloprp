@@ -22,7 +22,9 @@
 
   // Properties
   FieloLookupField.prototype.Constant_ = {
-    GET_METHOD: 'LookupFieldController.getValues'
+    GET_METHOD: 'LookupFieldController.getValues',
+    FIELD: 'data-lookup-field-name',
+    OBJECT: 'data-lookup-object-name'
 
   };
   /**
@@ -33,8 +35,13 @@
    */
   FieloLookupField.prototype.CssClasses_ = {
     FIELD: 'cms-prp-lookup__field',
-    SELECT: 'cms-prp-lookup__select',
-    OPTION: 'cms-prp-lookup__option'
+    CONTAINER: 'cms-prp-lookup-search-results__container',
+    MODEL: 'cms-prp-invoice-item__product-record',
+    SEARCH_BUTTON: 'cms-prp-lookup-button',
+    LOOKUP_SEARCH: 'cms-prp-lookup-search__model',
+    MODAL: 'fielo-modal',
+    MODAL_CONTAINER: 'fielo-modal__body-container',
+    ROW_SELECTOR: 'cms-prp-lookup-row-selector'
   };
 
   FieloLookupField.prototype.getValues = function() {
@@ -49,63 +56,95 @@
   };
 
   FieloLookupField.prototype.getValuesCallback = function(result) {
-    var options = {};
-    console.log(result);
-    if (result) {
-      [].forEach.call(result, function(option) {
-        options[option.Id] = option.Name;
-      }, this);
-    }
-    console.log(this.fieldFullName);
     FrontEndJSSettings.LOOKUPS[this.fieldFullName] = // eslint-disable-line no-undef
-      options;
+      result;
   };
 
   FieloLookupField.prototype.renderOptions = function() {
     if (!this.isLoaded) {
-      while (this.selectOptions.firstChild) {
-        this.selectOptions.removeChild(
-          this.selectOptions.firstChild);
+      while (this.optionsContainer.firstChild) {
+        this.optionsContainer.removeChild(
+          this.optionsContainer.firstChild);
       }
       this.options =
         FrontEndJSSettings.LOOKUPS[this.fieldFullName]; // eslint-disable-line no-undef
       var newOption;
-      var index = 0;
-      [].forEach.call(Object.keys(this.options), function(option) {
-        newOption = this.createOption();
-        newOption.value = this.options[option];
-        newOption.label = option;
-        newOption.innerHTML = option;
-        newOption.setAttribute('data-record-id', option);
-        this.selectOptions.add(newOption, index++);
+      [].forEach.call(this.options, function(option) {
+        newOption = this.createOption(option);
+        newOption.setAttribute('data-record-id', option.Id);
+        this.initOption(newOption);
+        this.optionsContainer.appendChild(newOption);
       }, this);
       this.isLoaded = true;
     }
   };
 
-  FieloLookupField.prototype.getLookupId = function(event) {
-    if (event.srcElement) {
-      var options = this.selectOptions
-        .querySelectorAll('option');
-      [].forEach.call(options, function(option) {
-        if (option.value === event.srcElement.value) {
-          this.inputField.setAttribute('data-lookup-id',
-            option.getAttribute('data-record-id'));
-        }
-      }, this);
-    }
+  FieloLookupField.prototype.createOption = function(record) {
+    var option = this.optionModel_.cloneNode(true);
+    [].forEach.call(Object.keys(record), function(key) {
+      if (key === 'Name') {
+        option.querySelector(
+          '[' + this.Constant_.FIELD + '="' + key + '"]')
+            .querySelector('.' + this.CssClasses_.ROW_SELECTOR)
+              .innerHTML = record[key];
+      } else {
+        option.querySelector(
+          '[' + this.Constant_.FIELD + '="' + key + '"]')
+            .querySelector('span')
+              .innerHTML = record[key];
+      }
+    }, this);
+    return option;
   };
 
-  FieloLookupField.prototype.createOption = function() {
-    var option = document.createElement('option');
-    this.addClass(option, this.CssClasses_.OPTION);
-    return option;
+  FieloLookupField.prototype.initOption = function(option) {
+    var selector =
+      option.querySelector('.' + this.CssClasses_.ROW_SELECTOR);
+    selector
+      .addEventListener('click', this.pickRecord.bind(this));
+  };
+
+  FieloLookupField.prototype.pickRecord = function(event) {
+    var record = event.srcElement.closest('tr');
+    this.inputField.setAttribute('data-lookup-id',
+      record.getAttribute('data-record-id'));
+    this.inputField.value =
+      record
+        .querySelector('[' + this.Constant_.FIELD + '="Name"]')
+          .querySelector('a')
+            .innerHTML;
+    var modal =
+      document.querySelector('.' + this.CssClasses_.MODAL);
+    modal.FieloModal.hide();
+  };
+
+  FieloLookupField.prototype.showModal = function() {
+    this.renderOptions();
+    var modal =
+      document.querySelector('.' + this.CssClasses_.MODAL);
+    var modalBody = modal
+      .querySelector('.' + this.CssClasses_.MODAL_CONTAINER);
+    while (modalBody.firstChild) {
+      modalBody.removeChild(modalBody.firstChild);
+    }
+    modal.FieloModal.show();
+    this.removeClass(this.lookupSearch, 'hidden');
+    modalBody.appendChild(this.lookupSearch);
   };
 
   FieloLookupField.prototype.addClass = function(element, className) {
     var classString = element.className;
     var newClass = classString.concat(' ' + className);
     element.className = newClass;
+  };
+
+  FieloLookupField.prototype.removeClass = function(element, className) {
+    if (element.classList) {
+      element.classList.remove(className);
+    } else {
+      element.className =
+        element.className.replace(new RegExp('\b?' + className + '\b?'), '');
+    }
   };
 
   /**
@@ -115,12 +154,18 @@
     if (this.element_) {
       this.inputField =
         this.element_.querySelector('.' + this.CssClasses_.FIELD);
-      this.selectOptions =
-        this.element_.querySelector('.' + this.CssClasses_.SELECT);
+      this.lookupSearch =
+        this.element_
+          .querySelector('.' + this.CssClasses_.LOOKUP_SEARCH)
+            .cloneNode(true);
+      this.optionsContainer =
+        this.lookupSearch.querySelector('.' + this.CssClasses_.CONTAINER);
+      this.optionModel_ =
+        this.element_.querySelector('.' + this.CssClasses_.MODEL);
       this.apiName =
-        this.inputField.getAttribute('data-field-name');
+        this.inputField.getAttribute(this.Constant_.FIELD);
       this.sObjectName =
-        this.inputField.getAttribute('data-object-name')
+        this.inputField.getAttribute(this.Constant_.OBJECT)
           .replace('[', '')
             .replace(']', '');
       this.fieldFullName =
@@ -136,8 +181,10 @@
       }
       this.inputField
         .addEventListener('focus', this.renderOptions.bind(this));
-      this.inputField
-        .addEventListener('change', this.getLookupId.bind(this));
+      this.lookupBtn =
+        this.element_.querySelector('.' + this.CssClasses_.SEARCH_BUTTON);
+      this.lookupBtn
+        .addEventListener('click', this.showModal.bind(this));
     }
   };
 
