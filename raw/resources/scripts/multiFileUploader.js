@@ -218,7 +218,6 @@
       var file = this.fileList[filePtr];
       delete this.fileList[filePtr];
       var self = this;
-      console.log(file);
       if (file) {
         var fr = new FileReader();
         fr.onloadend = function() {

@@ -140,7 +140,6 @@
    */
   FieloFormInvoice.prototype.init = function() {
     if (this.element_) {
-      console.log('Behold the Invoice Form!');
       this.items =
         document.querySelector('.' + this.CssClasses_.ITEMS);
       this.attachments =
