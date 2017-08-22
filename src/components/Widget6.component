@@ -15,7 +15,7 @@
         <apex:panelGroup layout="none" rendered="{!config['FieloCMS__Title__c']!=''}">
             <legend class="fielo-title" >{!config['FieloCMS__Title__c']}</legend>
         </apex:panelGroup>
-        
+        <form class="fielo-js-upgrade" data-remotearguments="componentId,SObject,Subcomponents" data-remoteobject="{!config['FieloCMS__ComponentLibrary__r']['FieloCMS__sobject__c']}" >
             <fieldset class="cms-prp-invoice-fieldset">
                 <input type="hidden" name="componentId" value="{! config['Id'] }" />
                 <input type="hidden" name="{! IF( record['Id'] <> '', 'SObject.id', 'SObject.sObjectType' ) }" value="{! IF( record['Id'] <> '', record['Id'], config['FieloCMS__ComponentLibrary__r']['FieloCMS__sobject__c']) }" />
@@ -53,7 +53,7 @@
 					</apex:panelGroup>
 				</apex:repeat>
             </fieldset>
-		
+		</form>
 
 		<apex:panelGroup layout="none" rendered="{!config['HasDetails__c']==true}">
 			<div class="cms-prp-invoice-items" data-product-field="{!productFieldName}" data-product-query="{!config['ProductInjectQuery__c']}">

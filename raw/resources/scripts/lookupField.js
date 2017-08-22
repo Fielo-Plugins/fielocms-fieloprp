@@ -128,6 +128,7 @@
   };
 
   FieloLookupField.prototype.preQuery = function(event) {
+    event.preventDefault();
     if (event.key === 'Enter') {
       var filteredItems =
         this.filterItems(FrontEndJSSettings.LOOKUPS[this.fieldFullName], // eslint-disable-line no-undef
