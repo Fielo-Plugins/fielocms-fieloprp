@@ -15,6 +15,7 @@
 	</types>
 	<types>
 		<members>FieloCMS__Component__c</members>
+		<members>FieloPRP__InvoiceItem__c</members>
 		<name>CustomObject</name>
 	</types>
 	<version>36.0</version>
