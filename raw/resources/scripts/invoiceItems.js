@@ -60,7 +60,9 @@
     COL_SELECTOR: 'fielo-field--is-column-selector',
     SEARCH_BUTTON: 'fielo-button__search',
     ADD_PRODUCTS_BUTTON: 'fielo-button__add-products',
-    CLOSE_PRODUCTS_BUTTON: 'fielo-button__close-products'
+    CLOSE_PRODUCTS_BUTTON: 'fielo-button__close-products',
+    TABLE_HEADER: 'fielo-table__head',
+    AMOUNT_CONTAINER: 'cms-prp-amount__output'
 
   };
 
@@ -90,93 +92,97 @@
   };
 
   FieloInvoiceItems.prototype.refreshTotalPrice = function(event) {
-    var row =
-      event.srcElement.closest('.' + this.CssClasses_.ITEM_RECORD);
-    var updatedField =
-      event.srcElement.closest('td').getAttribute('data-field-name');
-    var unitPriceFieldElement =
-      row.querySelector('[data-field-name="FieloPRP__UnitPrice__c"]');
-    var quantityFieldElement =
-      row.querySelector('[data-field-name="FieloPRP__Quantity__c"]');
-    var totalPriceFieldElement =
-      row.querySelector('[data-field-name="FieloPRP__TotalPrice__c"]');
+    if (this.hasAmountFields) {
+      var row =
+        event.srcElement.closest('.' + this.CssClasses_.ITEM_RECORD);
+      var updatedField =
+        event.srcElement.closest('td').getAttribute('data-field-name');
+      var unitPriceFieldElement =
+        row.querySelector('[data-field-name="FieloPRP__UnitPrice__c"]');
+      var quantityFieldElement =
+        row.querySelector('[data-field-name="FieloPRP__Quantity__c"]');
+      var totalPriceFieldElement =
+        row.querySelector('[data-field-name="FieloPRP__TotalPrice__c"]');
 
-    var unitPriceField = unitPriceFieldElement ?
-      unitPriceFieldElement.querySelector('input') :
-      null;
-    var quantityField = quantityFieldElement ?
-      quantityFieldElement.querySelector('input') :
-      null;
-    var totalPriceField = totalPriceFieldElement ?
-      totalPriceFieldElement.querySelector('input') :
-      null;
+      var unitPriceField = unitPriceFieldElement ?
+        unitPriceFieldElement.querySelector('input') :
+        null;
+      var quantityField = quantityFieldElement ?
+        quantityFieldElement.querySelector('input') :
+        null;
+      var totalPriceField = totalPriceFieldElement ?
+        totalPriceFieldElement.querySelector('input') :
+        null;
 
-    if (unitPriceField) {
-      if (unitPriceField.value === null ||
-        unitPriceField.value === undefined ||
-        unitPriceField.value === '') {
-        unitPriceField.value = 0;
+      if (unitPriceField) {
+        if (unitPriceField.value === null ||
+          unitPriceField.value === undefined ||
+          unitPriceField.value === '') {
+          unitPriceField.value = 0;
+        }
       }
-    }
-    if (quantityField) {
-      if (quantityField.value === null ||
-        quantityField.value === undefined ||
-        quantityField.value === '') {
-        quantityField.value = 0;
+      if (quantityField) {
+        if (quantityField.value === null ||
+          quantityField.value === undefined ||
+          quantityField.value === '') {
+          quantityField.value = 0;
+        }
       }
-    }
-    if (totalPriceField) {
-      if (totalPriceField.value === null ||
-        totalPriceField.value === undefined ||
-        totalPriceField.value === '') {
-        totalPriceField.value = 0;
+      if (totalPriceField) {
+        if (totalPriceField.value === null ||
+          totalPriceField.value === undefined ||
+          totalPriceField.value === '') {
+          totalPriceField.value = 0;
+        }
       }
-    }
 
-    if (totalPriceField && quantityField && unitPriceField) {
-      if (updatedField === 'FieloPRP__Quantity__c') {
-        totalPriceField.value =
-          parseFloat(quantityField.value) *
-            parseFloat(unitPriceField.value);
+      if (totalPriceField && quantityField && unitPriceField) {
+        if (updatedField === 'FieloPRP__Quantity__c') {
+          totalPriceField.value =
+            parseFloat(quantityField.value) *
+              parseFloat(unitPriceField.value);
+        }
+        if (updatedField === 'FieloPRP__UnitPrice__c') {
+          totalPriceField.value =
+            parseFloat(quantityField.value) *
+              parseFloat(unitPriceField.value);
+        }
+        if (updatedField === 'FieloPRP__TotalPrice__c') {
+          unitPriceField.value =
+            parseFloat(quantityField.value) > 0.0 ?
+            parseFloat(totalPriceField.value) /
+              parseFloat(quantityField.value) :
+              0;
+        }
       }
-      if (updatedField === 'FieloPRP__UnitPrice__c') {
-        totalPriceField.value =
-          parseFloat(quantityField.value) *
-            parseFloat(unitPriceField.value);
-      }
-      if (updatedField === 'FieloPRP__TotalPrice__c') {
-        unitPriceField.value =
-          parseFloat(quantityField.value) > 0.0 ?
-          parseFloat(totalPriceField.value) /
-            parseFloat(quantityField.value) :
-            0;
-      }
+      this.refreshAmount();
     }
-    this.refreshAmount();
   };
 
   FieloInvoiceItems.prototype.refreshAmount = function() {
-    var invoiceTotalValue = 0;
-    var itemTotal;
-    [].forEach.call(this.invoiceItems_, function(item) {
-      itemTotal = item
-        .querySelector('[data-field-name="FieloPRP__TotalPrice__c"]')
-          .querySelector('input').value;
-      itemTotal = itemTotal !== null &&
-        itemTotal !== undefined &&
-        itemTotal !== '' ?
-        itemTotal :
-        0;
-      invoiceTotalValue += parseFloat(itemTotal);
-    },
-      this
-    );
-    this.amountSpan_ =
-      this.element_
-        .querySelector('[data-field-name="FieloPRP__Amount__c"]')
-          .querySelector('span');
-    this.amountSpan_
-      .innerHTML = invoiceTotalValue;
+    if (this.hasAmountFields) {
+      var invoiceTotalValue = 0;
+      var itemTotal;
+      [].forEach.call(this.invoiceItems_, function(item) {
+        itemTotal = item
+          .querySelector('[data-field-name="FieloPRP__TotalPrice__c"]')
+            .querySelector('input').value;
+        itemTotal = itemTotal !== null &&
+          itemTotal !== undefined &&
+          itemTotal !== '' ?
+          itemTotal :
+          0;
+        invoiceTotalValue += parseFloat(itemTotal);
+      },
+        this
+      );
+      this.amountSpan_ =
+        this.element_
+          .querySelector('[data-field-name="FieloPRP__Amount__c"]')
+            .querySelector('span');
+      this.amountSpan_
+        .innerHTML = invoiceTotalValue;
+    }
   };
 
   FieloInvoiceItems.prototype.deleteItem_ = function(invoiceItem) {
@@ -474,6 +480,22 @@
     element.className = newClass;
   };
 
+  FieloInvoiceItems.prototype.getHasFields = function() {
+    this.tableHeader =
+      this.element_.querySelector('.' + this.CssClasses_.TABLE_HEADER);
+    this.hasAmountFields = false;
+    if (this.tableHeader.querySelector('[data-field-name="FieloPRP__Quantity__c"]') &&
+      this.tableHeader.querySelector('[data-field-name="FieloPRP__UnitPrice__c"]') &&
+      this.tableHeader.querySelector('[data-field-name="FieloPRP__TotalPrice__c"]')) {
+      this.hasAmountFields = true;
+    }
+    if (this.hasAmountFields === false) {
+      this.element_
+        .querySelector('.' + this.CssClasses_.AMOUNT_CONTAINER)
+          .style.display = 'none';
+    }
+  };
+
   /**
    * Inicializa el elemento
    */
@@ -491,7 +513,8 @@
         document.getElementsByClassName(this.CssClasses_.NEW)[0];
       this.addBtn_ =
         document.querySelector('.' + this.CssClasses_.ADD);
-
+      // Disables any calculation if one of the fields is not present
+      this.getHasFields();
       if (this.newBtn_) {
         this.newBtn_
           .addEventListener('click', this.newinvoiceItem_.bind(this));
