@@ -35,8 +35,8 @@ global with sharing class InvoiceItemAPI implements FieloCMS.DataInterface{
         String whereCondition = '';
         whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + MemberService.getCurrentMemberId() + '\'';
         if (!filtersMap.isEmpty()){
-            if (filtersMap.containsKey('FieloPRP__Invoice__c')) {
-                whereCondition += ' AND FieloPRP__Invoice__c = \'' + filtersMap.get('FieloPRP__Invoice__c') + '\'';
+            if (filtersMap.containsKey(component.CustomDetailParameter__c)) {
+                whereCondition += ' AND FieloPRP__Invoice__c = \'' + filtersMap.get(component.CustomDetailParameter__c) + '\'';
             }
         }
         whereCondition += ' LIMIT ' + String.valueOf(component.FieloCMS__Limit__c);
