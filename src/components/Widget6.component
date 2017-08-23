@@ -21,7 +21,7 @@
                 <input type="hidden" name="{! IF( record['Id'] <> '', 'SObject.id', 'SObject.sObjectType' ) }" value="{! IF( record['Id'] <> '', record['Id'], config['FieloCMS__ComponentLibrary__r']['FieloCMS__sobject__c']) }" />
 
                 <apex:repeat value="{!invoiceFieldSet}" var="field">
-                	<apex:panelGroup layout="none" rendered="{!field.apiName == 'FieloPRP__Amount__c' && config['HasDetails__c']==false || field.apiName != 'FieloPRP__Amount__c'}">
+                	<apex:panelGroup layout="none" rendered="{!field.apiName == 'FieloPRP__Amount__c' && config['HasDetails__c']==false && currentProgram.FieloPRP__RequestInvoiceProducts__c == false || field.apiName != 'FieloPRP__Amount__c'}">
 		                <div class="mdl-grid fielo-field fielo-field--is-{!field.apiName}" data-field-name="{!field.apiName}">
 					        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet fielo-field__label" >
 					            <apex:panelGroup layout="none" rendered="{!field.showLabel }">

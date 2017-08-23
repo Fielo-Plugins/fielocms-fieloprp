@@ -83,6 +83,15 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
         set;
     }
 
+    public FieloPLT__Program__c currentProgram {get{
+        Id memberId = MemberService.getCurrentMemberId();
+        FieloPLT__Member__c member = [SELECT Id, Name, FieloPLT__Program__r.Id, FieloPLT__Program__r.Name, FieloPLT__Program__r.FieloPRP__RequestInvoiceProducts__c FROM FieloPLT__Member__c WHERE Id = :memberId];
+        return member.FieloPLT__Program__r;
+    }
+        set;
+
+    }
+
     @RemoteAction
     global static Id saveAttachment(Id parentId, String fileName, String base64Data, String contentType) { 
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
