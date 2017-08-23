@@ -44,6 +44,26 @@
     console.log('Query parameter ' + paramName + ' not found');
   };
 
+  FieloInvoiceFilter.prototype.parseQueryString = function(query) {
+    var vars = query.split('&');
+    var queryString = {};
+    [].forEach.call(vars, function(param) {
+      var pair = param.split('=');
+      // If first entry with this name
+      if (typeof queryString[pair[0]] === 'undefined') {
+        queryString[pair[0]] = decodeURIComponent(pair[1]);
+        // If second entry with this name
+      } else if (typeof queryString[pair[0]] === 'string') {
+        var arr = [queryString[pair[0]], decodeURIComponent(pair[1])];
+        queryString[pair[0]] = arr;
+        // If third or later entry with this name
+      } else {
+        queryString[pair[0]].push(decodeURIComponent(pair[1]));
+      }
+    }, this);
+    return queryString;
+  };
+
   /**
    * Inicializa el elemento
    */
@@ -52,10 +72,8 @@
       this.paginator = this.element_
         .querySelector('.' + this.CssClasses_.PAGINATOR);
       if (this.paginator.FieloPaginator) {
-        var invoiceId = this.getParameter('id');
-        var filter = {};
-        filter.FieloPRP__Invoice__c = // eslint-disable-line camelcase
-          invoiceId;
+        var filter =
+          this.parseQueryString(window.location.search.replace(/^\?/, ''));
         this.paginator.FieloPaginator.setFilters(filter);
       }
     }
