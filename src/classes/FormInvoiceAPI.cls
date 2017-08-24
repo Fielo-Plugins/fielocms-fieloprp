@@ -12,6 +12,9 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
         List<Field> invoiceFieldSet = getFieldsStructure(mainComponent, mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
         List<Field> invoiceItemFieldSet = getFieldsStructure(secondaryComponent, secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
 		List<Field> productFieldSet = getFieldsStructure(productComponent, productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
+
+        //Check for required fields
+        invoiceItemFieldSet = addItemsRequiredFields(invoiceItemFieldSet);
         
         Component.Widget6 formInvoice = new Component.Widget6(config = c);
         formInvoice.mainObject = mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
@@ -54,6 +57,28 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
         system.debug('fieldsList');
         system.debug(fieldsList);
         return fieldsList;
+    }
+
+    public static List<Field> addItemsRequiredFields(List<Field> fieldSet) {
+        Set<String> fieldNames = new Set<String>();
+        List<Field> fields = new List<Field>();
+        for (Field field: fieldSet) {
+            fieldNames.add(field.apiName);
+        }
+        if (!fieldNames.contains('FieloPRP__Quantity__c')) {
+            DescribeFieldResult fieldDescribe = Schema.describeSObjects(new String[]{ 'FieloPRP__InvoiceItem__c' })[0].fields.getMap().get('FieloPRP__Quantity__c').getDescribe();
+            fields.add(
+                new Field(
+                    new Map<String, Object> {
+                        'type' => String.valueOf(fieldDescribe.getType()),
+                        'apiName' => fieldDescribe.getName(),
+                        'label'=> fieldDescribe.getLabel()
+                    }
+                )
+            );
+        }
+        fields.addAll(fieldSet);
+        return fields;
     }
     
     @RemoteAction
