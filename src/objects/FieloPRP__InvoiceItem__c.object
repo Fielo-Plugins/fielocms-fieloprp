@@ -57,6 +57,17 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
+        <fullName>FieloCMSPRP_ProductName__c</fullName>
+        <externalId>false</externalId>
+        <formula>FieloPRP__Product__r.Name</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Product Name</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>FieloPRP__Description__c</fullName>
         <deprecated>false</deprecated>
         <externalId>false</externalId>
@@ -125,17 +136,6 @@
         <scale>2</scale>
         <trackTrending>false</trackTrending>
         <type>Currency</type>
-    </fields>
-    <fields>
-        <fullName>ProductName__c</fullName>
-        <externalId>false</externalId>
-        <formula>FieloPRP__Product__r.Name</formula>
-        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
-        <label>Product Name</label>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <gender>Masculine</gender>
     <label>Invoice Item</label>

@@ -161,7 +161,7 @@ Default Account: The member will be related to an specific default CRM account</
         <type>Lookup</type>
     </fields>
     <fields>
-        <fullName>CustomDetailParameter__c</fullName>
+        <fullName>FieloCMSPRP_CustomDetailParameter__c</fullName>
         <externalId>false</externalId>
         <label>Custom Detail Parameter</label>
         <length>255</length>
@@ -169,6 +169,70 @@ Default Account: The member will be related to an specific default CRM account</
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>FieloCMSPRP_HasDetails__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Has Details</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>FieloCMSPRP_MainSourceComponent__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Main Source Component</label>
+        <referenceTo>FieloCMS__Component__c</referenceTo>
+        <relationshipLabel>Components (Main Source Component)</relationshipLabel>
+        <relationshipName>MainComponents</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>FieloCMSPRP_ProductSourceComponent__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Product Source Component</label>
+        <referenceTo>FieloCMS__Component__c</referenceTo>
+        <relationshipLabel>Components (Product Source Component)</relationshipLabel>
+        <relationshipName>ProductComponents</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>FieloCMSPRP_SecondarySourceComponent__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Secondary Source Component</label>
+        <referenceTo>FieloCMS__Component__c</referenceTo>
+        <relationshipLabel>Components (Secondary Source Component)</relationshipLabel>
+        <relationshipName>SecondaryComponents</relationshipName>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>FieloCMSPRP_SubmitMode__c</fullName>
+        <externalId>false</externalId>
+        <label>Submit Mode</label>
+        <picklist>
+            <picklistValues>
+                <fullName>Submit</fullName>
+                <default>false</default>
+            </picklistValues>
+            <picklistValues>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </picklistValues>
+            <restrictedPicklist>true</restrictedPicklist>
+            <sorted>false</sorted>
+        </picklist>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
     </fields>
     <fields>
         <fullName>FieloCMS__CSSClasses__c</fullName>
@@ -744,47 +808,6 @@ Default Account: The member will be related to an specific default CRM account</
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>HasDetails__c</fullName>
-        <defaultValue>true</defaultValue>
-        <externalId>false</externalId>
-        <label>Has Details</label>
-        <trackTrending>false</trackTrending>
-        <type>Checkbox</type>
-    </fields>
-    <fields>
-        <fullName>MainSourceComponent__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Main Source Component</label>
-        <referenceTo>FieloCMS__Component__c</referenceTo>
-        <relationshipLabel>Components (Main Source Component)</relationshipLabel>
-        <relationshipName>MainComponents</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>ProductInjectQuery__c</fullName>
-        <externalId>false</externalId>
-        <label>Product Inject Query</label>
-        <length>1000</length>
-        <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
-    </fields>
-    <fields>
-        <fullName>ProductSourceComponent__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Product Source Component</label>
-        <referenceTo>FieloCMS__Component__c</referenceTo>
-        <relationshipLabel>Components (Product Source Component)</relationshipLabel>
-        <relationshipName>ProductComponents</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
         <fullName>Program__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -817,38 +840,6 @@ Default Account: The member will be related to an specific default CRM account</
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
     </fields>
-    <fields>
-        <fullName>SecondarySourceComponent__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <externalId>false</externalId>
-        <label>Secondary Source Component</label>
-        <referenceTo>FieloCMS__Component__c</referenceTo>
-        <relationshipLabel>Components (Secondary Source Component)</relationshipLabel>
-        <relationshipName>SecondaryComponents</relationshipName>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>SubmitMode__c</fullName>
-        <externalId>false</externalId>
-        <label>Submit Mode</label>
-        <picklist>
-            <picklistValues>
-                <fullName>Submit</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Close</fullName>
-                <default>false</default>
-            </picklistValues>
-            <restrictedPicklist>true</restrictedPicklist>
-            <sorted>false</sorted>
-        </picklist>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-    </fields>
     <label>Component</label>
     <nameField>
         <label>Component Name</label>
@@ -860,6 +851,17 @@ Default Account: The member will be related to an specific default CRM account</
         <active>true</active>
         <description>It shows a list of records.</description>
         <label>List</label>
+        <picklistValues>
+            <picklist>FieloCMSPRP_SubmitMode__c</picklist>
+            <values>
+                <fullName>Close</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Submit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
         <picklistValues>
             <picklist>FieloCMS__DetailView__c</picklist>
             <values>
@@ -927,8 +929,14 @@ Default Account: The member will be related to an specific default CRM account</
                 <default>false</default>
             </values>
         </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>FieloCMS__Record</fullName>
+        <active>true</active>
+        <description>It shows and edits a single record.</description>
+        <label>Record</label>
         <picklistValues>
-            <picklist>SubmitMode__c</picklist>
+            <picklist>FieloCMSPRP_SubmitMode__c</picklist>
             <values>
                 <fullName>Close</fullName>
                 <default>false</default>
@@ -938,12 +946,6 @@ Default Account: The member will be related to an specific default CRM account</
                 <default>false</default>
             </values>
         </picklistValues>
-    </recordTypes>
-    <recordTypes>
-        <fullName>FieloCMS__Record</fullName>
-        <active>true</active>
-        <description>It shows and edits a single record.</description>
-        <label>Record</label>
         <picklistValues>
             <picklist>FieloCMS__DetailView__c</picklist>
             <values>
@@ -1011,8 +1013,14 @@ Default Account: The member will be related to an specific default CRM account</
                 <default>false</default>
             </values>
         </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>FieloCMS__Widget</fullName>
+        <active>true</active>
+        <description>It allows creating a Component logic outside Fielo CMS.</description>
+        <label>Widget</label>
         <picklistValues>
-            <picklist>SubmitMode__c</picklist>
+            <picklist>FieloCMSPRP_SubmitMode__c</picklist>
             <values>
                 <fullName>Close</fullName>
                 <default>false</default>
@@ -1022,12 +1030,6 @@ Default Account: The member will be related to an specific default CRM account</
                 <default>false</default>
             </values>
         </picklistValues>
-    </recordTypes>
-    <recordTypes>
-        <fullName>FieloCMS__Widget</fullName>
-        <active>true</active>
-        <description>It allows creating a Component logic outside Fielo CMS.</description>
-        <label>Widget</label>
         <picklistValues>
             <picklist>FieloCMS__DetailView__c</picklist>
             <values>
@@ -1076,17 +1078,6 @@ Default Account: The member will be related to an specific default CRM account</
             <picklist>FieloCMS__OrderBy__c</picklist>
             <values>
                 <fullName>Name ASC</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>SubmitMode__c</picklist>
-            <values>
-                <fullName>Close</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Submit</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
