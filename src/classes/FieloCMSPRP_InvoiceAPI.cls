@@ -1,4 +1,4 @@
-global class InvoiceAPI implements FieloCMS.DataInterface{
+global class FieloCMSPRP_InvoiceAPI implements FieloCMS.DataInterface{
 	global Map<Id, Object> getBulkData(List<FieloCMS__Component__c> components){                
         Map<Id,Object> newMapData = new Map<Id,Object>();
         //Prepare all the queries

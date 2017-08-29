@@ -2,16 +2,16 @@
     <apex:attribute name="config" type="SObject" description="" />
     <apex:attribute name="record" type="SObject" description="" />
     <apex:attribute name="itemRecord" type="SObject" description="" />
-    <apex:attribute name="invoiceFieldSet" type="Field[]" description="" />
-    <apex:attribute name="invoiceItemFieldSet" type="Field[]" description="" />
-    <apex:attribute name="productFieldSet" type="Field[]" description="" />
+    <apex:attribute name="invoiceFieldSet" type="FieloCMSPRP_Field[]" description="" />
+    <apex:attribute name="invoiceItemFieldSet" type="FieloCMSPRP_Field[]" description="" />
+    <apex:attribute name="productFieldSet" type="FieloCMSPRP_Field[]" description="" />
     <apex:attribute name="mainObject" type="String" description="" />
     <apex:attribute name="secondaryObject" type="String" description="" />
     <apex:attribute name="productObject" type="String" description="" />
     <apex:attribute name="productFieldName" type="String" default="FieloPRP__Product__c" description="" />
     <apex:attribute name="recentProducts" type="SObject[]" description="" />
 
-    <div class="fielo-record fielo-form {!config['FieloCMS__ComponentLibrary__r']['FieloCMS__CSSClasses__c']} {!config['FieloCMS__CSSClasses__c']} fielo-js-component cms-prp-invoice-form" data-parameter-name="{!config['CustomDetailParameter__c']}" data-redirect-page="{!config['RedirectPage__c']}" data-componentid="{! config['Id'] }" data-submit-mode="{!config['SubmitMode__c']}">
+    <div class="fielo-record fielo-form {!config['FieloCMS__ComponentLibrary__r']['FieloCMS__CSSClasses__c']} {!config['FieloCMS__CSSClasses__c']} fielo-js-component cms-prp-invoice-form" data-parameter-name="{!config['FieloCMSPRP_CustomDetailParameter__c']}" data-redirect-page="{!config['RedirectPage__c']}" data-componentid="{! config['Id'] }" data-submit-mode="{!config['FieloCMSPRP_SubmitMode__c']}">
         <apex:panelGroup layout="none" rendered="{!config['FieloCMS__Title__c']!=''}">
             <legend class="fielo-title" >{!config['FieloCMS__Title__c']}</legend>
         </apex:panelGroup>
@@ -21,7 +21,7 @@
                 <input type="hidden" name="{! IF( record['Id'] <> '', 'SObject.id', 'SObject.sObjectType' ) }" value="{! IF( record['Id'] <> '', record['Id'], config['FieloCMS__ComponentLibrary__r']['FieloCMS__sobject__c']) }" />
 
                 <apex:repeat value="{!invoiceFieldSet}" var="field">
-                	<apex:panelGroup layout="none" rendered="{!field.apiName == 'FieloPRP__Amount__c' && config['HasDetails__c']==false && currentProgram.FieloPRP__RequestInvoiceProducts__c == false || field.apiName != 'FieloPRP__Amount__c'}">
+                	<apex:panelGroup layout="none" rendered="{!field.apiName == 'FieloPRP__Amount__c' && config['FieloCMSPRP_HasDetails__c']==false && currentProgram.FieloPRP__RequestInvoiceProducts__c == false || field.apiName != 'FieloPRP__Amount__c'}">
 		                <div class="mdl-grid fielo-field fielo-field--is-{!field.apiName}" data-field-name="{!field.apiName}">
 					        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet fielo-field__label" >
 					            <apex:panelGroup layout="none" rendered="{!field.showLabel }">
@@ -43,7 +43,7 @@
 					            	<textarea class="fielo-input fielo-js-upgrade" data-required="{!field.attributes['required']}" placeholder="{!field.attributes['placeholder']}" data-type="{!field.type}"  id="{! config['Id'] }-{!field.apiName}" name="SObject.{!field.apiName}" >{!record[field.apiName]}</textarea>
 					            </apex:panelGroup>
 					            <apex:panelGroup layout="none" rendered="{!field.type == 'REFERENCE'}">
-					            	<c:LookupField config="{!config}" field="{!field}" sObject="{!$ObjectType[mainObject].fields[field.apiName].referenceTo[0].Name}"/>
+					            	<c:FieloCMSPRP_LookupField config="{!config}" field="{!field}" sObject="{!$ObjectType[mainObject].fields[field.apiName].referenceTo[0].Name}"/>
 					            </apex:panelGroup>
 					            <apex:panelGroup layout="none" rendered="{!field.type!='Picklist' && field.type!='TextArea' && field.type!='REFERENCE' }">
 					            	<input class="fielo-input fielo-js-upgrade disabled" data-required="{!field.attributes['required']}"  autocomplete="{!field.attributes['autocomplete']}" placeholder="{!field.attributes['placeholder']}" data-type="{!field.type}"  id="{! config['Id'] }-{!field.apiName}" name="SObject.{!field.apiName}"  value="{!record[field.apiName]}" step="0.01"/>
@@ -55,13 +55,13 @@
             </fieldset>
 		</form>
 
-		<apex:panelGroup layout="none" rendered="{!config['HasDetails__c']==true}">
-			<div class="cms-prp-invoice-items" data-product-field="{!IF(ISNULL($Setup.PublicSettings__c.ProductLookupField__c), 'FieloPRP__Product__c', $Setup.PublicSettings__c.ProductLookupField__c)}" data-product-query="{!config['ProductInjectQuery__c']}">
-				<c:HeaderComponent >
+		<apex:panelGroup layout="none" rendered="{!config['FieloCMSPRP_HasDetails__c']==true}">
+			<div class="cms-prp-invoice-items" data-product-field="{!IF(ISNULL($Setup.FieloPLT__PublicSettings__c.FieloPRP__ProductLookupField__c), 'FieloPRP__Product__c', $Setup.FieloPLT__PublicSettings__c.FieloPRP__ProductLookupField__c)}" data-product-query="{!currentProgram.FieloPRP__ProductInjectQuery__c}">
+				<c:FieloCMSPRP_HeaderComponent >
 					<h3 class="fielo-title cms-prp-section-header__left">Items</h3>
 					<button type="submit" class="fielo-button fielo-button__new cms-prp-new__invoice-item cms-prp-section-header__right" >New</button>
 					<button type="submit" class="fielo-button fielo-button__add cms-prp-add__products cms-prp-section-header__right" >Add</button>
-				</c:HeaderComponent>
+				</c:FieloCMSPRP_HeaderComponent>
 
 		        <table class="fielo-table mdl-data-table">
 					<thead class="fielo-table__head">
@@ -92,7 +92,7 @@
 							            	<textarea class="fielo-input fielo-js-upgrade" data-type="{!itemField.type}"  id="{! config['Id'] }-{!itemField.apiName}" name="SObject.{!itemField.apiName}" >{!itemRecord[itemField.apiName]}</textarea>
 							            </apex:panelGroup>
 							            <apex:panelGroup layout="none" rendered="{!itemField.type == 'REFERENCE'}">
-							            		<c:LookupField config="{!config}" field="{!itemField}" sObject="{!$ObjectType[secondaryObject].fields[itemField.apiName].referenceTo[0]}"/>
+							            		<c:FieloCMSPRP_LookupField config="{!config}" field="{!itemField}" sObject="{!$ObjectType[secondaryObject].fields[itemField.apiName].referenceTo[0]}"/>
 							            </apex:panelGroup>
 							            <apex:panelGroup layout="none" rendered="{!itemField.type!='Picklist' && itemField.type!='TextArea' && itemField.type!='REFERENCE'}">
 							            	<input class="fielo-input fielo-js-upgrade" data-type="{!itemField.type}"  id="{! config['Id'] }-{!itemField.apiName}" name="SObject.{!itemField.apiName}"  value="{!itemRecord[itemField.apiName]}" />
@@ -102,13 +102,13 @@
 		                	</apex:repeat>
 		                	<td class="fielo-field mdl-data-table__cell--non-numeric" data-th="Question">
 		                		<div style="float:right;">
-						    		<c:RemoveButton />
+						    		<c:FieloCMSPRP_RemoveButton />
 						    	</div>
 				    		</td>
 		                </tr>
 			        </tbody>
 			    </table>
-				<c:HeaderComponent className="cms-prp-section-header__half cms-prp-amount__output">
+				<c:FieloCMSPRP_HeaderComponent className="cms-prp-section-header__half cms-prp-amount__output">
 					<apex:repeat value="{!invoiceFieldSet}" var="field">
 						<apex:panelGroup layout="none" rendered="{!field.apiName=='FieloPRP__Amount__c'}">
 							<div class="fielo-field fielo-field--is-{!field.apiName} mdl-data-table__cell--non-numeric cms-prp-section-header__right" data-field-name="{!field.apiName}">
@@ -119,7 +119,7 @@
 				        	</div>
 						</apex:panelGroup>
 					</apex:repeat>
-				</c:HeaderComponent>
+				</c:FieloCMSPRP_HeaderComponent>
 			</div>
 		</apex:panelGroup>
 
@@ -129,11 +129,11 @@
 		<br/>
 
 		<div class="cms-prp-multifileuploader">
-		    <c:HeaderComponent >
+		    <c:FieloCMSPRP_HeaderComponent >
 				<h3 class="fielo-title cms-prp-section-header__left">Upload Files</h3>
 				<input type="file" id="file-upload-input" style="display: none;"/>
 				<button type="submit" class="fielo-button fielo-button__new-attachment cms-prp-section-header__right" >New</button>
-			</c:HeaderComponent>
+			</c:FieloCMSPRP_HeaderComponent>
 
 			<table class="fielo-table mdl-data-table">
 				<thead class="fielo-table__head">
@@ -149,7 +149,7 @@
 							<span class="fielo-output fielo-output__text" data-type="string">
 					        </span>
 					        <div style="float:right;">
-					    		<c:RemoveButton />
+					    		<c:FieloCMSPRP_RemoveButton />
 					    	</div>
 				    	</td>
 	                </tr>
@@ -157,12 +157,12 @@
 		    </table>
 		</div>
 
-		<c:HeaderComponent >
+		<c:FieloCMSPRP_HeaderComponent >
             <button type="submit" class="fielo-button fielo-button__submit cms-prp-section-header__right" >{!$Label.submit}</button>
-		</c:HeaderComponent>
+		</c:FieloCMSPRP_HeaderComponent>
 
 
-		<div class="fielo-record fielo-form cms-prp-advanced-product-search__model hidden" style="display: inline-block" data-object-name="{!productObject}">
+		<div class="fielo-record fielo-form cms-prp-advanced-product-search__model hidden" style="display: inline-block" data-object-name="{!productObject}" data-product-lookup-field="{!productFieldName}">
 			<div class="cms-prp-search-fields">
 				<apex:repeat value="{!productFieldSet}" var="productField">
 					<div class="fielo-field fielo-field--is-{!productField.apiName}" data-field-name="{!productField.apiName}" style="display: inline-block">
@@ -187,7 +187,7 @@
 				            	<textarea class="fielo-input fielo-js-upgrade" data-type="{!productField.type}"  id="{! config['Id'] }-{!productField.apiName}" name="SObject.{!productField.apiName}" ></textarea>
 				            </apex:panelGroup>
 				            <apex:panelGroup layout="none" rendered="{!productField.type == 'REFERENCE'}">
-				            	<c:LookupField config="{!config}" field="{!productField}" sObject="{!$ObjectType[productObject].fields[productField.apiName].referenceTo[0]}"/>
+				            	<c:FieloCMSPRP_LookupField config="{!config}" field="{!productField}" sObject="{!$ObjectType[productObject].fields[productField.apiName].referenceTo[0]}"/>
 				            </apex:panelGroup>
 				            <apex:panelGroup layout="none" rendered="{!productField.type!='PICKLIST' && productField.type!='TextArea' && productField.type!='REFERENCE' }">
 				            	<input class="fielo-input fielo-js-upgrade disabled" data-type="{!productField.type}"  id="{! config['Id'] }-{!productField.apiName}" name="SObject.{!productField.apiName}"  value="" />
@@ -220,17 +220,17 @@
 		                	</td>
 		                	<apex:repeat value="{!productFieldSet}" var="productField">
 			                	<td class="fielo-field fielo-field--is-{!productField.apiName} mdl-data-table__cell--non-numeric" data-th="{!productField.label}" data-field-name="{!productField.apiName}">
-						      		<c:OutputField sObject="{!productObject}" field="{!productField.apiName}" record="{!productRecord}"/>
+						      		<c:FieloCMSPRP_OutputField sObject="{!productObject}" field="{!productField.apiName}" record="{!productRecord}"/>
 					    		</td>
 		                	</apex:repeat>
 		                </tr>
 		            </apex:repeat>
 		        </tbody>
 		    </table>
-		    <c:HeaderComponent >
+		    <c:FieloCMSPRP_HeaderComponent >
             	<button type="button" class="fielo-button fielo-button__add-products cms-prp-section-header__right" >Add</button>
             	<button type="button" class="fielo-button fielo-button--danger fielo-button__close-products cms-prp-section-header__right" >Cancel</button>
-			</c:HeaderComponent>
+			</c:FieloCMSPRP_HeaderComponent>
 		</div>
 
     </div>

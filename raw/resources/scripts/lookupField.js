@@ -22,7 +22,7 @@
 
   // Properties
   FieloLookupField.prototype.Constant_ = {
-    GET_METHOD: 'LookupFieldController.getValues',
+    GET_METHOD: 'FieloCMSPRP_LookupFieldController.getValues',
     FIELD: 'data-lookup-field-name',
     OBJECT: 'data-lookup-object-name'
 

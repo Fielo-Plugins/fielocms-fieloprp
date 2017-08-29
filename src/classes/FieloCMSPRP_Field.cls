@@ -2,7 +2,7 @@
  * @brief      Clase wrapper con toda la informacion de un campo agregado en un fieldset de un componente para ser mostrado en Front End
  * @details    Contiene datos relacionados con atributos propios de un campo, atributos de un subcomponente, multi language, visibilidad y seguridad
  */
-global class Field implements Comparable{
+global class FieloCMSPRP_Field implements Comparable{
 /** Common Attributes **/
     global String apiName { get {
         return (String) attributes.get('apiName');
@@ -42,7 +42,7 @@ global class Field implements Comparable{
 * Constructor desde el JSON deserealizado
 * El constructor esta pensado para ser usado cuando crea un field de tipo subcomponent leyendo un fieldset en formato json
 */
-    public Field ( Map<String,Object> mapValues ) {
+    public FieloCMSPRP_Field ( Map<String,Object> mapValues ) {
     // Chequea que tenga los atributos basicos
         if ( !mapValues.containsKey('apiName') || !mapValues.containsKey('label') || !mapValues.containsKey('type') ) {
             throw new FieloPLT.FieloException( 'Field must have apiName, label & type' );
@@ -57,7 +57,7 @@ global class Field implements Comparable{
 * Constructor desde el JSON deserealizado
 * El constructor esta pensado para ser usado cuando crea un field de tipo campo leyendo un fieldset en formato json y eld describe del campo
 */
-    public Field ( Map<String,Object> mapValues , DescribeFieldResult fieldDescribe ) {
+    public FieloCMSPRP_Field ( Map<String,Object> mapValues , DescribeFieldResult fieldDescribe ) {
     // Chequea que tenga los atributos basicos
         if ( !mapValues.containsKey('apiName') || !mapValues.containsKey('label') || !mapValues.containsKey('type') ) {
             throw new FieloPLT.FieloException( 'Field must have apiName, label & type' );
@@ -93,7 +93,7 @@ global class Field implements Comparable{
 * El constructor esta pensado para ser usado cuando se agrega un campo a un Fieldset.
 * Como es la primera vez toma los datos por defecto del describe
 */
-    public Field ( DescribeFieldResult fieldDescribe, String fieldType ) {
+    public FieloCMSPRP_Field ( DescribeFieldResult fieldDescribe, String fieldType ) {
         attributes = new Map<String,Object>();
     // atributos basicos
         attributes.put( 'type', fieldDescribe.getType() );
@@ -116,7 +116,7 @@ global class Field implements Comparable{
 
 // Metodos para hacer sort en las listas
     public Integer compareTo(Object compareTo) {
-        FIeld compareToItem = (FIeld) compareTo;
+        FieloCMSPRP_Field compareToItem = (FieloCMSPRP_Field) compareTo;
         Integer ret = 0;
         if(this.label == compareToItem.label){
             ret = 0;
@@ -130,7 +130,7 @@ global class Field implements Comparable{
         return ret;
     }
 
-    public Boolean equals(Field fieldItem){
+    public Boolean equals(FieloCMSPRP_Field fieldItem){
         return this.apiName == fieldItem.apiName && this.type == fieldItem.type && this.label == fieldItem.label;
     }
 

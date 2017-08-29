@@ -28,8 +28,8 @@
   FieloMultiFileUploaderPRP.prototype.Constant_ = {
     MAX_FILE_SIZE: 4350000,
     CHUNK_SIZE: 950000,
-    UPLOAD_CONTROLLER: 'FormInvoiceAPI.saveTheChunk',
-    DELETE_FILES_CONTROLLER: 'FormInvoiceAPI.deleteAttachments'
+    UPLOAD_CONTROLLER: 'FieloCMSPRP_FormInvoiceAPI.saveTheChunk',
+    DELETE_FILES_CONTROLLER: 'FieloCMSPRP_FormInvoiceAPI.deleteAttachments'
   };
 
   /**

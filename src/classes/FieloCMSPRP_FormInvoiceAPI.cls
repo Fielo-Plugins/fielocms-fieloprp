@@ -1,22 +1,22 @@
-global class FormInvoiceAPI implements FieloCMS.ViewInterface{
+global class FieloCMSPRP_FormInvoiceAPI implements FieloCMS.ViewInterface{
 	global ApexPages.Component getComponent(FieloCMS__Component__c c){
         String query = 'Select FieloCMS__FieldSet__c, FieloCMS__Layout__c, FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c FROM FieloCMS__Component__c ' +
-            ' WHERE Id in (\'' + c.MainSourceComponent__c + '\',\'' + c.SecondarySourceComponent__c + '\',\'' + c.ProductSourceComponent__c + '\')';
+            ' WHERE Id in (\'' + c.FieloCMSPRP_MainSourceComponent__c + '\',\'' + c.FieloCMSPRP_SecondarySourceComponent__c + '\',\'' + c.FieloCMSPRP_ProductSourceComponent__c + '\')';
 
         Map<Id,FieloCMS__Component__c> components = new Map<Id,FieloCMS__Component__c>( (List<FieloCMS__Component__c>) Database.query(query));
 
-        FieloCMS__Component__c mainComponent = components.get(c.MainSourceComponent__c);
-        FieloCMS__Component__c secondaryComponent = components.get(c.SecondarySourceComponent__c);
-        FieloCMS__Component__c productComponent = components.get(c.ProductSourceComponent__c);
+        FieloCMS__Component__c mainComponent = components.get(c.FieloCMSPRP_MainSourceComponent__c);
+        FieloCMS__Component__c secondaryComponent = components.get(c.FieloCMSPRP_SecondarySourceComponent__c);
+        FieloCMS__Component__c productComponent = components.get(c.FieloCMSPRP_ProductSourceComponent__c);
 
-        List<Field> invoiceFieldSet = getFieldsStructure(mainComponent, mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
-        List<Field> invoiceItemFieldSet = getFieldsStructure(secondaryComponent, secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
-		List<Field> productFieldSet = getFieldsStructure(productComponent, productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
+        List<FieloCMSPRP_Field> invoiceFieldSet = getFieldsStructure(mainComponent, mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
+        List<FieloCMSPRP_Field> invoiceItemFieldSet = getFieldsStructure(secondaryComponent, secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
+		List<FieloCMSPRP_Field> productFieldSet = getFieldsStructure(productComponent, productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
 
         //Check for required fields
         invoiceItemFieldSet = addItemsRequiredFields(invoiceItemFieldSet);
         
-        Component.Widget6 formInvoice = new Component.Widget6(config = c);
+        Component.FieloCMSPRP_FormInvoice formInvoice = new Component.FieloCMSPRP_FormInvoice(config = c);
         formInvoice.mainObject = mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
         formInvoice.secondaryObject = secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
         formInvoice.productObject = productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c;
@@ -27,16 +27,19 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
         formInvoice.itemRecord = new FieloPRP__InvoiceItem__c(FieloPRP__Quantity__c=0);
 
         Set<String> productFields = new Set<String>();
-        for(Field productField: productFieldSet) {
+        for(FieloCMSPRP_Field productField: productFieldSet) {
             productFields.add(productField.apiName);
         }
 
         formInvoice.recentProducts = Database.query('Select ' + String.join(new List<String>(productFields),',') + ' From ' + formInvoice.productObject + ' ORDER BY LastModifiedDate LIMIT 10');
+        FieloPLT__PublicSettings__c pubSettings = FieloPLT__PublicSettings__c.getInstance(UserInfo.getProfileId());
+        formInvoice.productFieldName = pubSettings.FieloPRP__ProductLookupField__c;
+
         return formInvoice;
     }
 
-    public static List<Field> getFieldsStructure(FieloCMS__Component__c component, String sObjectName){
-        List<Field> fieldsList = new List<Field>();
+    public static List<FieloCMSPRP_Field> getFieldsStructure(FieloCMS__Component__c component, String sObjectName){
+        List<FieloCMSPRP_Field> fieldsList = new List<FieloCMSPRP_Field>();
         if(component.FieloCMS__FieldSet__c != null){
             Map<String,Schema.SObjectField> fieldsDescribeMap = Schema.describeSObjects(new String[]{ sObjectName })[0].fields.getMap();
             
@@ -46,10 +49,10 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
                 if ( attributes.get('type') != 'Subcomponent' ) {
                     Schema.DescribeFieldResult describeField = fieldsDescribeMap.get( (String) attributes.get('apiName') ).getDescribe();
                     if(describeField.isAccessible() && (component.FieloCMS__Layout__c != 'Edit' || describeField.isUpdateable())){
-                        fieldsList.add( new Field( attributes, describeField ) );
+                        fieldsList.add( new FieloCMSPRP_Field( attributes, describeField ) );
                     }
                 } else {
-                    fieldsList.add( new Field( attributes ) );
+                    fieldsList.add( new FieloCMSPRP_Field( attributes ) );
                 }
 
             }
@@ -59,16 +62,16 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
         return fieldsList;
     }
 
-    public static List<Field> addItemsRequiredFields(List<Field> fieldSet) {
+    public static List<FieloCMSPRP_Field> addItemsRequiredFields(List<FieloCMSPRP_Field> fieldSet) {
         Set<String> fieldNames = new Set<String>();
-        List<Field> fields = new List<Field>();
-        for (Field field: fieldSet) {
+        List<FieloCMSPRP_Field> fields = new List<FieloCMSPRP_Field>();
+        for (FieloCMSPRP_Field field: fieldSet) {
             fieldNames.add(field.apiName);
         }
         if (!fieldNames.contains('FieloPRP__Quantity__c')) {
             DescribeFieldResult fieldDescribe = Schema.describeSObjects(new String[]{ 'FieloPRP__InvoiceItem__c' })[0].fields.getMap().get('FieloPRP__Quantity__c').getDescribe();
             fields.add(
-                new Field(
+                new FieloCMSPRP_Field(
                     new Map<String, Object> {
                         'type' => String.valueOf(fieldDescribe.getType()),
                         'apiName' => fieldDescribe.getName(),
@@ -110,7 +113,7 @@ global class FormInvoiceAPI implements FieloCMS.ViewInterface{
 
     public FieloPLT__Program__c currentProgram {get{
         Id memberId = MemberService.getCurrentMemberId();
-        FieloPLT__Member__c member = [SELECT Id, Name, FieloPLT__Program__r.Id, FieloPLT__Program__r.Name, FieloPLT__Program__r.FieloPRP__RequestInvoiceProducts__c FROM FieloPLT__Member__c WHERE Id = :memberId];
+        FieloPLT__Member__c member = [SELECT Id, Name, FieloPLT__Program__r.Id, FieloPLT__Program__r.Name, FieloPLT__Program__r.FieloPRP__RequestInvoiceProducts__c, FieloPLT__Program__r.FieloPRP__ProductInjectQuery__c FROM FieloPLT__Member__c WHERE Id = :memberId];
         return member.FieloPLT__Program__r;
     }
         set;

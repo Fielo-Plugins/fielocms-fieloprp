@@ -1,4 +1,4 @@
-global with sharing class InvoiceItemAPI implements FieloCMS.DataInterface{
+global with sharing class FieloCMSPRP_InvoiceItemAPI implements FieloCMS.DataInterface{
 	global Id invoiceId {set;get;}
 
 	global Map<Id, Object> getBulkData(List<FieloCMS__Component__c> components){                
@@ -35,8 +35,8 @@ global with sharing class InvoiceItemAPI implements FieloCMS.DataInterface{
         String whereCondition = '';
         whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + MemberService.getCurrentMemberId() + '\'';
         if (!filtersMap.isEmpty()){
-            if (filtersMap.containsKey(component.CustomDetailParameter__c)) {
-                whereCondition += ' AND FieloPRP__Invoice__c = \'' + filtersMap.get(component.CustomDetailParameter__c) + '\'';
+            if (filtersMap.containsKey(component.FieloCMSPRP_CustomDetailParameter__c)) {
+                whereCondition += ' AND FieloPRP__Invoice__c = \'' + filtersMap.get(component.FieloCMSPRP_CustomDetailParameter__c) + '\'';
             }
         }
         whereCondition += ' LIMIT ' + String.valueOf(component.FieloCMS__Limit__c);
