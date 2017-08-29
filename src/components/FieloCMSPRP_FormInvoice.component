@@ -1,4 +1,4 @@
-<apex:component layout="none" controller="FormInvoiceAPI">
+<apex:component layout="none" controller="FieloCMSPRP_FormInvoiceAPI">
     <apex:attribute name="config" type="SObject" description="" />
     <apex:attribute name="record" type="SObject" description="" />
     <apex:attribute name="itemRecord" type="SObject" description="" />
