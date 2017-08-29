@@ -14,7 +14,7 @@
    * @private
    */
   FieloFormInvoice.prototype.Constant_ = {
-    SUBMIT_METHOD: 'FormInvoiceAPI.submit'
+    SUBMIT_METHOD: 'FieloCMSPRP_FormInvoiceAPI.submit'
 
   };
 

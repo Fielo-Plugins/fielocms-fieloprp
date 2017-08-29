@@ -1,0 +1,61 @@
+<apex:component controller="FieloCMSPRP_LookupFieldController">
+    <apex:attribute name="config" type="SObject" description="" />
+    <apex:attribute name="field" type="FieloCMSPRP_Field" description="" />
+    <apex:attribute name="sObject" type="String" description="" assignTo="{!csObject}"/>
+    <apex:variable var="sObjectName" value="{!SUBSTITUTE(SUBSTITUTE(sObject,'[',''),']','')}"/>
+    <apex:variable var="fieldType" value="{!CASE($ObjectType[sObjectName].fields['Name'].type,'number','number','percent','number','double','number','integer','number','decimal','number','currency', 'number','boolean', 'boolean','date','date','reference','reference','text')}"/>
+
+    <div class="cms-prp-lookup">
+        <input class="fielo-input fielo-js-upgrade cms-prp-lookup__field" data-type="{!field.type}" id="{! config['Id'] }-{!field.apiName}" data-lookup-object-name="{!sObject}" data-lookup-field-name="{!field.apiName}"  value=""/> <button type="button" class="fielo-button cms-prp-lookup-button cms-prp-lookup-button__icon" >&nbsp;</button>
+
+        <div class="fielo-record fielo-form cms-prp-lookup-search__model hidden" style="display: inline-block" data-object-name="">
+            <div class="cms-prp-search-fields">
+                <div class="fielo-field fielo-field--is-Name" data-lookup-field-name="Name" style="display: inline-block">
+                    <div class="fielo-field__label">
+                        <label for="{! config['Id'] }-Name" id="{! config['Id'] }_hlpName" >{!$ObjectType[sObjectName].fields['Name'].Label}</label>
+                    </div>
+                    <div class="fielo-field__value">
+                        <input class="fielo-input fielo-js-upgrade disabled" data-type="Text"  id="{! config['Id'] }-Name" name="SObject.Name"  value="" />
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="fielo-button fielo-button__search" >{!$Label.fielocms__search}</button>
+            <br/>
+            <br/>
+            <table class="fielo-table mdl-data-table">
+                <thead class="fielo-table__head">
+                    <tr class="fielo-record"  data-order-by-type="list">
+                        <th class="fielo-field fielo-field--is-Name mdl-data-table__cell--non-numeric">
+                            <span data-order-value="" data-lookup-field-name="Name">{!$ObjectType[sObjectName].fields['Name'].Label}</span>
+                        </th>
+                        <th class="fielo-field fielo-field--is-Id mdl-data-table__cell--non-numeric">
+                            <span data-order-value="" data-lookup-field-name="Name">{!$ObjectType[sObjectName].fields['Id'].Label}</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="fielo-record-set__data cms-prp-lookup-search-results__container">
+                  <tr class="fielo-record fielo-record-set__template cms-prp-invoice-item__product-record">
+                        <td class="fielo-field fielo-field--is-Name mdl-data-table__cell--non-numeric" data-th="{!$ObjectType[sObjectName].fields['Name'].Label}" data-lookup-field-name="Name">
+                                                <span class="fielo-output fielo-output__{!fieldType}"  data-type="{!fieldType}" data-value="{!record['Name']}" >
+                                                    <a class="cms-prp-lookup-row-selector" href="#">{!record['Name']}</a>
+                                            </span>
+                                    </td>
+                                    <td class="fielo-field fielo-field--is-Id mdl-data-table__cell--non-numeric" data-th="{!$ObjectType[sObjectName].fields['Id'].Label}" data-lookup-field-name="Id">
+                                                <span class="fielo-output fielo-output__{!fieldType}"  data-type="{!fieldType}" data-value="{!record['Id']}" >
+                                                        {!record['Id']}
+                                                </span>
+                                </td>
+                                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script type="text/javascript">
+        if(typeof FrontEndJSSettings == 'undefined') {
+        var FrontEndJSSettings = {};
+        }
+        if(typeof FrontEndJSSettings.LABELS == 'undefined') {
+            FrontEndJSSettings.LOOKUPS = {};
+        }
+    </script>
+</apex:component>

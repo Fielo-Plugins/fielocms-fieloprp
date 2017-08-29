@@ -1,4 +1,4 @@
-public class LookupFieldController {
+public class FieloCMSPRP_LookupFieldController {
 	@RemoteAction
 	public static List<sObject> getValues(String sObjectName){
 		return Database.query('Select Id, Name From ' + sObjectName);

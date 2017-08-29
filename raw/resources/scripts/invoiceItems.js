@@ -30,8 +30,9 @@
     DATA_UPGRADED: 'data-upgraded',
     DATA_CONTROLLER: 'data-controller-element',
     DATA_FIELD_NAME: 'data-field-name',
+    DATA_PRODUCT_FIELD: 'data-product-lookup-field',
     OBJECT_TYPE: 'FieloPRP__InvoiceItem__c',
-    QUERY_RECORDS_METHOD: 'FormInvoiceAPI.queryRecords'
+    QUERY_RECORDS_METHOD: 'FieloCMSPRP_FormInvoiceAPI.queryRecords'
 
   };
 
@@ -211,7 +212,7 @@
       [].forEach.call(item.querySelectorAll('input:not(.disabled)'),
       function(input) {
         if (input.closest('td').getAttribute('data-field-name') ===
-          'FieloPRP__Product__c') {
+          this.productFieldName) {
           sObjectValue = input.getAttribute('data-lookup-id');
           sObject[input.closest('td').getAttribute('data-field-name')] =
             sObjectValue;
@@ -431,7 +432,7 @@
             invoiceItem = this.invoiceItems_[this.invoiceItems_.length - 1];
           }
           productField = invoiceItem
-            .querySelector('[data-field-name="FieloPRP__Product__c"]');
+            .querySelector('[data-field-name="' + this.productFieldName + '"]');
           productField.querySelector('input').value =
             this.productBasket[productId];
           productField.querySelector('input').setAttribute('data-lookup-id',
@@ -455,8 +456,9 @@
       this.element_.getElementsByClassName(this.CssClasses_.ITEM_RECORD),
       function(element) {
         product =
-          element.querySelector('[data-field-name="FieloPRP__Product__c"]')
-            .querySelector('input').value;
+          element
+            .querySelector('[data-field-name="' + this.productFieldName + '"]')
+              .querySelector('input').value;
         if (product === null || product === undefined || product === '') {
           this.availableSlots.push(element);
         }
@@ -484,9 +486,12 @@
     this.tableHeader =
       this.element_.querySelector('.' + this.CssClasses_.TABLE_HEADER);
     this.hasAmountFields = false;
-    if (this.tableHeader.querySelector('[data-field-name="FieloPRP__Quantity__c"]') &&
-      this.tableHeader.querySelector('[data-field-name="FieloPRP__UnitPrice__c"]') &&
-      this.tableHeader.querySelector('[data-field-name="FieloPRP__TotalPrice__c"]')) {
+    if (this.tableHeader
+        .querySelector('[data-field-name="FieloPRP__Quantity__c"]') &&
+      this.tableHeader
+        .querySelector('[data-field-name="FieloPRP__UnitPrice__c"]') &&
+      this.tableHeader
+        .querySelector('[data-field-name="FieloPRP__TotalPrice__c"]')) {
       this.hasAmountFields = true;
     }
     if (this.hasAmountFields === false) {
@@ -515,6 +520,8 @@
         document.querySelector('.' + this.CssClasses_.ADD);
       // Disables any calculation if one of the fields is not present
       this.getHasFields();
+      this.productFieldName =
+        this.element_.getAttribute(this.Constant_.DATA_PRODUCT_FIELD);
       if (this.newBtn_) {
         this.newBtn_
           .addEventListener('click', this.newinvoiceItem_.bind(this));
