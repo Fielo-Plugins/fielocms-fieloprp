@@ -185,7 +185,7 @@ Default Account: The member will be related to an specific default CRM account</
         <label>Main Source Component</label>
         <referenceTo>FieloCMS__Component__c</referenceTo>
         <relationshipLabel>Components (Main Source Component)</relationshipLabel>
-        <relationshipName>MainComponents</relationshipName>
+        <relationshipName>FieloCMSPRP_MainComponents</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -197,7 +197,7 @@ Default Account: The member will be related to an specific default CRM account</
         <label>Product Source Component</label>
         <referenceTo>FieloCMS__Component__c</referenceTo>
         <relationshipLabel>Components (Product Source Component)</relationshipLabel>
-        <relationshipName>ProductComponents</relationshipName>
+        <relationshipName>FieloCMSPRP_ProductComponents</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
@@ -209,7 +209,7 @@ Default Account: The member will be related to an specific default CRM account</
         <label>Secondary Source Component</label>
         <referenceTo>FieloCMS__Component__c</referenceTo>
         <relationshipLabel>Components (Secondary Source Component)</relationshipLabel>
-        <relationshipName>SecondaryComponents</relationshipName>
+        <relationshipName>FieloCMSPRP_SecondaryComponents</relationshipName>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
