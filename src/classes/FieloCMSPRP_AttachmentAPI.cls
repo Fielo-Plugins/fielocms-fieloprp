@@ -1,4 +1,4 @@
-global with sharing class AttachmentAPI implements FieloCMS.DataInterface{
+global with sharing class FieloCMSPRP_AttachmentAPI implements FieloCMS.DataInterface{
 	
 	global Map<Id, Object> getBulkData(List<FieloCMS__Component__c> components){                
         Map<Id,Object> newMapData = new Map<Id,Object>();
@@ -8,8 +8,8 @@ global with sharing class AttachmentAPI implements FieloCMS.DataInterface{
                 c.FieloCMS__Limit__c = 5;
             
             String whereCondition = '';
-            if(String.isNotBlank(c.FieloCMS__DetailParameter__c) && ApexPages.CurrentPage().getParameters().containsKey(c.FieloCMS__DetailParameter__c)){
-                Id parentId = ApexPages.CurrentPage().getParameters().get(c.FieloCMS__DetailParameter__c);
+            if(String.isNotBlank(c.FieloCMSPRP_CustomDetailParameter__c) && ApexPages.CurrentPage().getParameters().containsKey(c.FieloCMSPRP_CustomDetailParameter__c)){
+                Id parentId = ApexPages.CurrentPage().getParameters().get(c.FieloCMSPRP_CustomDetailParameter__c);
                 whereCondition = ' ParentId = \'' + parentId + '\'';
             }else{
                 whereCondition = ' ParentId = != null ';
@@ -43,15 +43,12 @@ global with sharing class AttachmentAPI implements FieloCMS.DataInterface{
 
         Map<String, String> filtersMap = (Map<String, String>)JSON.deserialize(filters, Map<string,String>.class);
 
-        system.debug('***filters');
-        system.debug(filters);
-
         // Assembles Where Condition
         String whereCondition = '';
 
         if (!filtersMap.isEmpty()){
-            if (filtersMap.containsKey('FieloPRP__Invoice__c')) {
-                whereCondition += ' ParentId = \'' + filtersMap.get('FieloPRP__Invoice__c') + '\'';
+            if (filtersMap.containsKey(component.FieloCMSPRP_CustomDetailParameter__c)) {
+                whereCondition += ' ParentId = \'' + filtersMap.get(component.FieloCMSPRP_CustomDetailParameter__c) + '\'';
             }
         }
 

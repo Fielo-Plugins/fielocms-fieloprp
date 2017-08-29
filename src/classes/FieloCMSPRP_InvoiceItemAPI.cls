@@ -9,8 +9,8 @@ global with sharing class FieloCMSPRP_InvoiceItemAPI implements FieloCMS.DataInt
                 c.FieloCMS__Limit__c = 5;
             
             String whereCondition;
-            if(String.isNotBlank(c.FieloCMS__DetailParameter__c) && ApexPages.CurrentPage().getParameters().containsKey(c.FieloCMS__DetailParameter__c)){
-                invoiceId = ApexPages.CurrentPage().getParameters().get(c.FieloCMS__DetailParameter__c);
+            if(String.isNotBlank(c.FieloCMSPRP_CustomDetailParameter__c) && ApexPages.CurrentPage().getParameters().containsKey(c.FieloCMSPRP_CustomDetailParameter__c)){
+                invoiceId = ApexPages.CurrentPage().getParameters().get(c.FieloCMSPRP_CustomDetailParameter__c);
                 whereCondition = ' FieloPRP__Invoice__c = \'' + invoiceId + '\'';
             }else{
                 whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + MemberService.getCurrentMemberId() + '\'';
