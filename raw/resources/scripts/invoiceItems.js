@@ -30,7 +30,7 @@
     DATA_UPGRADED: 'data-upgraded',
     DATA_CONTROLLER: 'data-controller-element',
     DATA_FIELD_NAME: 'data-field-name',
-    DATA_PRODUCT_FIELD: 'data-product-lookup-field',
+    DATA_PRODUCT_FIELD: 'data-product-field',
     OBJECT_TYPE: 'FieloPRP__InvoiceItem__c',
     QUERY_RECORDS_METHOD: 'FieloCMSPRP_FormInvoiceAPI.queryRecords'
 
