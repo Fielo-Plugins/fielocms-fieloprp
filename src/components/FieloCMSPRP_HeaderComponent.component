@@ -1,24 +1,5 @@
 <apex:component >
 	<apex:attribute name="className" type="String" default="cms-prp-section-header" description="component class"/>
-	<style type="text/css">
-		.cms-prp-section-header {
-			display:inline-block;
-			width: 100%;
-		}
-		.cms-prp-section-header__half {
-			display:inline-block;
-			width: 50%;
-		}
-		.cms-prp-section-header__left {
-			float: left;
-		}
-		.cms-prp-section-header__right {
-			float: right;
-		}
-		.cms-prp-section-header__middle {
-			float: 
-		}
-	</style>
 	<div class="{!className}">
 		<apex:componentBody/>
 	</div>

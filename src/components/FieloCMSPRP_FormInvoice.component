@@ -11,7 +11,7 @@
     <apex:attribute name="productFieldName" type="String" default="FieloPRP__Product__c" description="" />
     <apex:attribute name="recentProducts" type="SObject[]" description="" />
 
-    <div class="fielo-record fielo-form {!config['FieloCMS__ComponentLibrary__r']['FieloCMS__CSSClasses__c']} {!config['FieloCMS__CSSClasses__c']} fielo-js-component cms-prp-invoice-form" data-parameter-name="{!config['FieloCMSPRP_CustomDetailParameter__c']}" data-redirect-page="{!config['RedirectPage__c']}" data-componentid="{! config['Id'] }" data-submit-mode="{!config['FieloCMSPRP_SubmitMode__c']}">
+    <div class="fielo-record fielo-form {!config['FieloCMS__ComponentLibrary__r']['FieloCMS__CSSClasses__c']} {!config['FieloCMS__CSSClasses__c']} fielo-js-component cms-prp-invoice-form" data-parameter-name="{!config['FieloCMSPRP_CustomDetailParameter__c']}" data-redirect-page="{!config['FieloCMSPLT_RedirectPage__c']}" data-componentid="{! config['Id'] }" data-submit-mode="{!config['FieloCMSPRP_SubmitMode__c']}">
         <apex:panelGroup layout="none" rendered="{!config['FieloCMS__Title__c']!=''}">
             <legend class="fielo-title" >{!config['FieloCMS__Title__c']}</legend>
         </apex:panelGroup>
@@ -255,5 +255,12 @@
 		[].forEach.call(pickLists, function(picklistInput) {
 			picklistInput.style.cssText += document.defaultView.getComputedStyle(input, "").cssText;
 		});
+		if(typeof FrontEndJSSettings == 'undefined') {
+	      var FrontEndJSSettings = {};
+	    }
+	    if(typeof FrontEndJSSettings.LABELS == 'undefined') {
+	      FrontEndJSSettings.LABELS = {};
+	    }
+	    // TODO: Put Frontend Labels to use in JS
     </script>
 </apex:component>
