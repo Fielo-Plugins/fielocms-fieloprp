@@ -13,11 +13,11 @@ global with sharing class FieloCMSPRP_InvoiceItemAPI implements FieloCMS.DataInt
                 invoiceId = ApexPages.CurrentPage().getParameters().get(c.FieloCMSPRP_CustomDetailParameter__c);
                 whereCondition = ' FieloPRP__Invoice__c = \'' + invoiceId + '\'';
             }else{
-                whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + MemberService.getCurrentMemberId() + '\'';
+                whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + FieloCMSPLT_MemberService.getCurrentMemberId() + '\'';
             }
             whereCondition += ' LIMIT ' + String.valueOf(c.FieloCMS__Limit__c);
             whereCondition += ' OFFSET 0';
-            newMapData.put(c.Id, Database.query('SELECT ' + String.join(new List<String>(OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)), ',') + ' FROM FieloPRP__InvoiceItem__c WHERE ' + whereCondition));
+            newMapData.put(c.Id, Database.query('SELECT ' + String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)), ',') + ' FROM FieloPRP__InvoiceItem__c WHERE ' + whereCondition));
         }
         return newMapData;
     }
@@ -33,7 +33,7 @@ global with sharing class FieloCMSPRP_InvoiceItemAPI implements FieloCMS.DataInt
 
         // Assemble Where Condition
         String whereCondition = '';
-        whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + MemberService.getCurrentMemberId() + '\'';
+        whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + FieloCMSPLT_MemberService.getCurrentMemberId() + '\'';
         if (!filtersMap.isEmpty()){
             if (filtersMap.containsKey(component.FieloCMSPRP_CustomDetailParameter__c)) {
                 whereCondition += ' AND FieloPRP__Invoice__c = \'' + filtersMap.get(component.FieloCMSPRP_CustomDetailParameter__c) + '\'';
@@ -43,7 +43,7 @@ global with sharing class FieloCMSPRP_InvoiceItemAPI implements FieloCMS.DataInt
         whereCondition += ' OFFSET ' + String.valueOf(offset);
 
         String query = 'SELECT ';
-        query += String.join(new List<String>(OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)), ',');
+        query += String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)), ',');
         query += ' FROM FieloPRP__InvoiceItem__c WHERE ';
         query += whereCondition;
         system.debug('***query');
