@@ -158,7 +158,7 @@
 		</div>
 
 		<c:FieloCMSPRP_HeaderComponent >
-            <button type="submit" class="fielo-button fielo-button__submit cms-prp-section-header__right" >{!$Label.submit}</button>
+            <button type="submit" class="fielo-button fielo-button__submit cms-prp-section-header__right" >{!$Label.fielocmsplt_submit}</button>
 		</c:FieloCMSPRP_HeaderComponent>
 
 
