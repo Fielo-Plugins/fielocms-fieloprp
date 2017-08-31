@@ -15,7 +15,7 @@ global with sharing class FieloCMSPRP_AttachmentAPI implements FieloCMS.DataInte
                 whereCondition = ' ParentId = != null ';
             }
             whereCondition += ' LIMIT ' + String.valueOf(c.FieloCMS__Limit__c);
-            newMapData.put(c.Id, Database.query('SELECT Id, ' + String.join(new List<String>(OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)), ',') + ' FROM Attachment WHERE ' + whereCondition));
+            newMapData.put(c.Id, Database.query('SELECT Id, ' + String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)), ',') + ' FROM Attachment WHERE ' + whereCondition));
 
             // Workaround
             if(c.FieloCMS__ComponentLibrary__r.Name == 'Attachments View'){
@@ -55,7 +55,7 @@ global with sharing class FieloCMSPRP_AttachmentAPI implements FieloCMS.DataInte
         whereCondition += ' LIMIT ' + String.valueOf(component.FieloCMS__Limit__c);
         whereCondition += ' OFFSET ' + String.valueOf(offset);
         // Workaround
-        List<sObject> records = Database.query('SELECT ' + String.join(new List<String>(OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)), ',') + ' FROM Attachment WHERE ' + whereCondition);
+        List<sObject> records = Database.query('SELECT ' + String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)), ',') + ' FROM Attachment WHERE ' + whereCondition);
 
         if(component.FieloCMS__ComponentLibrary__r.Name == 'Attachments View'){
             for(Attachment attachment: (List<Attachment>)records ) {
