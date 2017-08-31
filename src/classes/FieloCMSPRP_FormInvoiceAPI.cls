@@ -32,8 +32,13 @@ global class FieloCMSPRP_FormInvoiceAPI implements FieloCMS.ViewInterface{
         }
 
         formInvoice.recentProducts = Database.query('Select ' + String.join(new List<String>(productFields),',') + ' From ' + formInvoice.productObject + ' ORDER BY LastModifiedDate LIMIT 10');
-        FieloPLT__PublicSettings__c pubSettings = FieloPLT__PublicSettings__c.getInstance(UserInfo.getProfileId());
-        formInvoice.productFieldName = pubSettings.FieloPRP__ProductLookupField__c;
+        string productFieldName;
+        try{
+            productFieldName = FieloPLT__PublicSettings__c.getInstance(UserInfo.getProfileId()).FieloPRP__ProductLookupField__c;
+        } catch(Exception e) {
+            productFieldName = null;
+        }
+        formInvoice.productFieldName = productFieldName != null ? productFieldName : 'FieloPRP__Product__c';
 
         return formInvoice;
     }
