@@ -91,7 +91,7 @@ global class FieloCMSPRP_FormInvoiceAPI implements FieloCMS.ViewInterface{
     
     @RemoteAction
     global static Map<String, Object> submit(FieloPRP__Invoice__c invoice, List<FieloPRP__InvoiceItem__c> items, List<Attachment> attachments, String submitMode) {
-        invoice.FieloPRP__Member__c = MemberService.getCurrentMemberId();
+        invoice.FieloPRP__Member__c = FieloCMSPLT_MemberService.getCurrentMemberId();
         try{
             FieloPRP__Invoice__c submittedInvoice = FieloPRP.InvoiceService.submitInvoice(invoice, items, attachments);
             if (submitMode == 'Close') {
@@ -117,7 +117,7 @@ global class FieloCMSPRP_FormInvoiceAPI implements FieloCMS.ViewInterface{
     }
 
     public FieloPLT__Program__c currentProgram {get{
-        Id memberId = MemberService.getCurrentMemberId();
+        Id memberId = FieloCMSPLT_MemberService.getCurrentMemberId();
         FieloPLT__Member__c member = [SELECT Id, Name, FieloPLT__Program__r.Id, FieloPLT__Program__r.Name, FieloPLT__Program__r.FieloPRP__RequestInvoiceProducts__c, FieloPLT__Program__r.FieloPRP__ProductInjectQuery__c FROM FieloPLT__Member__c WHERE Id = :memberId];
         return member.FieloPLT__Program__r;
     }
