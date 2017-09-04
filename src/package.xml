@@ -14,6 +14,10 @@
 		<name>ApexComponent</name>
 	</types>
 	<types>
+		<members>*</members>
+		<name>CustomLabels</name>
+	</types>
+	<types>
 		<members>FieloCMS__Component__c</members>
 		<members>FieloPRP__InvoiceItem__c</members>
 		<name>CustomObject</name>
