@@ -28,8 +28,8 @@
   FieloMultiFileUploaderPRP.prototype.Constant_ = {
     MAX_FILE_SIZE: 4350000,
     CHUNK_SIZE: 950000,
-    UPLOAD_CONTROLLER: 'FieloCMSPRP_FormInvoiceAPI.saveTheChunk',
-    DELETE_FILES_CONTROLLER: 'FieloCMSPRP_FormInvoiceAPI.deleteAttachments'
+    UPLOAD_CONTROLLER: 'FieloCMSPRP_FormInvoiceCtrl.saveTheChunk',
+    DELETE_FILES_CONTROLLER: 'FieloCMSPRP_FormInvoiceCtrl.deleteAttachments'
   };
 
   /**
@@ -168,9 +168,8 @@
           this.fileList[Object.keys(this.fileList).length.toString()] = file;
           this.addFileRecord(file);
         } else {
-          var message = 'File size cannot exceed ' +
-            (this.Constant_.MAX_FILE_SIZE / 1024 / 1024).toFixed(2) +
-            ' Mbytes.';
+          var message = FrontEndJSSettings.LABELS.MaxFileSize.replace('{0}', // eslint-disable-line no-undef
+            (this.Constant_.MAX_FILE_SIZE / 1024 / 1024).toFixed(2).toString());
           this.throwMessage(message, 'error');
           this.input_.value = null;
         }

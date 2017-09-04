@@ -1,4 +1,4 @@
-<apex:component layout="none" controller="FieloCMSPRP_FormInvoiceAPI">
+<apex:component layout="none" controller="FieloCMSPRP_FormInvoiceCtrl">
     <apex:attribute name="config" type="SObject" description="" />
     <apex:attribute name="record" type="SObject" description="" />
     <apex:attribute name="itemRecord" type="SObject" description="" />
@@ -262,5 +262,7 @@
 	      FrontEndJSSettings.LABELS = {};
 	    }
 	    // TODO: Put Frontend Labels to use in JS
+	    FrontEndJSSettings.LABELS.InvoiceSavedSuccess = '{!$Label.FieloCMSPRP_InvoiceSavedSuccess}';
+	    FrontEndJSSettings.LABELS.MaxFileSize = '{!$Label.FieloCMSPRP_MaxFileSize}';
     </script>
 </apex:component>

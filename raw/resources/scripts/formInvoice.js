@@ -14,7 +14,7 @@
    * @private
    */
   FieloFormInvoice.prototype.Constant_ = {
-    SUBMIT_METHOD: 'FieloCMSPRP_FormInvoiceAPI.submit'
+    SUBMIT_METHOD: 'FieloCMSPRP_FormInvoiceCtrl.submit'
 
   };
 
@@ -82,7 +82,7 @@
   };
 
   FieloFormInvoice.prototype.redirect = function() {
-    var result = {message: 'The invoice was saved successfully'};
+    var result = {message: FrontEndJSSettings.LABELS.InvoiceSavedSuccess}; // eslint-disable-line no-undef
     this.throwMessage(result.message, 'success');
     if (window.redirectURL) {
       result.redirectURL = window.redirectURL;
