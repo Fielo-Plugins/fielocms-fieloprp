@@ -33,7 +33,7 @@
     "FieloCMS__Layouts__c": "", 
     "FieloCMS__RecordType__c": "Widget", 
     "FieloCMS__Subcomponents__c": "", 
-    "FieloCMS__ViewClass__c": "FieloCMSPRP_FormInvoiceAPI", 
+    "FieloCMS__ViewClass__c": "FieloCMSPRP_FormInvoiceCtrl", 
     "FieloCMS__Visibility__c": "Private", 
     "FieloCMS__sObject__c": "FieloPRP__Invoice__c", 
     "Name": "Invoice Upload", 
