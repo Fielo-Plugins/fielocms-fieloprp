@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>FieloCMSPRP_InvoiceSavedSuccess</fullName>
+        <categories>formInvoice.js</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FieloCMSPRP_InvoiceSavedSuccess</shortDescription>
+        <value>The invoice was saved successfully.</value>
+    </labels>
+    <labels>
+        <fullName>FieloCMSPRP_MaxFileSize</fullName>
+        <categories>multiFileUploader.js</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FieloCMSPRP_MaxFileSize</shortDescription>
+        <value>File size cannot exceed {0} Mbytes.</value>
+    </labels>
+</CustomLabels>

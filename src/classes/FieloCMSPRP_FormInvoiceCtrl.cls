@@ -1,5 +1,5 @@
-global class FieloCMSPRP_FormInvoiceAPI implements FieloCMS.ViewInterface{
-	global ApexPages.Component getComponent(FieloCMS__Component__c c){
+global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
+    public ApexPages.Component getComponent(FieloCMS__Component__c c){
         String query = 'Select FieloCMS__FieldSet__c, FieloCMS__Layout__c, FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c FROM FieloCMS__Component__c ' +
             ' WHERE Id in (\'' + c.FieloCMSPRP_MainSourceComponent__c + '\',\'' + c.FieloCMSPRP_SecondarySourceComponent__c + '\',\'' + c.FieloCMSPRP_ProductSourceComponent__c + '\')';
 
@@ -11,7 +11,7 @@ global class FieloCMSPRP_FormInvoiceAPI implements FieloCMS.ViewInterface{
 
         List<FieloCMSPRP_Field> invoiceFieldSet = getFieldsStructure(mainComponent, mainComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
         List<FieloCMSPRP_Field> invoiceItemFieldSet = getFieldsStructure(secondaryComponent, secondaryComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
-		List<FieloCMSPRP_Field> productFieldSet = getFieldsStructure(productComponent, productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
+        List<FieloCMSPRP_Field> productFieldSet = getFieldsStructure(productComponent, productComponent.FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c);
 
         //Check for required fields
         invoiceItemFieldSet = addItemsRequiredFields(invoiceItemFieldSet);
@@ -62,8 +62,6 @@ global class FieloCMSPRP_FormInvoiceAPI implements FieloCMS.ViewInterface{
 
             }
         }
-        system.debug('fieldsList');
-        system.debug(fieldsList);
         return fieldsList;
     }
 
