@@ -58,18 +58,21 @@
         <fullName>FieloCMSPRP_SubmitMode__c</fullName>
         <externalId>false</externalId>
         <label>Submit Mode</label>
-        <picklist>
-            <picklistValues>
-                <fullName>Submit</fullName>
-                <default>false</default>
-            </picklistValues>
-            <picklistValues>
-                <fullName>Close</fullName>
-                <default>false</default>
-            </picklistValues>
-            <restrictedPicklist>true</restrictedPicklist>
-            <sorted>false</sorted>
-        </picklist>
+        <valueSet>
+            <valueSetDefinition>
+                <value>
+                    <fullName>Submit</fullName>
+                    <default>false</default>
+                    <label>Submit</label>
+                </value>
+                <value>
+                    <fullName>Close</fullName>
+                    <default>false</default>
+                    <label>Close</label>
+                </value>
+                <sorted>false</sorted>
+            </valueSetDefinition>
+        </valueSet>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
