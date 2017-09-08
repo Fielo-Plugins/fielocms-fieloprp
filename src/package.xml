@@ -25,7 +25,7 @@
 		<members>FieloCMS__Component__c.FieloCMSPRP_SecondarySourceComponent__c</members>
 		<members>FieloCMS__Component__c.FieloCMSPRP_SubmitMode__c</members>
 		<members>FieloPRP__InvoiceItem__c.FieloCMSPRP_ProductName__c</members>
-		<name>CustomObject</name>
+		<name>CustomField</name>
 	</types>
 	<version>36.0</version>
 </Package>
