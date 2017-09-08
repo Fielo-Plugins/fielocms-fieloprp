@@ -1,0 +1,14 @@
+{
+			"type":"repository",
+			"version":"master",
+			"dependencies":[
+				{
+					"type":"linkRepository",
+					"name":"Fielo-Apps/fieloprp"
+				},
+				{
+					"type":"linkRepository",
+					"name":"Fielo-Plugins/fielocms-fieloplt"
+				}
+			]
+		}
