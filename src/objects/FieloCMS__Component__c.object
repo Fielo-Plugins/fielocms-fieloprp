@@ -77,4 +77,5 @@
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
     </fields>
+    <version>39.0</version>
 </CustomObject>
