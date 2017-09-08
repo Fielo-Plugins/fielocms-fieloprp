@@ -140,20 +140,20 @@
       if (totalPriceField && quantityField && unitPriceField) {
         if (updatedField === 'FieloPRP__Quantity__c') {
           totalPriceField.value =
-            parseFloat(quantityField.value) *
-              parseFloat(unitPriceField.value);
+            (parseFloat(quantityField.value) *
+              parseFloat(unitPriceField.value)).toFixed(2);
         }
         if (updatedField === 'FieloPRP__UnitPrice__c') {
           totalPriceField.value =
-            parseFloat(quantityField.value) *
-              parseFloat(unitPriceField.value);
+            (parseFloat(quantityField.value) *
+              parseFloat(unitPriceField.value)).toFixed(2);
         }
         if (updatedField === 'FieloPRP__TotalPrice__c') {
           unitPriceField.value =
-            parseFloat(quantityField.value) > 0.0 ?
+            (parseFloat(quantityField.value) > 0.0 ?
             parseFloat(totalPriceField.value) /
               parseFloat(quantityField.value) :
-              0;
+              0).toFixed(2);
         }
       }
       this.refreshAmount();
@@ -162,18 +162,16 @@
 
   FieloInvoiceItems.prototype.refreshAmount = function() {
     if (this.hasAmountFields) {
-      var invoiceTotalValue = 0;
+      var invoiceTotalValue = Number(0);
       var itemTotal;
       [].forEach.call(this.invoiceItems_, function(item) {
         itemTotal = item
           .querySelector('[data-field-name="FieloPRP__TotalPrice__c"]')
             .querySelector('input').value;
-        itemTotal = itemTotal !== null &&
-          itemTotal !== undefined &&
-          itemTotal !== '' ?
-          itemTotal :
-          0;
-        invoiceTotalValue += parseFloat(itemTotal);
+        itemTotal = isNaN(parseFloat(itemTotal)) ?
+          parseFloat(0) :
+          parseFloat(itemTotal);
+        invoiceTotalValue += Number(parseFloat(itemTotal));
       },
         this
       );
@@ -182,7 +180,7 @@
           .querySelector('[data-field-name="FieloPRP__Amount__c"]')
             .querySelector('span');
       this.amountSpan_
-        .innerHTML = invoiceTotalValue;
+        .innerHTML = parseFloat(invoiceTotalValue).toFixed(2);
     }
   };
 
