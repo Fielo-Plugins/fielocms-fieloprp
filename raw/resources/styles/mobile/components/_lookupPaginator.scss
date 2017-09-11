@@ -1,0 +1,19 @@
+.cms-prp-lookup__paginator {
+  text-align: center;
+  .fielo-link__previous {
+    &:after {
+      content: " <";
+    }
+  }
+  .fielo-link__next {
+    &:before {
+      content: "> ";
+    }
+  }
+}
+
+.cms-prp-lookup__paginator .disabled {
+	color: #999DA0;
+	cursor: default;
+	text-decoration: none;
+}
