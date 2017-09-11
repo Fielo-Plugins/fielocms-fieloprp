@@ -137,20 +137,28 @@
   FieloLookupField.prototype.preQuery = function(event) {
     if (event.key === 'Enter') {
       event.preventDefault();
-      var filteredItems =
-        this.filterItems(FrontEndJSSettings.LOOKUPS[this.fieldFullName], // eslint-disable-line no-undef
-          this.inputField.value);
-      if (filteredItems.length === 1) {
-        this.inputField.setAttribute('data-lookup-id',
-          filteredItems[0].Id);
-        this.inputField.value =
-          filteredItems[0].Name;
-      } else {
-        this.inputField.setAttribute('data-lookup-id',
-          '');
-        this.showModal();
-      }
+      this.filter.Name =
+        this.inputField.value;
+      this.pageNumber = 1;
+      this.getValues(this.preQueryCallback.bind(this));
+      fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
     }
+  };
+
+  FieloLookupField.prototype.preQueryCallback = function(result) {
+    var filteredItems =
+      result.Records;
+    if (filteredItems.length === 1) {
+      this.inputField.setAttribute('data-lookup-id',
+        filteredItems[0].Id);
+      this.inputField.value =
+        filteredItems[0].Name;
+    } else {
+      this.inputField.setAttribute('data-lookup-id',
+        '');
+      this.showModal();
+    }
+    fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
   };
 
   FieloLookupField.prototype.showModal = function() {
