@@ -48,6 +48,10 @@
                                 </tr>
                 </tbody>
             </table>
+            <nav class="cms-prp-lookup__paginator">
+                <a href="#previousPage" class="fielo-link fielo-link__previous disabled">{!$Label.fielocms__Previous}</a>
+                <a href="#nextPage" class="fielo-link fielo-link__next disabled">{!$Label.fielocms__Next}</a>
+            </nav>
         </div>
     </div>
     <script type="text/javascript">
