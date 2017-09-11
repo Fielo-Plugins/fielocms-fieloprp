@@ -71,7 +71,7 @@ _**FieloPRP**_
 
 > **_TIP_**: The administrator user of the Org may not have access to some objects of the plugins because the plugin repositories don't deploy the user profile. For example, there is a section that asks you to create 2 segments with a specific RecordType. Two things may happen: the RecordType doesn't exist or you don't have access to it. Try creating the record types or editing your profile.
 
-![Add Image](/Source/Add%20RecordType.png?raw=true) <!-- .element height="50%" width="50%" -->
+![Add Image](Source/Add%20RecordType.png?raw=true) <!-- .element height="50%" width="50%" -->
 
 ## 3. Libraries
 
@@ -216,7 +216,7 @@ In the Programs tab go to:
 
 If the field isn't in the classic layout edit the layout and add the field "**Standard Actions**", hit save. In the **Program > View** page settings add the value **View** to the field **Standard Actions** and save.
 
-![Add Image](/Source/Add%20View%20Action.png?raw=true) <!-- .element height="50%" width="50%" -->
+![Add Image](Source/Add%20View%20Action.png?raw=true) <!-- .element height="50%" width="50%" -->
 
 After that, go back to the Programs tab and go to:
 
@@ -233,7 +233,7 @@ If they are not in the layout add the fields **Register Step 2 Page**, **Site UR
 
 Example:
 
-![Program Site Config](/Source/ProgramSiteConfig.gif?raw=true)
+![Program Site Config](Source/ProgramSiteConfig.gif?raw=true)
 
 By now your Site should be working. There are few steps more to be 100% functional.
 
@@ -245,7 +245,7 @@ Go to:
 
 Add Invoices to the **Selected Tabs**
 
-![Fielo Platform Tabs](/Source/FieloPlatformAppConfig.gif)
+![Fielo Platform Tabs](Source/FieloPlatformAppConfig.gif)
 
 ## 8. Create a Member to access the Site
 
