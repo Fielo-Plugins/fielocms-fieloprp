@@ -26,7 +26,7 @@ Use the following combination of repositories/branches to configure your environ
 
 | Repository | Branch |
 | --- | --- |
-|[FieloCMS-FieloPLT](https://github.com/Fielo-Plugins/fielocms-fieloplt)| feature/naming |
+|[FieloCMS-FieloPLT](https://github.com/Fielo-Plugins/fielocms-fieloplt)| tag: v2.0.1 |
 |[FieloCMS-FieloELR](https://github.com/Fielo-Plugins/fielocms-fieloelr)| master |
 |[FieloCMS-FieloPRP](https://github.com/Fielo-Plugins/fielocms-fieloprp)| master |
 
@@ -71,7 +71,7 @@ _**FieloPRP**_
 
 > **_TIP_**: The administrator user of the Org may not have access to some objects of the plugins because the plugin repositories don't deploy the user profile. For example, there is a section that asks you to create 2 segments with a specific RecordType. Two things may happen: the RecordType doesn't exist or you don't have access to it. Try creating the record types or editing your profile.
 
-![Add Image](https://github.com/tibeal/Fielo-Tutorials/blob/master/Instalation/Source/Add%20RecordType.png?raw=true) <!-- .element height="50%" width="50%" -->
+![Add Image](Source/Add%20RecordType.png?raw=true) <!-- .element height="50%" width="50%" -->
 
 ## 3. Libraries
 
@@ -82,7 +82,7 @@ To do so, just go to:
 
 **NOTE**: The FieloELR library has an issue. It uses Models in order to make easier for the users to create Courses from pre-defined templates. So, before you activate it, go to the Models Object
 
-> **Setup** \> **Create** \> **Objects** \> **Model** > **FieloPLT\_\_Type\_\_c** Field
+> **Setup** \> **Create** \> **Objects** \> **Model** (FieloPLT) > **FieloPLT\_\_Type\_\_c** Field
 
 Add the value **Course** to the picklist values.
 
@@ -216,7 +216,7 @@ In the Programs tab go to:
 
 If the field isn't in the classic layout edit the layout and add the field "**Standard Actions**", hit save. In the **Program > View** page settings add the value **View** to the field **Standard Actions** and save.
 
-![Add Image](https://github.com/tibeal/Fielo-Tutorials/blob/b135714f55037cb299c89163fd73be327ebb315b/Instalation/Source/Add%20View%20Action.png?raw=true) <!-- .element height="50%" width="50%" -->
+![Add Image](Source/Add%20View%20Action.png?raw=true) <!-- .element height="50%" width="50%" -->
 
 After that, go back to the Programs tab and go to:
 
@@ -233,7 +233,7 @@ If they are not in the layout add the fields **Register Step 2 Page**, **Site UR
 
 Example:
 
-![Program Site Config](https://github.com/tibeal/Fielo-Tutorials/blob/master/Instalation/Source/ProgramSiteConfig.gif?raw=true)
+![Program Site Config](Source/ProgramSiteConfig.gif?raw=true)
 
 By now your Site should be working. There are few steps more to be 100% functional.
 
@@ -245,7 +245,7 @@ Go to:
 
 Add Invoices to the **Selected Tabs**
 
-![Fielo Platform Tabs](https://raw.githubusercontent.com/tibeal/Fielo-Tutorials/6d06cbf0719170dab0fedb172a6a103fa7871547/Instalation/Source/FieloPlatformAppConfig.gif)
+![Fielo Platform Tabs](Source/FieloPlatformAppConfig.gif)
 
 ## 8. Create a Member to access the Site
 
