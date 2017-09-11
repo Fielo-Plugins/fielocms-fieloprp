@@ -229,7 +229,7 @@ If they are not in the layout add the fields **Register Step 2 Page**, **Site UR
 | Register Step 2 Page | Register 2 | |
 | Site URL | <_site\_url_> | The Site URL from the site configured for this CMS |
 | Site User Profile | Fielo Member Site |  |
-| User Creation Class | UserCreationFielo |  |
+| User Creation Class | FieloCMSPLT\_UserCreation |  |
 
 Example:
 
