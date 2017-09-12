@@ -32,7 +32,7 @@
     DATA_FIELD_NAME: 'data-field-name',
     DATA_PRODUCT_FIELD: 'data-product-field',
     OBJECT_TYPE: 'FieloPRP__InvoiceItem__c',
-    QUERY_RECORDS_METHOD: 'FieloCMSPRP_FormInvoiceAPI.queryRecords'
+    QUERY_RECORDS_METHOD: 'FieloCMSPRP_FormInvoiceCtrl.queryRecords'
 
   };
 
@@ -528,7 +528,6 @@
         this.addBtn_
           .addEventListener('click', this.openProductsModal.bind(this));
       }
-      [].forEach.call(this.invoiceItems_, this.initItem_.bind(this));
     }
   };
 

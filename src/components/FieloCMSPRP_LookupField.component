@@ -54,12 +54,4 @@
             </nav>
         </div>
     </div>
-    <script type="text/javascript">
-        if(typeof FrontEndJSSettings == 'undefined') {
-        var FrontEndJSSettings = {};
-        }
-        if(typeof FrontEndJSSettings.LABELS == 'undefined') {
-            FrontEndJSSettings.LOOKUPS = {};
-        }
-    </script>
 </apex:component>
