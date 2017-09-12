@@ -64,51 +64,47 @@
   };
 
   FieloLookupField.prototype.getValuesCallback = function(result) {
-    FrontEndJSSettings.LOOKUPS[this.fieldFullName] = // eslint-disable-line no-undef
+    this.recordSet = // eslint-disable-line no-undef
       result.Records;
     this.setLinksStatus_(result.hasNext);
+    this.renderRecords();
   };
 
-  FieloLookupField.prototype.renderOptions = function() {
-    if (!this.isLoaded) {
-      while (this.optionsContainer.firstChild) {
-        this.optionsContainer.removeChild(
-          this.optionsContainer.firstChild);
-      }
-      this.options =
-        FrontEndJSSettings.LOOKUPS[this.fieldFullName]; // eslint-disable-line no-undef
-      var newOption;
-      [].forEach.call(this.options, function(option) {
-        newOption = this.createOption(option);
-        newOption.setAttribute('data-record-id', option.Id);
-        this.initOption(newOption);
-        this.optionsContainer.appendChild(newOption);
-      }, this);
-      this.isLoaded = true;
+  FieloLookupField.prototype.renderRecords = function() {
+    while (this.recordsContainer.firstChild) {
+      this.recordsContainer.removeChild(
+        this.recordsContainer.firstChild);
     }
+    var newRecord;
+    [].forEach.call(this.recordSet, function(record) {
+      newRecord = this.createRecord(record);
+      newRecord.setAttribute('data-record-id', record.Id);
+      this.initRecord(newRecord);
+      this.recordsContainer.appendChild(newRecord);
+    }, this);
   };
 
-  FieloLookupField.prototype.createOption = function(record) {
-    var option = this.optionModel_.cloneNode(true);
+  FieloLookupField.prototype.createRecord = function(record) {
+    var newRecord = this.recordModel_.cloneNode(true);
     [].forEach.call(Object.keys(record), function(key) {
       if (key === 'Name') {
-        option.querySelector(
+        newRecord.querySelector(
           '[' + this.Constant_.FIELD + '="' + key + '"]')
             .querySelector('.' + this.CssClasses_.ROW_SELECTOR)
               .innerHTML = record[key];
       } else {
-        option.querySelector(
+        newRecord.querySelector(
           '[' + this.Constant_.FIELD + '="' + key + '"]')
             .querySelector('span')
               .innerHTML = record[key];
       }
     }, this);
-    return option;
+    return newRecord;
   };
 
-  FieloLookupField.prototype.initOption = function(option) {
+  FieloLookupField.prototype.initRecord = function(record) {
     var selector =
-      option.querySelector('.' + this.CssClasses_.ROW_SELECTOR);
+      record.querySelector('.' + this.CssClasses_.ROW_SELECTOR);
     selector
       .addEventListener('click', this.pickRecord.bind(this));
   };
@@ -128,43 +124,33 @@
     this.inputField.focus();
   };
 
-  FieloLookupField.prototype.filterItems = function(items, query) {
-    return items.filter(function(el) {
-      return el.Name.toLowerCase().indexOf(query.toLowerCase()) > -1;
-    });
-  };
-
-  FieloLookupField.prototype.preQuery = function(event) {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      this.filter.Name =
-        this.inputField.value;
-      this.pageNumber = 1;
-      this.getValues(this.preQueryCallback.bind(this));
-      fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
-    }
+  FieloLookupField.prototype.preQuery = function() {
+    fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
+    this.filter.Name =
+      this.inputField.value;
+    this.pageNumber = 1;
+    this.getValues(this.preQueryCallback.bind(this));
   };
 
   FieloLookupField.prototype.preQueryCallback = function(result) {
-    var filteredItems =
+    this.recordSet =
       result.Records;
-    if (filteredItems.length === 1) {
+    if (this.recordSet.length === 1) {
       this.inputField.setAttribute('data-lookup-id',
-        filteredItems[0].Id);
+        this.recordSet[0].Id);
       this.inputField.value =
-        filteredItems[0].Name;
+        this.recordSet[0].Name;
     } else {
-      this.inputField.setAttribute('data-lookup-id',
-        '');
+      this.inputField
+        .setAttribute('data-lookup-id', '');
+      this.renderRecords();
       this.showModal();
+      this.setLinksStatus_(result.hasNext);
     }
     fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
   };
 
   FieloLookupField.prototype.showModal = function() {
-    this.renderOptions();
-    this.lookupSearchInput.value =
-      this.inputField.value;
     var modal =
       document.querySelector('.' + this.CssClasses_.MODAL);
     var modalBody = modal
@@ -172,33 +158,27 @@
     while (modalBody.firstChild) {
       modalBody.removeChild(modalBody.firstChild);
     }
-    modal.FieloModal.show();
     this.removeClass(this.lookupSearch, 'hidden');
     modalBody.appendChild(this.lookupSearch);
-    this.filterResults();
+    modal.FieloModal.show();
   };
 
-  FieloLookupField.prototype.filterResults = function() {
+  FieloLookupField.prototype.executeSearch = function() {
     this.filter.Name =
       this.lookupSearchInput.value;
     this.pageNumber = 1;
-    this.getValues(this.filterResultsCallback.bind(this));
+    this.getValues(this.searchCallback.bind(this));
   };
 
-  FieloLookupField.prototype.filterResultsCallback = function(result) {
-    while (this.optionsContainer.firstChild) {
-      this.optionsContainer.removeChild(
-        this.optionsContainer.firstChild);
+  FieloLookupField.prototype.searchCallback = function(result) {
+    while (this.recordsContainer.firstChild) {
+      this.recordsContainer.removeChild(
+        this.recordsContainer.firstChild);
     }
-    this.options =
+    this.recordSet =
       result.Records; // eslint-disable-line no-undef
-    var newOption;
-    [].forEach.call(this.options, function(option) {
-      newOption = this.createOption(option);
-      newOption.setAttribute('data-record-id', option.Id);
-      this.initOption(newOption);
-      this.optionsContainer.appendChild(newOption);
-    }, this);
+
+    this.renderRecords();
 
     this.setLinksStatus_(result.hasNext);
   };
@@ -217,14 +197,6 @@
     } else {
       this.links_.previous.classList.remove(this.CssClasses_.DISABLED);
     }
-  };
-
-  FieloLookupField.prototype.setLinksListeners_ = function() {
-    this.links_.previous
-      .addEventListener('click', this.getPreviousPage_.bind(this));
-
-    this.links_.next
-      .addEventListener('click', this.getNextPage_.bind(this));
   };
 
   FieloLookupField.prototype.getPreviousPage_ = function() {
@@ -256,6 +228,41 @@
     }
   };
 
+  FieloLookupField.prototype.handleLookupBtnClick = function() {
+    this.lookupSearchInput.value =
+      this.inputField.value;
+    this.renderRecords();
+    this.showModal();
+    if (this.inputField.value !== null &&
+      this.inputField.value !== undefined &&
+      this.inputField.value !== '') {
+      this.executeSearch();
+    }
+  };
+
+  FieloLookupField.prototype.handleKeyPress = function(event) {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      this.preQuery();
+    }
+  };
+
+  FieloLookupField.prototype.setElementListeners_ = function() {
+    this.inputField
+      .addEventListener('keypress', this.handleKeyPress.bind(this));
+    this.lookupBtn
+      .addEventListener('click', this.handleLookupBtnClick.bind(this));
+    this.lookupSearchBtn
+        .addEventListener('click', this.executeSearch.bind(this));
+  };
+
+  FieloLookupField.prototype.setLinksListeners_ = function() {
+    this.links_.previous
+      .addEventListener('click', this.getPreviousPage_.bind(this));
+    this.links_.next
+      .addEventListener('click', this.getNextPage_.bind(this));
+  };
+
   /**
    * Inicializa el elemento
    */
@@ -267,37 +274,21 @@
         this.element_
           .querySelector('.' + this.CssClasses_.LOOKUP_SEARCH)
             .cloneNode(true);
-      this.optionsContainer =
+      this.recordsContainer =
         this.lookupSearch.querySelector('.' + this.CssClasses_.CONTAINER);
-      this.optionModel_ =
+      this.recordModel_ =
         this.element_.querySelector('.' + this.CssClasses_.MODEL);
-      this.apiName =
-        this.inputField.getAttribute(this.Constant_.FIELD);
       this.sObjectName =
-        this.inputField.getAttribute(this.Constant_.OBJECT)
-          .replace('[', '')
-            .replace(']', '');
-      this.fieldFullName =
-        this.sObjectName + '.' + this.apiName;
-      if (FrontEndJSSettings.LOOKUPS === null || // eslint-disable-line no-undef
-      FrontEndJSSettings.LOOKUPS === undefined) { // eslint-disable-line no-undef
-        FrontEndJSSettings.LOOKUPS = {}; // eslint-disable-line no-undef
-      }
-      if (FrontEndJSSettings.LOOKUPS[this.fieldFullName] === null || // eslint-disable-line no-undef
-        FrontEndJSSettings.LOOKUPS[this.fieldFullName] === undefined) { // eslint-disable-line no-undef
+        this.inputField.getAttribute(this.Constant_.OBJECT);
+      if (this.recordSet === null || // eslint-disable-line no-undef
+        this.recordSet === undefined) { // eslint-disable-line no-undef
         this.pageNumber = 1;
         this.recordsPerPage = 10;
         this.filter = {};
         this.getValues(this.getValuesCallback.bind(this)); // eslint-disable-line no-undef
       }
-      this.inputField
-        .addEventListener('focus', this.renderOptions.bind(this));
-      this.inputField
-        .addEventListener('keypress', this.preQuery.bind(this));
       this.lookupBtn =
         this.element_.querySelector('.' + this.CssClasses_.SEARCH_BUTTON);
-      this.lookupBtn
-        .addEventListener('click', this.showModal.bind(this));
       this.lookupSearchInput =
         this.lookupSearch
           .querySelector('.' + this.CssClasses_.SEARCH_FIELD_CONTAINER)
@@ -306,8 +297,6 @@
       this.lookupSearchBtn =
         this.lookupSearch
           .querySelector('.' + this.CssClasses_.SEARCH_RECORDS_BUTTON);
-      this.lookupSearchBtn
-        .addEventListener('click', this.filterResults.bind(this));
 
       // Paginator Buttons
       this.links_ = {
@@ -316,6 +305,9 @@
         next:
           this.lookupSearch.querySelector('.' + this.CssClasses_.LINK_NEXT)
       };
+
+      // Setup Listeners
+      this.setElementListeners_();
       this.setLinksListeners_();
     }
   };
