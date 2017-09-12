@@ -67,7 +67,7 @@
 
   };
 
-  FieloInvoiceItems.prototype.initItem_ = function(invoiceItem) {
+  FieloInvoiceItems.prototype.initItem_ = function(invoiceItem, upgrade) {
     invoiceItem.deleteBtn_ =
       invoiceItem.getElementsByClassName(this.CssClasses_.DELETE)[0];
     invoiceItem.deleteBtn_.addEventListener(
@@ -82,14 +82,17 @@
         this.refreshTotalPrice.bind(this)
       );
     }, this);
-    invoiceItem.setAttribute('data-upgraded', '');
-    componentHandler.upgradeElement(invoiceItem); // eslint-disable-line no-undef
-    var childElements = invoiceItem
-      .querySelectorAll('[' + this.Constant_.DATA_UPGRADED + ']');
-    [].forEach.call(childElements, function(child) {
-      child.setAttribute('data-upgraded', '');
-      componentHandler.upgradeElement(child); // eslint-disable-line no-undef
-    }, this);
+
+    if (upgrade) {
+      invoiceItem.setAttribute('data-upgraded', '');
+      componentHandler.upgradeElement(invoiceItem); // eslint-disable-line no-undef
+      var childElements = invoiceItem
+        .querySelectorAll('[' + this.Constant_.DATA_UPGRADED + ']');
+      [].forEach.call(childElements, function(child) {
+        child.setAttribute('data-upgraded', '');
+        componentHandler.upgradeElement(child); // eslint-disable-line no-undef
+      }, this);
+    }
   };
 
   FieloInvoiceItems.prototype.refreshTotalPrice = function(event) {
@@ -198,7 +201,7 @@
     this.container_.appendChild(invoiceItem);
     this.invoiceItems_ =
         this.element_.querySelectorAll('.' + this.CssClasses_.ITEM_RECORD);
-    this.initItem_(invoiceItem);
+    this.initItem_(invoiceItem, true);
   };
 
   FieloInvoiceItems.prototype.get = function() {
@@ -528,6 +531,9 @@
         this.addBtn_
           .addEventListener('click', this.openProductsModal.bind(this));
       }
+      [].forEach.call(this.invoiceItems_, function(item) {
+        this.initItem_(item, false);
+      }, this);
     }
   };
 
