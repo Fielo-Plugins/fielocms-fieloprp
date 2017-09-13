@@ -12,6 +12,7 @@ global class FieloCMSPRP_InvoiceAPI implements FieloCMS.DataInterface{
                 query += String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)), ',');
                 query += ' FROM FieloPRP__Invoice__c';
                 query += ' WHERE FieloPRP__Member__c =: memberId';
+                query += ' ORDER BY LastModifiedDate DESC';
                 query += ' LIMIT ' + String.valueOf(c.FieloCMS__Limit__c);
                 query += ' OFFSET 0';
                 newMapData.put(c.Id, Database.query(query));
@@ -32,6 +33,7 @@ global class FieloCMSPRP_InvoiceAPI implements FieloCMS.DataInterface{
                     query += ' FROM FieloPRP__Invoice__c';
                     query += ' WHERE Id = :recordId ';
                     query += ' AND FieloPRP__Member__c =: memberId';
+                    query += ' ORDER BY LastModifiedDate DESC';
                     query += ' LIMIT ' + String.valueOf(c.FieloCMS__Limit__c);
                     query += ' OFFSET 0';
                     newMapData.put(c.Id, Database.query(query));
@@ -49,6 +51,7 @@ global class FieloCMSPRP_InvoiceAPI implements FieloCMS.DataInterface{
         Integer offset = Integer.valueOf(component.FieloCMS__Limit__c * (pageNumber - 1));                
         Id memberId = FieloCMSPLT_MemberService.getCurrentMemberId();
         String query = 'SELECT Id,' + String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)), ',') + ' FROM FieloPRP__Invoice__c WHERE FieloPRP__Member__c =: memberId';
+        query += ' ORDER BY LastModifiedDate DESC';
         query += ' LIMIT ' + String.valueOf(component.FieloCMS__Limit__c);
         query += ' OFFSET ' + String.valueOf(offset);
         return Database.query(query);
