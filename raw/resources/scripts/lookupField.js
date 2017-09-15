@@ -202,14 +202,14 @@
   FieloLookupField.prototype.getPreviousPage_ = function() {
     if (!this.links_.previous.classList.contains(this.CssClasses_.DISABLED)) {
       this.pageNumber--;
-      this.getValues(this.filterResultsCallback.bind(this));
+      this.getValues(this.searchCallback.bind(this));
     }
   };
 
   FieloLookupField.prototype.getNextPage_ = function() {
     if (!this.links_.next.classList.contains(this.CssClasses_.DISABLED)) {
       this.pageNumber++;
-      this.getValues(this.filterResultsCallback.bind(this));
+      this.getValues(this.searchCallback.bind(this));
     }
   };
 
