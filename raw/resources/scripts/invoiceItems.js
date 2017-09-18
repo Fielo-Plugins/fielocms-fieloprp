@@ -63,7 +63,11 @@
     ADD_PRODUCTS_BUTTON: 'fielo-button__add-products',
     CLOSE_PRODUCTS_BUTTON: 'fielo-button__close-products',
     TABLE_HEADER: 'fielo-table__head',
-    AMOUNT_CONTAINER: 'cms-prp-amount__output'
+    AMOUNT_CONTAINER: 'cms-prp-amount__output',
+    PRODUCT_PAGINATOR: 'cms-prp-advanced-product-search__paginator',
+    LINK_PREVIOUS: 'fielo-link__previous',
+    LINK_NEXT: 'fielo-link__next',
+    DISABLED: 'disabled'
 
   };
 
@@ -274,6 +278,22 @@
       this.products.querySelector('.' + this.CssClasses_.CLOSE_PRODUCTS_BUTTON);
     this.closeProductsBtn_
       .addEventListener('click', this.closeModal.bind(this));
+    // Paginator Buttons
+    this.productPaginator =
+      this.products.querySelector('.' + this.CssClasses_.PRODUCT_PAGINATOR);
+    this.links_ = {
+      previous:
+        this.productPaginator
+          .querySelector('.' + this.CssClasses_.LINK_PREVIOUS),
+      next:
+        this.productPaginator.querySelector('.' + this.CssClasses_.LINK_NEXT)
+    };
+    if (!this.linksEnabled) {
+      this.setLinksListeners_();
+      this.linksEnabled = true;
+    }
+    this.pageNumber = 1;
+    this.queryRecords();
   };
 
   FieloInvoiceItems.prototype.closeModal = function() {
@@ -302,17 +322,18 @@
   };
 
   FieloInvoiceItems.prototype.queryRecords = function() {
+    fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
     this.productBasket = [];
     this.getFilter();
     var objectName =
       this.products.getAttribute('data-object-name');
-    this.offSet = 0;
     Visualforce.remoting.Manager.invokeAction( // eslint-disable-line no-undef
       this.Constant_.QUERY_RECORDS_METHOD,
       objectName,
       this.productFieldList,
       JSON.stringify(this.filter),
-      this.offSet,
+      10,
+      this.pageNumber,
       this.element_.getAttribute('data-product-query'),
       this.queryRecordsCallback.bind(this),
       {
@@ -322,56 +343,96 @@
   };
 
   FieloInvoiceItems.prototype.queryRecordsCallback = function(result) {
-    console.log(result);
     if (result) {
       while (this.productContainer.firstChild) {
         this.productContainer.removeChild(
           this.productContainer.firstChild);
       }
-      if (result.length > 0) {
-        var newProductRow;
-        var fieldPtr;
-        [].forEach.call(result, function(row) {
-          newProductRow =
-            this.productModel.cloneNode(true);
+      if (result.Records) {
+        if (result.Records.length > 0) {
+          var newProductRow;
+          var fieldPtr;
+          [].forEach.call(result.Records, function(row) {
+            newProductRow =
+              this.productModel.cloneNode(true);
 
-          [].forEach.call(this.productFieldList, function(field) {
-            if (Object.keys(row).indexOf(field) === -1) {
-              fieldPtr = newProductRow
-                .querySelector('[data-field-name=' + field + ']');
-              fieldPtr
-                .querySelector('span').innerHTML =
-                  fieldPtr.querySelector('span').innerHTML
-                    .replace(fieldPtr.querySelector('span')
-                      .getAttribute('data-value'),
-                        ''
-                      );
-              fieldPtr.querySelector('span')
-                .setAttribute('data-value', '');
-            } else {
-              fieldPtr = newProductRow
-                .querySelector('[data-field-name=' + field + ']');
-              fieldPtr
-                .querySelector('span').innerHTML =
-                  fieldPtr.querySelector('span').innerHTML
-                    .replace(fieldPtr.querySelector('span')
-                      .getAttribute('data-value'),
-                        row[field]
-                      );
-              fieldPtr.querySelector('span')
-                .setAttribute('data-value', row[field]);
-            }
+            [].forEach.call(this.productFieldList, function(field) {
+              if (Object.keys(row).indexOf(field) === -1) {
+                fieldPtr = newProductRow
+                  .querySelector('[data-field-name=' + field + ']');
+                fieldPtr
+                  .querySelector('span').innerHTML =
+                    fieldPtr.querySelector('span').innerHTML
+                      .replace(fieldPtr.querySelector('span')
+                        .getAttribute('data-value'),
+                          ''
+                        );
+                fieldPtr.querySelector('span')
+                  .setAttribute('data-value', '');
+              } else {
+                fieldPtr = newProductRow
+                  .querySelector('[data-field-name=' + field + ']');
+                fieldPtr
+                  .querySelector('span').innerHTML =
+                    fieldPtr.querySelector('span').innerHTML
+                      .replace(fieldPtr.querySelector('span')
+                        .getAttribute('data-value'),
+                          row[field]
+                        );
+                fieldPtr.querySelector('span')
+                  .setAttribute('data-value', row[field]);
+              }
+            }, this);
+            newProductRow
+              .querySelector('.' + this.CssClasses_.ROW_SELECTOR)
+                .setAttribute('data-record-id', row.Id);
+            newProductRow
+              .querySelector('.' + this.CssClasses_.ROW_SELECTOR)
+                .setAttribute('data-record-name', row.Name);
+            this.productContainer.appendChild(newProductRow);
+            this.initRowSelector(newProductRow);
           }, this);
-          newProductRow
-            .querySelector('.' + this.CssClasses_.ROW_SELECTOR)
-              .setAttribute('data-record-id', row.Id);
-          newProductRow
-            .querySelector('.' + this.CssClasses_.ROW_SELECTOR)
-              .setAttribute('data-record-name', row.Name);
-          this.productContainer.appendChild(newProductRow);
-          this.initRowSelector(newProductRow);
-        }, this);
+        }
       }
+      this.setLinksStatus_(result.hasNext);
+    }
+    fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
+  };
+
+  FieloInvoiceItems.prototype.setLinksListeners_ = function() {
+    this.links_.previous
+      .addEventListener('click', this.getPreviousPage_.bind(this));
+    this.links_.next
+      .addEventListener('click', this.getNextPage_.bind(this));
+  };
+
+  FieloInvoiceItems.prototype.setLinksStatus_ = function(hasNext) {
+    // link next
+    if (hasNext) {
+      this.links_.next.classList.remove(this.CssClasses_.DISABLED);
+    } else {
+      this.links_.next.classList.add(this.CssClasses_.DISABLED);
+    }
+
+    // link previous
+    if (this.pageNumber === 1) {
+      this.links_.previous.classList.add(this.CssClasses_.DISABLED);
+    } else {
+      this.links_.previous.classList.remove(this.CssClasses_.DISABLED);
+    }
+  };
+
+  FieloInvoiceItems.prototype.getPreviousPage_ = function() {
+    if (!this.links_.previous.classList.contains(this.CssClasses_.DISABLED)) {
+      this.pageNumber--;
+      this.queryRecords();
+    }
+  };
+
+  FieloInvoiceItems.prototype.getNextPage_ = function() {
+    if (!this.links_.next.classList.contains(this.CssClasses_.DISABLED)) {
+      this.pageNumber++;
+      this.queryRecords();
     }
   };
 

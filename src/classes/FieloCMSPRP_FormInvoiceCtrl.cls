@@ -31,7 +31,8 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             productFields.add(productField.apiName);
         }
 
-        formInvoice.recentProducts = Database.query('Select ' + String.join(new List<String>(productFields),',') + ' From ' + formInvoice.productObject + ' ORDER BY LastModifiedDate LIMIT 10');
+        formInvoice.recentProducts = Database.query('Select ' + String.join(new List<String>(productFields),',') + ' From ' + formInvoice.productObject + ' ORDER BY LastModifiedDate LIMIT 1');
+        
         string productFieldName;
         try{
             productFieldName = FieloPLT__PublicSettings__c.getInstance(UserInfo.getProfileId()).FieloPRP__ProductLookupField__c;
@@ -186,15 +187,14 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
     }
 
     @RemoteAction
-    global static List<sObject> queryRecords(String objectName, List<String> fields, String filter, Integer offSet, String injectQuery) {
-        String query = 'Select ' +
-            String.join(new List<String>(new Set<String>(fields)), ',') +
-            ' FROM ' +
-            objectName;
+    global static Map<String, Object> queryRecords(String objectName, List<String> fields, String filterJson, Integer recordsPerPage, Integer pageNumber, String injectQuery) {
+        Integer offset = Integer.valueOf(recordsPerPage * (pageNumber - 1));
+
         Map<String, String> filterMap;
-        if (filter != '') {
-            filterMap = (Map<String, String>) JSON.deserialize(filter, Map<String, String>.class);
+        if (filterJson != '') {
+            filterMap = (Map<String, String>) JSON.deserialize(filterJson, Map<String, String>.class);
         }
+
         String whereClause = '';
         List<String> statements = new List<String>();
         for(String fieldName: filterMap.keySet()) {
@@ -210,16 +210,24 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         } else if (injectQuery!='') {
             whereClause = injectQuery;
         }
+
         if (whereClause != '') {
-            query += ' WHERE ' + whereClause;
+            whereClause = ' WHERE ' + whereClause;
         }
-        query += ' ORDER BY LastModifiedDate DESC ';
-        // query += ' LIMIT 30';
-        query += ' OFFSET ' + String.valueOf(offSet);
 
-        system.debug('query');
-        system.debug(query);
+        List<sObject> records = Database.query('Select ' + String.join(new List<String>(new Set<String>(fields)), ',') + ' FROM ' +
+            objectName + whereClause + ' ORDER BY LastModifiedDate DESC LIMIT ' + (recordsPerPage + 1) + ' OFFSET ' + String.valueOf(offSet)
+        );
 
-        return Database.query(query);
+        Boolean hasNext = records.size() > recordsPerPage;
+
+        if (hasNext) {
+            records.remove(records.size()-1);
+        }
+
+        return new Map<String, Object>{
+            'Records' => (Object) records,
+            'hasNext' => (Object) hasNext
+        };
     }
 }

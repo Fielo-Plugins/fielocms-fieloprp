@@ -227,6 +227,10 @@
 		            </apex:repeat>
 		        </tbody>
 		    </table>
+		    <nav class="cms-prp-advanced-product-search__paginator">
+                <a href="#previousPage" class="fielo-link fielo-link__previous disabled">{!$Label.fielocms__Previous}</a>
+                <a href="#nextPage" class="fielo-link fielo-link__next disabled">{!$Label.fielocms__Next}</a>
+            </nav>
 		    <c:FieloCMSPRP_HeaderComponent >
             	<button type="button" class="fielo-button fielo-button__add-products cms-prp-section-header__right" >Add</button>
             	<button type="button" class="fielo-button fielo-button--danger fielo-button__close-products cms-prp-section-header__right" >Cancel</button>
