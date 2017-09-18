@@ -26,7 +26,7 @@ Use the following combination of repositories/branches to configure your environ
 
 | Repository | Branch |
 | --- | --- |
-|[FieloCMS-FieloPLT](https://github.com/Fielo-Plugins/fielocms-fieloplt)| tag: v2.0.1 |
+|[FieloCMS-FieloPLT](https://github.com/Fielo-Plugins/fielocms-fieloplt)| tag: v2.0.2 |
 |[FieloCMS-FieloELR](https://github.com/Fielo-Plugins/fielocms-fieloelr)| master |
 |[FieloCMS-FieloPRP](https://github.com/Fielo-Plugins/fielocms-fieloprp)| master |
 
