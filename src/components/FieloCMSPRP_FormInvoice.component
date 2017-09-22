@@ -232,7 +232,7 @@
                 <a href="#nextPage" class="fielo-link fielo-link__next disabled">{!$Label.fielocms__Next}</a>
             </nav>
 		    <c:FieloCMSPRP_HeaderComponent >
-            	<button type="button" class="fielo-button fielo-button__add-products cms-prp-section-header__right" >Add</button>
+            	<button type="button" class="fielo-button fielo-button__add-products cms-prp-section-header__right" >{!$Label.FieloCMSPRP_Add}</button>
             	<button type="button" class="fielo-button fielo-button--danger fielo-button__close-products cms-prp-section-header__right" >Cancel</button>
 			</c:FieloCMSPRP_HeaderComponent>
 		</div>
