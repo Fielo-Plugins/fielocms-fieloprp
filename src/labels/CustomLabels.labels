@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>FieloCMSPRP_Add</fullName>
+        <categories>FormInvoiceItems</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add</shortDescription>
+        <value>Add</value>
+    </labels>
+    <labels>
         <fullName>FieloCMSPRP_InvoiceSavedSuccess</fullName>
         <categories>formInvoice.js</categories>
         <language>en_US</language>
