@@ -556,9 +556,19 @@
         .querySelector('[data-field-name="FieloPRP__TotalPrice__c"]')) {
       this.hasAmountFields = true;
     }
+    this.hasProductField = false;
+    if (this.tableHeader
+        .querySelector('[data-field-name="' + this.productFieldName + '"]')) {
+      this.hasProductField = true;
+    }
     if (this.hasAmountFields === false) {
       this.element_
         .querySelector('.' + this.CssClasses_.AMOUNT_CONTAINER)
+          .style.display = 'none';
+    }
+    if (this.hasProductField === false) {
+      this.element_
+        .querySelector('.' + this.CssClasses_.ADD)
           .style.display = 'none';
     }
   };
@@ -581,9 +591,9 @@
       this.addBtn_ =
         document.querySelector('.' + this.CssClasses_.ADD);
       // Disables any calculation if one of the fields is not present
-      this.getHasFields();
       this.productFieldName =
         this.element_.getAttribute(this.Constant_.DATA_PRODUCT_FIELD);
+      this.getHasFields();
       if (this.newBtn_) {
         this.newBtn_
           .addEventListener('click', this.newinvoiceItem_.bind(this));
