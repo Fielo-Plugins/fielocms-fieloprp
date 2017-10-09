@@ -6,7 +6,7 @@
     <apex:variable var="fieldType" value="{!CASE($ObjectType[sObjectName].fields['Name'].type,'number','number','percent','number','double','number','integer','number','decimal','number','currency', 'number','boolean', 'boolean','date','date','reference','reference','text')}"/>
 
     <div class="cms-prp-lookup">
-        <input class="fielo-input fielo-js-upgrade cms-prp-lookup__field" data-type="{!field.type}" id="{! config['Id'] }-{!field.apiName}" data-lookup-object-name="{!sObject}" data-lookup-field-name="{!field.apiName}"  value=""/> <button type="button" class="fielo-button cms-prp-lookup-button cms-prp-lookup-button__icon" >&nbsp;</button>
+        <input class="fielo-input fielo-js-upgrade cms-prp-lookup__field" data-type="TEXT" id="{! config['Id'] }-{!field.apiName}" data-lookup-object-name="{!sObject}" data-lookup-field-name="{!field.apiName}"  value=""/> <button type="button" class="fielo-button cms-prp-lookup-button cms-prp-lookup-button__icon" >&nbsp;</button>
 
         <div class="fielo-record fielo-form cms-prp-lookup-search__model hidden" style="display: inline-block" data-object-name="">
             <div class="cms-prp-search-fields">
