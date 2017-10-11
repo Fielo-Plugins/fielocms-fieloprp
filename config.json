@@ -1,6 +1,6 @@
 {
 			"type":"repository",
-			"version":"master",
+			"version":"v1.1.0",
 			"dependencies":[
 				{
 					"type":"linkRepository",
