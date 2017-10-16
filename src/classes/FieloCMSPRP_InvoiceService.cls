@@ -1,6 +1,6 @@
 public class FieloCMSPRP_InvoiceService {
-	
-	public static List<FieloPRP__Invoice__c> getInvoices(Set<String> fields, Id memberId, Integer quantity, Integer offset, String orderBy, String dynamicFilter){
+    
+    public static List<FieloPRP__Invoice__c> getInvoices(Set<String> fields, Id memberId, Integer quantity, Integer offset, String orderBy, String dynamicFilter){
 
         //writes the query
         String query = 'SELECT ' + String.join(new List<String>(fields), ',');
@@ -9,7 +9,7 @@ public class FieloCMSPRP_InvoiceService {
         String conditions = '';
         query += ' FROM FieloPRP__Invoice__c WHERE FieloPRP__Member__c =: memberId';
 
-        if(String.isNotBlank(dynamicFilter)){
+        if(String.isNotBlank(dynamicFilter) && dynamicFilter != '[]'){
             query += ' AND ' + FieloCMSPLT_FilterService.getDynamicWhereCondition(dynamicFilter, 'FieloPRP__Invoice__c', '');
         }
 
