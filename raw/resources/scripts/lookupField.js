@@ -86,17 +86,26 @@
 
   FieloLookupField.prototype.createRecord = function(record) {
     var newRecord = this.recordModel_.cloneNode(true);
+    var field;
     [].forEach.call(Object.keys(record), function(key) {
       if (key === 'Name') {
-        newRecord.querySelector(
-          '[' + this.Constant_.FIELD + '="' + key + '"]')
-            .querySelector('.' + this.CssClasses_.ROW_SELECTOR)
+        field = newRecord.querySelector(
+          '[' + this.Constant_.FIELD + '="' + key + '"]');
+        if (field) {
+          if (field.querySelector('.' + this.CssClasses_.ROW_SELECTOR)) {
+            field.querySelector('.' + this.CssClasses_.ROW_SELECTOR)
               .innerHTML = record[key];
+          }
+        }
       } else {
-        newRecord.querySelector(
-          '[' + this.Constant_.FIELD + '="' + key + '"]')
-            .querySelector('span')
+        field = newRecord.querySelector(
+          '[' + this.Constant_.FIELD + '="' + key + '"]');
+        if (field) {
+          if (field.querySelector('span')) {
+            field.querySelector('span')
               .innerHTML = record[key];
+          }
+        }
       }
     }, this);
     return newRecord;
