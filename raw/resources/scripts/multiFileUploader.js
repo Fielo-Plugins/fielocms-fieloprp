@@ -85,6 +85,12 @@
   };
 
   FieloMultiFileUploaderPRP.prototype.deleteItem_ = function(attachmentItem) {
+    var fileIndex = attachmentItem.getAttribute('data-record-id');
+    if (this.fileList) {
+      if (this.fileList[fileIndex]) {
+        delete this.fileList[fileIndex];
+      }
+    }
     attachmentItem.parentNode.removeChild(attachmentItem);
     this.attachmentItems_ =
       this.element_.querySelectorAll('.' + this.CssClasses_.ITEM_RECORD);
