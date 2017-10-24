@@ -56,6 +56,7 @@
       this.recordsPerPage,
       this.pageNumber,
       JSON.stringify(this.filter),
+      this.WhereCondition,
       callback,
       {
         escape: false
@@ -272,6 +273,11 @@
       .addEventListener('click', this.getNextPage_.bind(this));
   };
 
+  FieloLookupField.prototype.getWhereCondition = function() {
+    this.WhereCondition =
+      this.inputField.getAttribute('data-whereclause');
+  };
+
   /**
    * Inicializa el elemento
    */
@@ -294,6 +300,7 @@
         this.pageNumber = 1;
         this.recordsPerPage = 10;
         this.filter = {};
+        this.getWhereCondition();
         this.getValues(this.getValuesCallback.bind(this)); // eslint-disable-line no-undef
       }
       this.lookupBtn =

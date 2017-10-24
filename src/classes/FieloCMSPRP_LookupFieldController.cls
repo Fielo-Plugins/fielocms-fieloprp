@@ -1,17 +1,24 @@
 public class FieloCMSPRP_LookupFieldController {
 	@RemoteAction
-	public static Map<String, Object> getValues(String sObjectName, Integer recordsPerPage, Integer pageNumber, String filterJson){
+	public static Map<String, Object> getValues(String sObjectName, Integer recordsPerPage, Integer pageNumber, String filterJson, String whereCondition){
 		Integer offset = Integer.valueOf(recordsPerPage * (pageNumber - 1));
 
 		Map<String,Object> filter = (Map<String, Object>) JSON.deserializeUntyped(filterJson);
 
-		String whereCondition = '';
+		String whereClause = '';
 
 		if (filter.containsKey('Name')) {
-			whereCondition = ' WHERE Name LIKE \'%' + filter.get('Name') + '%\'';
+			whereClause = ' WHERE Name LIKE \'%' + filter.get('Name') + '%\'';
+		}
+
+		
+		if (whereCondition != '' && whereCondition != null) {
+			whereClause += whereClause == '' ?
+				' WHERE ' + whereCondition :
+				' AND ' + whereCondition;
 		}
 		
-		List<sObject> records = Database.query('Select Id, Name From ' + sObjectName + whereCondition +
+		List<sObject> records = Database.query('Select Id, Name From ' + sObjectName + whereClause +
 			' ORDER BY LastModifiedDate LIMIT ' + (recordsPerPage + 1) +
 			' OFFSET ' + offset);
 
