@@ -58,9 +58,9 @@
 		<apex:panelGroup layout="none" rendered="{!config['FieloCMSPRP_HasDetails__c']==true}">
 			<div class="cms-prp-invoice-items" data-product-field="{!IF(ISNULL($Setup.FieloPLT__PublicSettings__c.FieloPRP__ProductLookupField__c), 'FieloPRP__Product__c', $Setup.FieloPLT__PublicSettings__c.FieloPRP__ProductLookupField__c)}" data-product-query="{!currentProgram.FieloPRP__ProductInjectQuery__c}">
 				<c:FieloCMSPRP_HeaderComponent >
-					<h3 class="fielo-title cms-prp-section-header__left">Items</h3>
-					<button type="submit" class="fielo-button fielo-button__new cms-prp-new__invoice-item cms-prp-section-header__right" >New</button>
-					<button type="submit" class="fielo-button fielo-button__add cms-prp-add__products cms-prp-section-header__right" >Add</button>
+					<h3 class="fielo-title cms-prp-section-header__left">{!$Label.FieloCMSPRP_Items}</h3>
+					<button type="submit" class="fielo-button fielo-button__new cms-prp-new__invoice-item cms-prp-section-header__right" >{!$Label.FieloCMSPRP_NewItem}</button>
+					<button type="submit" class="fielo-button fielo-button__add cms-prp-add__products cms-prp-section-header__right" >{!$Label.FieloCMSPRP_AddProducts}</button>
 				</c:FieloCMSPRP_HeaderComponent>
 
 		        <table class="fielo-table mdl-data-table">
@@ -130,16 +130,16 @@
 
 		<div class="cms-prp-multifileuploader">
 		    <c:FieloCMSPRP_HeaderComponent >
-				<h3 class="fielo-title cms-prp-section-header__left">Upload Files</h3>
+				<h3 class="fielo-title cms-prp-section-header__left">{!$Label.FieloCMSPRP_UploadFiles}</h3>
 				<input type="file" id="file-upload-input" style="display: none;"/>
-				<button type="submit" class="fielo-button fielo-button__new-attachment cms-prp-section-header__right" >New</button>
+				<button type="submit" class="fielo-button fielo-button__new-attachment cms-prp-section-header__right" >{!$Label.FieloCMSPRP_NewFile}</button>
 			</c:FieloCMSPRP_HeaderComponent>
 
 			<table class="fielo-table mdl-data-table">
 				<thead class="fielo-table__head">
 					<tr class="fielo-record"  data-order-by-type="list">
 						<th class="fielo-field fielo-field--is-Name mdl-data-table__cell--non-numeric">
-							<span class="{!IF(config['FieloCMS__orderBy__c'] == '' , '', 'fielo-order-by__item')} {!IF(config['FieloCMS__orderBy__c']=='DESC', 'fielo-order-by__item--is-desc active','')} {!IF(config['FieloCMS__orderBy__c']=='ASC', 'fielo-order-by__item--is-asc active','')}" data-order-value="Name">File Name</span>
+							<span class="{!IF(config['FieloCMS__orderBy__c'] == '' , '', 'fielo-order-by__item')} {!IF(config['FieloCMS__orderBy__c']=='DESC', 'fielo-order-by__item--is-desc active','')} {!IF(config['FieloCMS__orderBy__c']=='ASC', 'fielo-order-by__item--is-asc active','')}" data-order-value="Name">{!$ObjectType['Attachment'].fields['Name'].label}</span>
 	                	</th>
 		            </tr>
 		        </thead>
@@ -233,7 +233,7 @@
             </nav>
 		    <c:FieloCMSPRP_HeaderComponent >
             	<button type="button" class="fielo-button fielo-button__add-products cms-prp-section-header__right" >{!$Label.FieloCMSPRP_Add}</button>
-            	<button type="button" class="fielo-button fielo-button--danger fielo-button__close-products cms-prp-section-header__right" >Cancel</button>
+            	<button type="button" class="fielo-button fielo-button--danger fielo-button__close-products cms-prp-section-header__right" >{!$Label.FieloCMSPRP_Cancel}</button>
 			</c:FieloCMSPRP_HeaderComponent>
 		</div>
 
