@@ -77,4 +77,14 @@
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
     </fields>
+    <fields>
+        <fullName>FieloCMSPRP_DistributorLookupFilter__c</fullName>
+        <externalId>false</externalId>
+        <label>Distributor Lookup Filter</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
 </CustomObject>
