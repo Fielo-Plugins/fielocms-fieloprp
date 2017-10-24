@@ -145,7 +145,7 @@
 		        </thead>
 		        <tbody class="fielo-record-set__data cms-prp-attachemnts">
 	                <tr class="fielo-record fielo-record-set__template cms-prp-attachment-record" data-has-attachment="false" style="display: none;">
-	                	<td class="fielo-field fielo-field--is-FieloELR__Question__c mdl-data-table__cell--non-numeric" data-th="Name">
+	                	<td class="fielo-field fielo-field--is-Name mdl-data-table__cell--non-numeric" data-th="Name">
 							<span class="fielo-output fielo-output__text" data-type="string">
 					        </span>
 					        <div style="float:right;">
