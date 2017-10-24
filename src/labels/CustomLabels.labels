@@ -9,6 +9,22 @@
         <value>Add</value>
     </labels>
     <labels>
+        <fullName>FieloCMSPRP_AddProducts</fullName>
+        <categories>FormInvoice</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Add Products</shortDescription>
+        <value>Add</value>
+    </labels>
+    <labels>
+        <fullName>FieloCMSPRP_Cancel</fullName>
+        <categories>FormInvoice</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Cancel</shortDescription>
+        <value>Cancel</value>
+    </labels>
+    <labels>
         <fullName>FieloCMSPRP_InvoiceSavedSuccess</fullName>
         <categories>formInvoice.js</categories>
         <language>en_US</language>
@@ -17,11 +33,43 @@
         <value>The invoice was saved successfully.</value>
     </labels>
     <labels>
+        <fullName>FieloCMSPRP_Items</fullName>
+        <categories>FormInvoice</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Items</shortDescription>
+        <value>Items</value>
+    </labels>
+    <labels>
         <fullName>FieloCMSPRP_MaxFileSize</fullName>
         <categories>multiFileUploader.js</categories>
         <language>en_US</language>
         <protected>true</protected>
         <shortDescription>FieloCMSPRP_MaxFileSize</shortDescription>
         <value>File size cannot exceed {0} Mbytes.</value>
+    </labels>
+    <labels>
+        <fullName>FieloCMSPRP_NewFile</fullName>
+        <categories>FormInvoice</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>New File</shortDescription>
+        <value>New</value>
+    </labels>
+    <labels>
+        <fullName>FieloCMSPRP_NewItem</fullName>
+        <categories>FormInvoice</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>New Item</shortDescription>
+        <value>New</value>
+    </labels>
+    <labels>
+        <fullName>FieloCMSPRP_UploadFiles</fullName>
+        <categories>FormInvoice</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>Upload Files</shortDescription>
+        <value>Upload Files</value>
     </labels>
 </CustomLabels>

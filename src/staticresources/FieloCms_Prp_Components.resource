@@ -2,7 +2,7 @@
 {
   "plugins" : [ {
     "Name" : "PrpPlugin",
-    "FieloCMS__Version__c" : 1.02,
+    "FieloCMS__Version__c" : 1.03,
     "components" : [ {
       "recordTypeName" : "List",
       "Name" : "Attachments View",
