@@ -29,24 +29,16 @@
                         <th class="fielo-field fielo-field--is-Name mdl-data-table__cell--non-numeric">
                             <span data-order-value="" data-lookup-field-name="Name">{!$ObjectType[sObjectName].fields['Name'].Label}</span>
                         </th>
-                        <th class="fielo-field fielo-field--is-Id mdl-data-table__cell--non-numeric">
-                            <span data-order-value="" data-lookup-field-name="Name">{!$ObjectType[sObjectName].fields['Id'].Label}</span>
-                        </th>
                     </tr>
                 </thead>
                 <tbody class="fielo-record-set__data cms-prp-lookup-search-results__container">
-                  <tr class="fielo-record fielo-record-set__template cms-prp-invoice-item__product-record">
+                    <tr class="fielo-record fielo-record-set__template cms-prp-invoice-item__product-record">
                         <td class="fielo-field fielo-field--is-Name mdl-data-table__cell--non-numeric" data-th="{!$ObjectType[sObjectName].fields['Name'].Label}" data-lookup-field-name="Name">
-                                                <span class="fielo-output fielo-output__{!fieldType}"  data-type="{!fieldType}" data-value="{!record['Name']}" >
-                                                    <a class="cms-prp-lookup-row-selector" href="#">{!record['Name']}</a>
-                                            </span>
-                                    </td>
-                                    <td class="fielo-field fielo-field--is-Id mdl-data-table__cell--non-numeric" data-th="{!$ObjectType[sObjectName].fields['Id'].Label}" data-lookup-field-name="Id">
-                                                <span class="fielo-output fielo-output__{!fieldType}"  data-type="{!fieldType}" data-value="{!record['Id']}" >
-                                                        {!record['Id']}
-                                                </span>
-                                </td>
-                                </tr>
+                            <span class="fielo-output fielo-output__{!fieldType}"  data-type="{!fieldType}" data-value="{!record['Name']}" >
+                                    <a class="cms-prp-lookup-row-selector" href="#">{!record['Name']}</a>
+                            </span>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
             <nav class="cms-prp-lookup__paginator">
