@@ -362,11 +362,7 @@
                   .querySelector('[data-field-name=' + field + ']');
                 fieldPtr
                   .querySelector('span').innerHTML =
-                    fieldPtr.querySelector('span').innerHTML
-                      .replace(fieldPtr.querySelector('span')
-                        .getAttribute('data-value'),
-                          ''
-                        );
+                    '';
                 fieldPtr.querySelector('span')
                   .setAttribute('data-value', '');
               } else {
@@ -374,11 +370,7 @@
                   .querySelector('[data-field-name=' + field + ']');
                 fieldPtr
                   .querySelector('span').innerHTML =
-                    fieldPtr.querySelector('span').innerHTML
-                      .replace(fieldPtr.querySelector('span')
-                        .getAttribute('data-value'),
-                          row[field]
-                        );
+                    row[field];
                 fieldPtr.querySelector('span')
                   .setAttribute('data-value', row[field]);
               }
