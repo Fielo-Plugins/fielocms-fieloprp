@@ -288,10 +288,8 @@
       next:
         this.productPaginator.querySelector('.' + this.CssClasses_.LINK_NEXT)
     };
-    if (!this.linksEnabled) {
-      this.setLinksListeners_();
-      this.linksEnabled = true;
-    }
+    this.setLinksListeners_();
+    this.linksEnabled = true;
     this.pageNumber = 1;
     this.queryRecords();
   };
