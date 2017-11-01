@@ -268,5 +268,6 @@
 	    // TODO: Put Frontend Labels to use in JS
 	    FrontEndJSSettings.LABELS.InvoiceSavedSuccess = '{!$Label.FieloCMSPRP_InvoiceSavedSuccess}';
 	    FrontEndJSSettings.LABELS.MaxFileSize = '{!$Label.FieloCMSPRP_MaxFileSize}';
+	    FrontEndJSSettings.LABELS.AttachmentsMissing = '{!$Label.FieloCMSPRP_AttachmentsMissing}';
     </script>
 </apex:component>

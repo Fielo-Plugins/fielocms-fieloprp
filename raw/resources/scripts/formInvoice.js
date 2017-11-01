@@ -37,21 +37,23 @@
 
   FieloFormInvoice.prototype.submit = function() {
     this.getValues();
-    try {
-      fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
-      Visualforce.remoting.Manager.invokeAction( // eslint-disable-line no-undef
-        this.Constant_.SUBMIT_METHOD,
-        this.invoiceObject,
-        this.invoiceItems ? this.invoiceItems : null,
-        [{}],
-        this.element_.getAttribute('data-submit-mode'),
-        this.submitCallback.bind(this),
-        {
-          escape: false
-        }
-      );
-    } catch (e) {
-      console.log(e);
+    if (this.validateAttachments()) {
+      try {
+        fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
+        Visualforce.remoting.Manager.invokeAction( // eslint-disable-line no-undef
+          this.Constant_.SUBMIT_METHOD,
+          this.invoiceObject,
+          this.invoiceItems ? this.invoiceItems : null,
+          [{}],
+          this.element_.getAttribute('data-submit-mode'),
+          this.submitCallback.bind(this),
+          {
+            escape: false
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
@@ -134,6 +136,24 @@
     }
     this.attachmentsList =
       this.attachments.FieloMultiFileUploaderPRP.get();
+  };
+
+  FieloFormInvoice.prototype.validateAttachments = function() {
+    var hasAttachments = false;
+    if (this.attachmentsList) {
+      if (this.attachmentsList.length === 0) {
+        this.throwMessage(
+          FrontEndJSSettings.LABELS.AttachmentsMissing, '#', 2, 'ERROR'); // eslint-disable-line no-undef
+        hasAttachments = false;
+      } else {
+        hasAttachments = true;
+      }
+    } else {
+      this.throwMessage(
+        FrontEndJSSettings.LABELS.AttachmentsMissing, '#', 2, 'ERROR'); // eslint-disable-line no-undef
+      hasAttachments = false;
+    }
+    return hasAttachments;
   };
 
   FieloFormInvoice.prototype.disableSubmit = function(event) {
