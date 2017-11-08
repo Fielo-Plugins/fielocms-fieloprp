@@ -1,7 +1,16 @@
 global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
     public ApexPages.Component getComponent(FieloCMS__Component__c c){
-        String query = 'Select FieloCMS__FieldSet__c, FieloCMS__Layout__c, FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c FROM FieloCMS__Component__c ' +
-            ' WHERE Id in (\'' + c.FieloCMSPRP_MainSourceComponent__c + '\',\'' + c.FieloCMSPRP_SecondarySourceComponent__c + '\',\'' + c.FieloCMSPRP_ProductSourceComponent__c + '\')';
+        String query = 'SELECT ' +
+            'FieloCMS__FieldSet__c, ' +
+            'FieloCMS__Layout__c, ' +
+            'FieloCMS__Limit__c, ' +
+            'FieloCMS__OrderBy__c, ' +
+            'FieloCMS__ComponentLibrary__r.FieloCMS__sObject__c ' +
+            'FROM FieloCMS__Component__c ' +
+            ' WHERE Id in (\'' +
+                c.FieloCMSPRP_MainSourceComponent__c + 
+                '\',\'' + c.FieloCMSPRP_SecondarySourceComponent__c + 
+                '\',\'' + c.FieloCMSPRP_ProductSourceComponent__c + '\')';
 
         Map<Id,FieloCMS__Component__c> components = new Map<Id,FieloCMS__Component__c>( (List<FieloCMS__Component__c>) Database.query(query));
 
@@ -25,6 +34,7 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         formInvoice.productFieldSet = productFieldSet;
         formInvoice.record = new FieloPRP__Invoice__c();
         formInvoice.itemRecord = new FieloPRP__InvoiceItem__c(FieloPRP__Quantity__c=0);
+        formInvoice.productConfig = productComponent;
 
         Set<String> productFields = new Set<String>();
         for(FieloCMSPRP_Field productField: productFieldSet) {
@@ -187,7 +197,7 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
     }
 
     @RemoteAction
-    global static Map<String, Object> queryRecords(String objectName, List<String> fields, String filterJson, Integer recordsPerPage, Integer pageNumber, String injectQuery) {
+    global static Map<String, Object> queryRecords(String objectName, List<String> fields, String filterJson, Integer recordsPerPage, Integer pageNumber, String injectQuery, String orderBy) {
         Integer offset = Integer.valueOf(recordsPerPage * (pageNumber - 1));
 
         Map<String, String> filterMap;
@@ -215,8 +225,12 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             whereClause = ' WHERE ' + whereClause;
         }
 
+        String orderByClause = orderBy == '' || orderBy == null ?
+            'LastModifiedDate' :
+            orderBy;
+
         List<sObject> records = Database.query('Select ' + String.join(new List<String>(new Set<String>(fields)), ',') + ' FROM ' +
-            objectName + whereClause + ' ORDER BY LastModifiedDate DESC LIMIT ' + (recordsPerPage + 1) + ' OFFSET ' + String.valueOf(offSet)
+            objectName + whereClause + ' ORDER BY ' + orderByClause + ' LIMIT ' + (recordsPerPage + 1) + ' OFFSET ' + String.valueOf(offSet)
         );
 
         Boolean hasNext = records.size() > recordsPerPage;

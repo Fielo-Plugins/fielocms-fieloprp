@@ -176,7 +176,7 @@
         } else {
           var message = FrontEndJSSettings.LABELS.MaxFileSize.replace('{0}', // eslint-disable-line no-undef
             (this.Constant_.MAX_FILE_SIZE / 1024 / 1024).toFixed(2).toString());
-          this.throwMessage(message, 'error');
+          this.throwMessage(message);
           this.input_.value = null;
         }
       } catch (e) {
@@ -231,8 +231,7 @@
         };
         fr.readAsBinaryString(file);
       } else {
-        this.throwMessage('You must choose a file before trying to upload it',
-          'error');
+        this.throwMessage('You must choose a file before trying to upload it');
       }
     } else {
       this.redirectToParent(parentId);
@@ -287,14 +286,22 @@
     fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
     var result = {message: 'The invoice was saved successfully',
       redirectURL: '/' + parentId};
-    this.throwMessage(result.message, 'success');
     if (window.redirectURL) {
       result.redirectURL = window.redirectURL;
     }
-    location.replace(result.redirectURL);
+    this.redirectWithMessage(result.message, result.redirectURL, 2);
   };
 
-  FieloMultiFileUploaderPRP.prototype.throwMessage = function(message, redirect, time) { // eslint-disable-line max-len
+  FieloMultiFileUploaderPRP.prototype.throwMessage = function(message) { // eslint-disable-line max-len
+    fieloUtils.message.FieloMessage.clear(); // eslint-disable-line no-undef
+    fieloUtils.message.FieloMessage.addMessages( // eslint-disable-line no-undef
+    fieloUtils.site.FieloSite.getLabel( // eslint-disable-line no-undef
+      message)
+    );
+    fieloUtils.message.FieloMessage.show(); // eslint-disable-line no-undef
+  };
+
+  FieloMultiFileUploaderPRP.prototype.redirectWithMessage = function(message, redirect, time) { // eslint-disable-line max-len
     fieloUtils.message.FieloMessage.clear(); // eslint-disable-line no-undef
     fieloUtils.message.FieloMessage.addMessages( // eslint-disable-line no-undef
     fieloUtils.site.FieloSite.getLabel( // eslint-disable-line no-undef
