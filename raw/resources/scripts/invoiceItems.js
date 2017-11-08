@@ -330,9 +330,10 @@
       objectName,
       this.productFieldList,
       JSON.stringify(this.filter),
-      10,
+      parseInt(this.element_.getAttribute('data-product-limit'),10),
       this.pageNumber,
       this.element_.getAttribute('data-product-query'),
+      this.element_.getAttribute('data-product-orderby'),
       this.queryRecordsCallback.bind(this),
       {
         escape: false
