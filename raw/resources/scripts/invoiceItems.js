@@ -321,7 +321,6 @@
 
   FieloInvoiceItems.prototype.queryRecords = function() {
     fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
-    this.productBasket = [];
     this.getFilter();
     var objectName =
       this.products.getAttribute('data-object-name');
@@ -330,7 +329,7 @@
       objectName,
       this.productFieldList,
       JSON.stringify(this.filter),
-      parseInt(this.element_.getAttribute('data-product-limit'),10),
+      parseInt(this.element_.getAttribute('data-product-limit'), 10),
       this.pageNumber,
       this.element_.getAttribute('data-product-query'),
       this.element_.getAttribute('data-product-orderby'),
@@ -381,6 +380,11 @@
               .querySelector('.' + this.CssClasses_.ROW_SELECTOR)
                 .setAttribute('data-record-name', row.Name);
             this.productContainer.appendChild(newProductRow);
+            if (Object.keys(this.productBasket).indexOf(row.Id) !== -1) {
+              newProductRow
+                .querySelector('.' + this.CssClasses_.ROW_SELECTOR)
+                  .querySelector('input').checked = true;
+            }
             this.initRowSelector(newProductRow);
           }, this);
         }
