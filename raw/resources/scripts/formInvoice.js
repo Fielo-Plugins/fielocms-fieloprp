@@ -66,7 +66,7 @@
         Object.keys(fileList).length > 0 :
         false;
       var invoiceId = result.object.Id;
-      var url = 'FieloCMS__Page?pageId=' +
+      var url = '/FieloCMS__Page?pageId=' +
         this.element_.getAttribute('data-redirect-page') + '&' +
         this.element_.getAttribute('data-parameter-name') + '=' +
         invoiceId;
