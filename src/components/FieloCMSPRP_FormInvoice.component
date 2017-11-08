@@ -10,8 +10,15 @@
     <apex:attribute name="productObject" type="String" description="" />
     <apex:attribute name="productFieldName" type="String" default="FieloPRP__Product__c" description="" />
     <apex:attribute name="recentProducts" type="SObject[]" description="" />
+    <apex:attribute name="productConfig" type="SObject" description="" />
 
-    <div class="fielo-record fielo-form {!config['FieloCMS__ComponentLibrary__r']['FieloCMS__CSSClasses__c']} {!config['FieloCMS__CSSClasses__c']} fielo-js-component cms-prp-invoice-form" data-parameter-name="{!config['FieloCMSPRP_CustomDetailParameter__c']}" data-redirect-page="{!config['FieloCMSPLT_RedirectPage__c']}" data-componentid="{! config['Id'] }" data-submit-mode="{!config['FieloCMSPRP_SubmitMode__c']}" data-distributor-filter="{!config['FieloCMSPRP_DistributorLookupFilter__c']}">
+    <div class="fielo-record fielo-form {!config['FieloCMS__ComponentLibrary__r']['FieloCMS__CSSClasses__c']} {!config['FieloCMS__CSSClasses__c']} fielo-js-component cms-prp-invoice-form" 
+    data-parameter-name="{!config['FieloCMSPRP_CustomDetailParameter__c']}" 
+    data-redirect-page="{!config['FieloCMSPLT_RedirectPage__c']}" 
+    data-componentid="{! config['Id'] }" 
+    data-submit-mode="{!config['FieloCMSPRP_SubmitMode__c']}" 
+    data-distributor-filter="{!config['FieloCMSPRP_DistributorLookupFilter__c']}">
+
         <apex:panelGroup layout="none" rendered="{!config['FieloCMS__Title__c']!=''}">
             <legend class="fielo-title" >{!config['FieloCMS__Title__c']}</legend>
         </apex:panelGroup>
@@ -56,8 +63,12 @@
 		</form>
 
 		<apex:panelGroup layout="none" rendered="{!config['FieloCMSPRP_HasDetails__c']==true}">
-			<div class="cms-prp-invoice-items" data-product-field="{!IF(ISNULL($Setup.FieloPLT__PublicSettings__c.FieloPRP__ProductLookupField__c), 'FieloPRP__Product__c', $Setup.FieloPLT__PublicSettings__c.FieloPRP__ProductLookupField__c)}" data-product-query="{!currentProgram.FieloPRP__ProductInjectQuery__c}">
-				<c:FieloCMSPRP_HeaderComponent >
+			<div class="cms-prp-invoice-items"
+			data-product-field="{!IF(ISNULL($Setup.FieloPLT__PublicSettings__c.FieloPRP__ProductLookupField__c), 'FieloPRP__Product__c', $Setup.FieloPLT__PublicSettings__c.FieloPRP__ProductLookupField__c)}"
+			data-product-query="{!currentProgram.FieloPRP__ProductInjectQuery__c}" 
+			data-product-limit="{!productConfig['FieloCMS__Limit__c']}" 
+    		data-product-orderby="{!productConfig['FieloCMS__OrderBy__c']}">
+				<c:FieloCMSPRP_HeaderComponent>
 					<h3 class="fielo-title cms-prp-section-header__left">{!$Label.FieloCMSPRP_Items}</h3>
 					<button type="submit" class="fielo-button fielo-button__new cms-prp-new__invoice-item cms-prp-section-header__right" >{!$Label.FieloCMSPRP_NewItem}</button>
 					<button type="submit" class="fielo-button fielo-button__add cms-prp-add__products cms-prp-section-header__right" >{!$Label.FieloCMSPRP_AddProducts}</button>
