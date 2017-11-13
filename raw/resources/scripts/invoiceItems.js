@@ -380,7 +380,7 @@
                   .querySelector('span');
                 if (fieldSpan.getAttribute('data-type') === 'reference') {
                   fieldSpan.innerHTML =
-                    row[field.replace('__c', '__r')]['Name'];
+                    row[field.replace('__c', '__r')].Name;
                 } else {
                   fieldSpan.innerHTML = row[field];
                 }
