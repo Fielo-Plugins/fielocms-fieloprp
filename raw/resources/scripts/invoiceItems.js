@@ -359,6 +359,7 @@
         if (result.Records.length > 0) {
           var newProductRow;
           var fieldPtr;
+          var fieldSpan;
           [].forEach.call(result.Records, function(row) {
             newProductRow =
               this.productModel.cloneNode(true);
@@ -375,10 +376,15 @@
               } else {
                 fieldPtr = newProductRow
                   .querySelector('[data-field-name=' + field + ']');
-                fieldPtr
-                  .querySelector('span').innerHTML =
-                    row[field];
-                fieldPtr.querySelector('span')
+                fieldSpan = fieldPtr
+                  .querySelector('span');
+                if (fieldSpan.getAttribute('data-type') === 'reference') {
+                  fieldSpan.innerHTML =
+                    row[field.replace('__c', '__r')]['Name'];
+                } else {
+                  fieldSpan.innerHTML = row[field];
+                }
+                fieldSpan
                   .setAttribute('data-value', row[field]);
               }
             }, this);

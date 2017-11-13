@@ -244,6 +244,18 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             'LastModifiedDate' :
             orderBy;
 
+        Set<String> fieldsToAdd = new Set<String>();
+
+        for(String fieldName: fields) {
+            fieldType = fieldsDescribeMap.get( fieldName ).getDescribe().getType().name();
+            if (fieldType == 'REFERENCE') {
+                fieldsToAdd.add(fieldName.replace('__c','__r') + '.' + 'Name');
+            }
+        }
+        if (!fieldsToAdd.isEmpty()) {
+            fields.addAll(fieldsToAdd);
+        }
+
         List<sObject> records = Database.query('Select ' + String.join(new List<String>(new Set<String>(fields)), ',') + ' FROM ' +
             objectName + whereClause + ' ORDER BY ' + orderByClause + ' LIMIT ' + (recordsPerPage + 1) + ' OFFSET ' + String.valueOf(offSet)
         );
