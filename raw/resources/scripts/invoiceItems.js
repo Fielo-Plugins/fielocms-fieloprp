@@ -67,7 +67,8 @@
     PRODUCT_PAGINATOR: 'cms-prp-advanced-product-search__paginator',
     LINK_PREVIOUS: 'fielo-link__previous',
     LINK_NEXT: 'fielo-link__next',
-    DISABLED: 'disabled'
+    DISABLED: 'disabled',
+    LOOKUP: 'fielo-lookup'
 
   };
 
@@ -288,6 +289,14 @@
       next:
         this.productPaginator.querySelector('.' + this.CssClasses_.LINK_NEXT)
     };
+    this.lookupFields =
+      this.products
+        .querySelectorAll('.' + this.CssClasses_.LOOKUP);
+    if (this.lookupFields) {
+      [].forEach.call(this.lookupFields, function(lookupField) {
+        lookupField.FieloLookup = new FieloLookup(lookupField); // eslint-disable-line no-undef
+      }, this);
+    }
     this.setLinksListeners_();
     this.linksEnabled = true;
     this.pageNumber = 1;

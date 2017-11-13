@@ -200,6 +200,9 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
     global static Map<String, Object> queryRecords(String objectName, List<String> fields, String filterJson, Integer recordsPerPage, Integer pageNumber, String injectQuery, String orderBy) {
         Integer offset = Integer.valueOf(recordsPerPage * (pageNumber - 1));
 
+        Map<String,Schema.SObjectField> fieldsDescribeMap = Schema.describeSObjects(new String[]{ objectName })[0].fields.getMap();
+        Set<String> nonQuotedTypes = new Set<String>{'DOUBLE','DATETIME','DATE','CURRENCY','INTEGER','BOOLEAN','PERCENT','TIME'};
+
         Map<String, String> filterMap;
         if (filterJson != '') {
             filterMap = (Map<String, String>) JSON.deserialize(filterJson, Map<String, String>.class);
@@ -207,9 +210,21 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
 
         String whereClause = '';
         List<String> statements = new List<String>();
+        String fieldType;
         for(String fieldName: filterMap.keySet()) {
             if (filterMap.get(fieldName) != '') {
-                statements.add(fieldName + ' like \'%' + filterMap.get(fieldName) + '%\'');
+                fieldType = fieldsDescribeMap.get( fieldName ).getDescribe().getType().name();
+
+                if (nonQuotedTypes.contains(fieldType)) {
+                    statements.add(fieldName + ' = ' + filterMap.get(fieldName));
+
+                } else if (fieldType == 'STRING') {
+                    statements.add(fieldName + ' like \'%' + filterMap.get(fieldName) + '%\'');
+
+                } else {
+                    statements.add(fieldName + ' = \'' + filterMap.get(fieldName) + '\'');
+                }
+                
             }
         }
         if (!statements.isEmpty()) {
