@@ -1,6 +1,6 @@
 {
 			"type":"repository",
-			"version":"v1.4.2",
+			"version":"v1.4.4",
 			"dependencies":[
 				{
 					"type":"linkRepository",
