@@ -198,7 +198,22 @@
 				            	<textarea class="fielo-input fielo-js-upgrade" data-type="{!productField.type}"  id="{! config['Id'] }-{!productField.apiName}" name="SObject.{!productField.apiName}" ></textarea>
 				            </apex:panelGroup>
 				            <apex:panelGroup layout="none" rendered="{!productField.type == 'REFERENCE'}">
-				            	<c:FieloCMSPRP_LookupField config="{!config}" field="{!productField}" sObject="{!$ObjectType[productObject].fields[productField.apiName].referenceTo[0]}"/>
+				            	<div class="fielo-lookup">
+							    <div class="fielo-lookup__container">
+										<input id="{! config['Id'] }-{!productField.apiName}" name="SObject.{!productField.apiName}" class="fielo-input fielo-lookup__reference fielo-js-upgrade hidden" data-type="{!productField.type}" data-required="{!productField.attributes['required']}" data-object="{!productField.attributes['sobject']}" data-field-id="Id" data-field-label="Name" data-field-meta="" data-field-where-condition=""
+											autocomplete="{!productField.attributes['autocomplete']}"
+											placeholder="{! IF(productField.attributes['placeholder'] == '',$Label.fielocms__search,productField.attributes['placeholder'])}"
+											value="{!itemRecord[productFieldName]}"
+										/>
+										<span class="fielo-lookup__badge hidden"></span>
+							    </div>
+							    <div class="fielo-lookup__no-results hidden">{!$Label.fielocms__NoResultsFound}</div>
+							    <ul class="fielo-lookup__list hidden">
+							      <li class="fielo-lookup__list-item fielo-lookup__list-item--is-template hidden">
+							        <span class="fielo-lookup__record"></span>
+							      </li>
+							    </ul>
+								</div>
 				            </apex:panelGroup>
 				            <apex:panelGroup layout="none" rendered="{!productField.type!='PICKLIST' && productField.type!='TextArea' && productField.type!='REFERENCE' }">
 				            	<input class="fielo-input fielo-js-upgrade disabled" data-type="{!productField.type}"  id="{! config['Id'] }-{!productField.apiName}" name="SObject.{!productField.apiName}"  value="" />
