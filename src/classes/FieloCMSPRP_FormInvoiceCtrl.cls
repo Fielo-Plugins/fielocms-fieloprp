@@ -40,6 +40,9 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         for(FieloCMSPRP_Field productField: productFieldSet) {
             productFields.add(productField.apiName);
         }
+        if (!productFields.contains('Name')) {
+            productFields.add('Name');
+        }
 
         formInvoice.recentProducts = Database.query('Select ' + String.join(new List<String>(productFields),',') + ' From ' + formInvoice.productObject + ' ORDER BY LastModifiedDate LIMIT 1');
         
@@ -254,6 +257,9 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         }
         if (!fieldsToAdd.isEmpty()) {
             fields.addAll(fieldsToAdd);
+        }
+        if (!new Set<String>(fields).contains('Name')) {
+            fields.add('Name');
         }
 
         List<sObject> records = Database.query('Select ' + String.join(new List<String>(new Set<String>(fields)), ',') + ' FROM ' +
