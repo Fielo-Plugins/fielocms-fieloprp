@@ -8,16 +8,17 @@ global with sharing class FieloCMSPRP_InvoiceItemAPI implements FieloCMS.DataInt
             if(c.FieloCMS__Limit__c == null)
                 c.FieloCMS__Limit__c = 5;
             
-            String whereCondition;
+            String whereCondition = 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + FieloCMSPLT_MemberService.getCurrentMemberId() + '\'';
             if(String.isNotBlank(c.FieloCMSPRP_CustomDetailParameter__c) && ApexPages.CurrentPage().getParameters().containsKey(c.FieloCMSPRP_CustomDetailParameter__c)){
                 invoiceId = ApexPages.CurrentPage().getParameters().get(c.FieloCMSPRP_CustomDetailParameter__c);
-                whereCondition = ' FieloPRP__Invoice__c = \'' + invoiceId + '\'';
-            }else{
-                whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + FieloCMSPLT_MemberService.getCurrentMemberId() + '\'';
+                whereCondition += ' AND FieloPRP__Invoice__c = \'' + invoiceId + '\'';
             }
             whereCondition += ' LIMIT ' + String.valueOf(c.FieloCMS__Limit__c);
             whereCondition += ' OFFSET 0';
-            newMapData.put(c.Id, Database.query('SELECT ' + String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)), ',') + ' FROM FieloPRP__InvoiceItem__c WHERE ' + whereCondition));
+
+            String fieldSet = String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)),',');
+            if(String.isBlank(fieldSet)) fieldSet = 'Id';
+            newMapData.put(c.Id, Database.query('SELECT ' + fieldSet + ' FROM FieloPRP__InvoiceItem__c WHERE ' + whereCondition));
         }
         return newMapData;
     }
@@ -29,33 +30,26 @@ global with sharing class FieloCMSPRP_InvoiceItemAPI implements FieloCMS.DataInt
         //Calculate the offset from the Page Number
         Integer offset = Integer.valueOf(component.FieloCMS__Limit__c * (pageNumber - 1));
 
-        Map<String, String> filtersMap = (Map<String, String>)JSON.deserialize(filters, Map<string,String>.class);
-
-        // Assemble Where Condition
-        String whereCondition = '';
-        whereCondition += 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + FieloCMSPLT_MemberService.getCurrentMemberId() + '\'';
-        if (!filtersMap.isEmpty()){
-            if (filtersMap.containsKey(component.FieloCMSPRP_CustomDetailParameter__c)) {
-                whereCondition += ' AND FieloPRP__Invoice__c = \'' + filtersMap.get(component.FieloCMSPRP_CustomDetailParameter__c) + '\'';
+        String whereCondition = 'FieloPRP__Invoice__r.FieloPRP__Member__c = \'' + FieloCMSPLT_MemberService.getCurrentMemberId() + '\'';
+        if(String.isNotBlank(filters)){
+            Map<String, String> filtersMap = (Map<String, String>)JSON.deserialize(filters, Map<string,String>.class);
+            // Assemble Where Condition
+            if (!filtersMap.isEmpty()){
+                if (filtersMap.containsKey(component.FieloCMSPRP_CustomDetailParameter__c)) {
+                    whereCondition += ' AND FieloPRP__Invoice__c = \'' + filtersMap.get(component.FieloCMSPRP_CustomDetailParameter__c) + '\'';
+                }
             }
         }
+
         whereCondition += ' LIMIT ' + String.valueOf(component.FieloCMS__Limit__c);
-        whereCondition += ' OFFSET ' + String.valueOf(offset);
+        
+        if(offset != null)
+            whereCondition += ' OFFSET ' + String.valueOf(offset);
 
-        String query = 'SELECT ';
-        query += String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)), ',');
-        query += ' FROM FieloPRP__InvoiceItem__c WHERE ';
-        query += whereCondition;
-        system.debug('***query');
-        system.debug(query);
+        String fieldSet = String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c)),',');
+        if(String.isBlank(fieldSet)) fieldSet = 'Id';
+
+        String query = 'SELECT ' + fieldSet + ' FROM FieloPRP__InvoiceItem__c WHERE ' + whereCondition;
         return Database.query(query);
-    }
-
-    public class Field{
-        public String apiName {get;set;}
-        public String label {get;set;}
-        public String type {get;set;}
-        public Boolean showLabel {get;set;}
-        public Boolean multiLanguage {get;set;}
     }
 }

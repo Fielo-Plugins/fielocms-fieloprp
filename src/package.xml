@@ -28,5 +28,5 @@
 		<members>FieloPRP__InvoiceItem__c.FieloCMSPRP_ProductName__c</members>
 		<name>CustomField</name>
 	</types>
-	<version>39.0</version>
+	<version>40.0</version>
 </Package>

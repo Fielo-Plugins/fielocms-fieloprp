@@ -3,14 +3,14 @@ public class FieloCMSPRP_LookupFieldController {
 	public static Map<String, Object> getValues(String sObjectName, Integer recordsPerPage, Integer pageNumber, String filterJson, String whereCondition){
 		Integer offset = Integer.valueOf(recordsPerPage * (pageNumber - 1));
 
-		Map<String,Object> filter = (Map<String, Object>) JSON.deserializeUntyped(filterJson);
-
 		String whereClause = '';
 
-		if (filter.containsKey('Name')) {
-			whereClause = ' WHERE Name LIKE \'%' + filter.get('Name') + '%\'';
+		if(String.isNotBlank(filterJson)){
+			Map<String,Object> filter = (Map<String, Object>) JSON.deserializeUntyped(filterJson);
+			if (filter.containsKey('Name')) {
+				whereClause = ' WHERE Name LIKE \'%' + filter.get('Name') + '%\'';
+			}
 		}
-
 		
 		if (whereCondition != '' && whereCondition != null) {
 			whereClause += whereClause == '' ?
