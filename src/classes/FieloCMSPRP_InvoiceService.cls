@@ -2,8 +2,15 @@ public class FieloCMSPRP_InvoiceService {
     
     public static List<FieloPRP__Invoice__c> getInvoices(Set<String> fields, Id memberId, Integer quantity, Integer offset, String orderBy, String dynamicFilter){
 
+        String fieldSet;
+        if(fields == null || fields.isEmpty()){
+            fieldSet = 'Id';
+        }else{
+            fieldSet = String.join(new List<String>(fields), ',');
+        }
+
         //writes the query
-        String query = 'SELECT ' + String.join(new List<String>(fields), ',');
+        String query = 'SELECT ' + fieldSet;
 
         //evaluate conditions
         String conditions = '';

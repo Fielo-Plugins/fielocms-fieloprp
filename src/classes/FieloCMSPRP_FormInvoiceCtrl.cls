@@ -206,40 +206,41 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         Map<String,Schema.SObjectField> fieldsDescribeMap = Schema.describeSObjects(new String[]{ objectName })[0].fields.getMap();
         Set<String> nonQuotedTypes = new Set<String>{'DOUBLE','DATETIME','DATE','CURRENCY','INTEGER','BOOLEAN','PERCENT','TIME'};
 
-        Map<String, String> filterMap;
-        if (filterJson != '') {
-            filterMap = (Map<String, String>) JSON.deserialize(filterJson, Map<String, String>.class);
-        }
 
         String whereClause = '';
         List<String> statements = new List<String>();
         String fieldType;
-        for(String fieldName: filterMap.keySet()) {
-            if (filterMap.get(fieldName) != '') {
-                fieldType = fieldsDescribeMap.get( fieldName ).getDescribe().getType().name();
+        
+        if(String.isNotBlank(filterJson)){
+            Map<String, String> filterMap = (Map<String, String>) JSON.deserialize(filterJson, Map<String, String>.class);
+            for(String fieldName: filterMap.keySet()) {
+                if (filterMap.get(fieldName) != '') {
+                    fieldType = fieldsDescribeMap.get( fieldName ).getDescribe().getType().name();
 
-                if (nonQuotedTypes.contains(fieldType)) {
-                    statements.add(fieldName + ' = ' + filterMap.get(fieldName));
+                    if (nonQuotedTypes.contains(fieldType)) {
+                        statements.add(fieldName + ' = ' + filterMap.get(fieldName));
 
-                } else if (fieldType == 'STRING') {
-                    statements.add(fieldName + ' like \'%' + filterMap.get(fieldName) + '%\'');
+                    } else if (fieldType == 'STRING') {
+                        statements.add(fieldName + ' like \'%' + filterMap.get(fieldName) + '%\'');
 
-                } else {
-                    statements.add(fieldName + ' = \'' + filterMap.get(fieldName) + '\'');
+                    } else {
+                        statements.add(fieldName + ' = \'' + filterMap.get(fieldName) + '\'');
+                    }
+                    
                 }
-                
             }
         }
+
         if (!statements.isEmpty()) {
             whereClause = String.join(statements, ' AND ');
-            if (injectQuery!='') {
+            if (String.isNotBlank(injectQuery)) {
                 whereClause += ' AND ' + injectQuery;
             }
-        } else if (injectQuery!='') {
+        } else if (String.isNotBlank(injectQuery)) {
             whereClause = injectQuery;
         }
 
-        if (whereClause != '') {
+        if (String.isNotBlank(whereClause)) {
             whereClause = ' WHERE ' + whereClause;
         }
 
@@ -262,9 +263,10 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             fields.add('Name');
         }
 
-        List<sObject> records = Database.query('Select ' + String.join(new List<String>(new Set<String>(fields)), ',') + ' FROM ' +
-            objectName + whereClause + ' ORDER BY ' + orderByClause + ' LIMIT ' + (recordsPerPage + 1) + ' OFFSET ' + String.valueOf(offSet)
-        );
+        String query = 'Select ' + String.join(new List<String>(new Set<String>(fields)), ',') + ' FROM ' +
+            objectName + whereClause + ' ORDER BY ' + orderByClause + ' LIMIT ' + (recordsPerPage + 1) + ' OFFSET ' + String.valueOf(offSet);
+        system.debug(query);
+        List<sObject> records = Database.query(query);
 
         Boolean hasNext = records.size() > recordsPerPage;
 
