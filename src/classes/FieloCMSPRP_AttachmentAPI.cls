@@ -23,6 +23,9 @@ global with sharing class FieloCMSPRP_AttachmentAPI implements FieloCMS.DataInte
             if(c.FieloCMS__ComponentLibrary__r.Name == 'Attachments View'){
                 for(Attachment attachment: ((List<Attachment>) newMapData.get(c.Id))) {
                     String attachmentURL = URL.getSalesforceBaseUrl().toExternalForm();
+                    if (!Test.isRunningTest()) {
+                        attachmentURL += Site.getPathPrefix();
+                    }
                     attachmentURL += '/servlet/servlet.FileDownload?file=';
                     attachmentURL += attachment.Id;
                     attachmentURL += '&oid=';
@@ -69,6 +72,9 @@ global with sharing class FieloCMSPRP_AttachmentAPI implements FieloCMS.DataInte
         if(component.FieloCMS__ComponentLibrary__r.Name == 'Attachments View'){
             for(Attachment attachment: (List<Attachment>)records ) {
                 String attachmentURL = URL.getSalesforceBaseUrl().toExternalForm();
+                if (!Test.isRunningTest()) {
+                    attachmentURL += Site.getPathPrefix();
+                }
                 attachmentURL += '/servlet/servlet.FileDownload?file=';
                 attachmentURL += attachment.Id;
                 attachmentURL += '&oid=';
