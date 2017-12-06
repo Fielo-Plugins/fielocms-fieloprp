@@ -32,7 +32,7 @@
 		                <div class="mdl-grid fielo-field fielo-field--is-{!field.apiName}" data-field-name="{!field.apiName}">
 					        <div class="mdl-cell mdl-cell--6-col mdl-cell--4-col-tablet fielo-field__label" >
 					            <apex:panelGroup layout="none" rendered="{!field.showLabel }">
-					                <label for="{! config['Id'] }-{!field.apiName}" id="{! config['Id'] }_hlp{!field.apiName}" >{!field.label}</label>
+					                <label for="{! config['Id'] }-{!field.apiName}" id="{! config['Id'] }_hlp{!field.apiName}" >{!$ObjectType[mainObject].Fields[field.apiName].label}</label>
 					                <apex:panelGroup layout="none" rendered="{!field.attributes['inlineHelpText'] <> '' }" >
 					                    <div class="mdl-tooltip" for="{! config['Id'] }_hlp{!field.apiName}">{!field.attributes['inlineHelpText']}</div>
 					                </apex:panelGroup>
@@ -79,7 +79,7 @@
 						<tr class="fielo-record"  data-order-by-type="list">
 							<apex:repeat value="{!invoiceItemFieldSet}" var="itemField">
 								<th class="fielo-field fielo-field--is-{!itemField.apiName} mdl-data-table__cell--non-numeric">
-									<span class="{!IF(config['FieloCMS__orderBy__c'] == '' , '', 'fielo-order-by__item')} {!IF(config['FieloCMS__orderBy__c']=='DESC', 'fielo-order-by__item--is-desc active','')} {!IF(config['FieloCMS__orderBy__c']=='ASC', 'fielo-order-by__item--is-asc active','')}" data-order-value="{!itemField.apiName}" data-field-name="{!itemField.apiName}">{!itemField.label}</span>
+									<span class="{!IF(config['FieloCMS__orderBy__c'] == '' , '', 'fielo-order-by__item')} {!IF(config['FieloCMS__orderBy__c']=='DESC', 'fielo-order-by__item--is-desc active','')} {!IF(config['FieloCMS__orderBy__c']=='ASC', 'fielo-order-by__item--is-asc active','')}" data-order-value="{!itemField.apiName}" data-field-name="{!itemField.apiName}">{!$ObjectType[secondaryObject].Fields[itemField.apiName].label}</span>
 		                    	</th>
 							</apex:repeat>
 							<th class="mdl-data-table__cell--non-numeric">
@@ -90,7 +90,7 @@
 			        <tbody class="fielo-record-set__data cms-prp-invoice-items__container">
 		                <tr class="fielo-record fielo-record-set__template cms-prp-invoice-item__record">
 		                	<apex:repeat value="{!invoiceItemFieldSet}" var="itemField">
-			                	<td class="fielo-field fielo-field--is-{!itemField.apiName} mdl-data-table__cell--non-numeric" data-th="{!itemField.label}" data-field-name="{!itemField.apiName}">
+			                	<td class="fielo-field fielo-field--is-{!itemField.apiName} mdl-data-table__cell--non-numeric" data-th="{!$ObjectType[secondaryObject].Fields[itemField.apiName].label}" data-field-name="{!itemField.apiName}">
 						      		<span class="fielo-field__value">
 				                		<apex:panelGroup layout="none" rendered="{!itemField.type=='Picklist' }">
 										    <select class="fielo-input fielo-js-upgrade" data-value="{!itemRecord[itemField.apiName]}" data-required="{!itemField.attributes['required']}" data-type="{!itemField.type}" id="{! config['Id'] }-{!itemField.apiName}" name="SObject.{!itemField.apiName}">
@@ -126,7 +126,7 @@
 								<span>0</span>
 				        	</div>
 							<div class="fielo-field fielo-field--is-{!field.apiName} mdl-data-table__cell--non-numeric cms-prp-section-header__right">
-								<span><b>{!field.label + ' (' + currencyCode + ')'} :&nbsp;</b></span>
+								<span><b>{!$ObjectType[mainObject].Fields[field.apiName].label + ' (' + currencyCode + ')'} :&nbsp;</b></span>
 				        	</div>
 						</apex:panelGroup>
 					</apex:repeat>
@@ -179,7 +179,7 @@
 					<div class="fielo-field fielo-field--is-{!productField.apiName}" data-field-name="{!productField.apiName}" style="display: inline-block">
 				        <div class="fielo-field__label">
 				            <apex:panelGroup layout="none" rendered="{!productField.showLabel }">
-				                <label for="{! config['Id'] }-{!productField.apiName}" id="{! config['Id'] }_hlp{!productField.apiName}" >{!productField.label}</label>
+				                <label for="{! config['Id'] }-{!productField.apiName}" id="{! config['Id'] }_hlp{!productField.apiName}" >{!$ObjectType[productObject].Fields[productField.apiName].label}</label>
 				                <apex:panelGroup layout="none" rendered="{!productField.attributes['inlineHelpText'] <> '' }" >
 				                    <div class="mdl-tooltip" for="{! config['Id'] }_hlp{!productField.apiName}">{!productField.attributes['inlineHelpText']}</div>
 				                </apex:panelGroup>
@@ -233,7 +233,7 @@
 						</th>
 						<apex:repeat value="{!productFieldSet}" var="productField">
 							<th class="fielo-field fielo-field--is-{!productField.apiName} mdl-data-table__cell--non-numeric">
-								<span class="{!IF(config['FieloCMS__orderBy__c'] == '' , '', 'fielo-order-by__item')} {!IF(config['FieloCMS__orderBy__c']=='DESC', 'fielo-order-by__item--is-desc active','')} {!IF(config['FieloCMS__orderBy__c']=='ASC', 'fielo-order-by__item--is-asc active','')}" data-order-value="{!productField.apiName}" data-field-name="{!productField.apiName}">{!productField.label}</span>
+								<span class="{!IF(config['FieloCMS__orderBy__c'] == '' , '', 'fielo-order-by__item')} {!IF(config['FieloCMS__orderBy__c']=='DESC', 'fielo-order-by__item--is-desc active','')} {!IF(config['FieloCMS__orderBy__c']=='ASC', 'fielo-order-by__item--is-asc active','')}" data-order-value="{!productField.apiName}" data-field-name="{!productField.apiName}">{!$ObjectType[productObject].Fields[productField.apiName].label}</span>
 	                    	</th>
 						</apex:repeat>
 		            </tr>
@@ -245,7 +245,7 @@
 		                		<input type="checkbox" tabindex="-1" class="cms-prp-row-selector" value=""/>
 		                	</td>
 		                	<apex:repeat value="{!productFieldSet}" var="productField">
-			                	<td class="fielo-field fielo-field--is-{!productField.apiName} mdl-data-table__cell--non-numeric" data-th="{!productField.label}" data-field-name="{!productField.apiName}">
+			                	<td class="fielo-field fielo-field--is-{!productField.apiName} mdl-data-table__cell--non-numeric" data-th="{!$ObjectType[productObject].Fields[productField.apiName].label}" data-field-name="{!productField.apiName}">
 						      		<c:FieloCMSPRP_OutputField sObject="{!productObject}" field="{!productField.apiName}" record="{!productRecord}"/>
 					    		</td>
 		                	</apex:repeat>
