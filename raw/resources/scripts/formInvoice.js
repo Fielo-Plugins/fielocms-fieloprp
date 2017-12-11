@@ -108,13 +108,27 @@
       this.element_.querySelector('.' + this.CssClasses_.FIELDSET)
         .querySelectorAll('.' + this.CssClasses_.FIELD);
     this.invoiceObject = {};
+    var fieldInput;
+    var fieldValue;
     [].forEach.call(this.fields_, function(field) {
       if (field.getAttribute('data-field-name') === 'FieloPRP__Date__c') {
-        if (field.querySelector('input').value !== null &&
-          field.querySelector('input').value !== undefined &&
-          field.querySelector('input').value !== '') {
+        fieldInput = field.querySelector('input');
+        if (fieldInput.value !== null &&
+          fieldInput.value !== undefined &&
+          fieldInput.value !== '') {
+          if (fieldInput._flatpickr.selectedDates.length > 0) {
+            fieldValue = fieldInput._flatpickr.selectedDates[0].valueOf();
+            if (fieldInput._flatpickr.config.enableTime) {
+              fieldValue -= (new Date().getTimezoneOffset()) * 60000;
+              fieldValue += fieloConfig.OFFSET * 60000; // eslint-disable-line no-undef
+            } else {
+              fieldValue += (new Date().getTimezoneOffset()) * 60000;
+            }
+          } else {
+            fieldValue = undefined;
+          }
           this.invoiceObject[field.getAttribute('data-field-name')] =
-          new Date(field.querySelector('input').value).getTime();
+            fieldValue;
         }
       } else if (field.getAttribute('data-field-name') ===
         'FieloPRP__Distributor__c') {
