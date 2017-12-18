@@ -14,26 +14,28 @@ global with sharing class FieloCMSPRP_AttachmentAPI implements FieloCMS.DataInte
             }else{
                 whereCondition = ' ParentId != null ';
             }
+            if(c.FieloCMS__ComponentLibrary__r.Name == 'Attachments View'){
+                whereCondition += ' AND ContentType like \'%image%\' ';
+            }
             whereCondition += ' LIMIT ' + String.valueOf(c.FieloCMS__Limit__c);
             String fieldset = String.join(new List<String>(FieloCMSPLT_OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c)), ',');
             if(String.isBlank(fieldset)) fieldset = 'Id';
             newMapData.put(c.Id, Database.query('SELECT ' + fieldset + ' FROM Attachment WHERE ' + whereCondition));
 
             // Workaround
-            if(c.FieloCMS__ComponentLibrary__r.Name == 'Attachments View'){
-                for(Attachment attachment: ((List<Attachment>) newMapData.get(c.Id))) {
-                    String attachmentURL = URL.getSalesforceBaseUrl().toExternalForm();
-                    if (!Test.isRunningTest()) {
-                        attachmentURL += Site.getPathPrefix();
-                    }
-                    attachmentURL += '/servlet/servlet.FileDownload?file=';
-                    attachmentURL += attachment.Id;
-                    attachmentURL += '&oid=';
-                    attachmentURL += UserInfo.getOrganizationId();
-
-                    attachment.Description = attachmentURL;
+            for(Attachment attachment: ((List<Attachment>) newMapData.get(c.Id))) {
+                String attachmentURL = URL.getSalesforceBaseUrl().toExternalForm();
+                if (!Test.isRunningTest()) {
+                    attachmentURL += Site.getPathPrefix();
                 }
+                attachmentURL += '/servlet/servlet.FileDownload?file=';
+                attachmentURL += attachment.Id;
+                attachmentURL += '&oid=';
+                attachmentURL += UserInfo.getOrganizationId();
+
+                attachment.Description = attachmentURL;
             }
+            
         }
         return newMapData;
     }
