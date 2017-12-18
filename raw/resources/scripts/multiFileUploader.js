@@ -284,7 +284,7 @@
 
   FieloMultiFileUploaderPRP.prototype.redirectToParent = function(parentId) {
     fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
-    var result = {message: 'The invoice was saved successfully',
+    var result = {message: FrontEndJSSettings.LABELS.InvoiceSavedSuccess, // eslint-disable-line no-undef
       redirectURL: '/' + parentId};
     if (window.redirectURL) {
       result.redirectURL = window.redirectURL;
