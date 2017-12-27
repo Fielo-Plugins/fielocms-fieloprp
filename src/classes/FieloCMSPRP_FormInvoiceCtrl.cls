@@ -248,21 +248,32 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             'LastModifiedDate' :
             orderBy;
 
+        Set<String> uniqueFields = new Set<String>();
         Set<String> fieldsToAdd = new Set<String>();
+        Set<String> picklistFields = new Set<String>();
 
         for(String fieldName: fields) {
             fieldType = fieldsDescribeMap.get( fieldName ).getDescribe().getType().name();
             if (fieldType == 'REFERENCE') {
                 fieldsToAdd.add(fieldName.replace('__c','__r') + '.' + 'Name');
             }
+            if (fieldType == 'PICKLIST') {
+                picklistFields.add(fieldName);
+            }
         }
-        if (!fieldsToAdd.isEmpty()) {
-            fields.addAll(fieldsToAdd);
+        fields.addAll(fieldsToAdd);
+
+        uniqueFields = new Set<String>(fields);
+        uniqueFields.removeAll(picklistFields);
+        for (String fieldName: picklistFields) {
+            uniqueFields.add('toLabel(' + fieldName + ')');
         }
+        fields = new List<String>(uniqueFields);
+
         if (!new Set<String>(fields).contains('Name')) {
             fields.add('Name');
         }
-
+        
         String query = 'Select ' + String.join(new List<String>(new Set<String>(fields)), ',') + ' FROM ' +
             objectName + whereClause + ' ORDER BY ' + orderByClause + ' LIMIT ' + (recordsPerPage + 1) + ' OFFSET ' + String.valueOf(offSet);
         system.debug(query);
