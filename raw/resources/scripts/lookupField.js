@@ -134,6 +134,14 @@
     this.inputField.focus();
   };
 
+  FieloLookupField.prototype.preQueryById = function(id) {
+    fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
+    this.filter.Id =
+      id;
+    this.pageNumber = 1;
+    this.getValues(this.preQueryCallback.bind(this));
+  };
+
   FieloLookupField.prototype.preQuery = function() {
     fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
     this.filter.Name =

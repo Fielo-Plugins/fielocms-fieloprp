@@ -191,7 +191,7 @@
         this.invoiceFields,
         this.invoiceItemFields ? this.invoiceItemFields : '',
         this.cloneId_,
-        this.retrieveCallback.bind(this),
+        this.retrieveHandler.bind(this),
         {
           escape: false
         }
@@ -202,8 +202,29 @@
     }
   };
 
-  FieloFormInvoice.prototype.retrieveCallback = function(result) {
+  FieloFormInvoice.prototype.retrieveHandler = function(result) {
     console.log(result);
+    this.fields_ =
+      this.element_.querySelector('.' + this.CssClasses_.FIELDSET)
+        .querySelectorAll('.' + this.CssClasses_.FIELD);
+    [].forEach.call(this.fields_, function(field) {
+      if (result[field.getAttribute('data-field-name')]) {
+        if (field.getAttribute('data-field-name') === 'FieloPRP__Date__c') {
+          //TO DO: set date field
+        } else if (field.getAttribute('data-field-name') ===
+          'FieloPRP__Distributor__c') {
+          field.querySelector('.cms-prp-lookup').FieloLookupField
+            .preQueryById(result[field.getAttribute('data-field-name')]);
+        } else if (field.querySelector('input')) {
+          if (field.getAttribute('data-field-name')) {
+            if (field.querySelector('input')) {
+              field.querySelector('input').value =
+                result[field.getAttribute('data-field-name')];
+            }
+          }
+        }
+      }
+    }, this);
     fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
   };
 

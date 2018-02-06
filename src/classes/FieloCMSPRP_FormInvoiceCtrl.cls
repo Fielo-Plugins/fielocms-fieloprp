@@ -310,6 +310,21 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
 
     @RemoteAction
     global static sObject getInvoice(String invoiceFields, String invoiceItemFields, String cloneId) {
+        if (invoiceItemFields!='') {
+            string productFieldName = 'FieloPRP__Product__c';
+            if (!String.isBlank(FieloPLT__PublicSettings__c.getOrgDefaults().FieloPRP__ProductLookupField__c)) {
+                productFieldName = FieloPLT__PublicSettings__c.getOrgDefaults().FieloPRP__ProductLookupField__c;
+            }
+
+            Map<String,Schema.SObjectField> fieldsDescribeMap = Schema.describeSObjects(new String[]{ 'FieloPRP__InvoiceItem__c' })[0].fields.getMap();
+            
+            String productRelationship = fieldsDescribeMap.get(productFieldName).getDescribe().getRelationshipName();
+    
+            invoiceItemFields += ',';
+            invoiceItemFields += productRelationship + '.Id,';
+            invoiceItemFields += productRelationship + '.Name';
+        }
+
         String query = 'SELECT ' + invoiceFields;
 
         query += ( invoiceItemFields != '' ?
