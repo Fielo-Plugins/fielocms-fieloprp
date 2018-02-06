@@ -35,14 +35,31 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         formInvoice.record = new FieloPRP__Invoice__c();
         formInvoice.itemRecord = new FieloPRP__InvoiceItem__c(FieloPRP__Quantity__c=0);
         formInvoice.productConfig = productComponent;
+        if (ApexPages.CurrentPage().getParameters().containsKey('cloneId')) {
+            formInvoice.cloneId = ApexPages.CurrentPage().getParameters().get('cloneId');
+        }
 
         Set<String> productFields = new Set<String>();
+        Set<String> invoiceFields = new Set<String>();
+        Set<String> invoiceItemFields = new Set<String>();
+
         for(FieloCMSPRP_Field productField: productFieldSet) {
             productFields.add(productField.apiName);
         }
+        for(FieloCMSPRP_Field invoiceField: invoiceFieldSet) {
+            invoiceFields.add(invoiceField.apiName);
+        }
+        for(FieloCMSPRP_Field invoiceItemField: invoiceItemFieldSet) {
+            invoiceItemFields.add(invoiceItemField.apiName);
+        }
+
         if (!productFields.contains('Name')) {
             productFields.add('Name');
         }
+
+        formInvoice.invoiceFields = String.join(new List<String>(invoiceFields), ',');
+        formInvoice.invoiceItemFields = String.join(new List<String>(invoiceItemFields), ',');
+        formInvoice.productFields = String.join(new List<String>(productFields), ',');
 
         formInvoice.recentProducts = Database.query('Select ' + String.join(new List<String>(productFields),',') + ' From ' + formInvoice.productObject + ' ORDER BY LastModifiedDate LIMIT 1');
         
@@ -289,5 +306,18 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             'Records' => (Object) records,
             'hasNext' => (Object) hasNext
         };
+    }
+
+    @RemoteAction
+    global static sObject getInvoice(String invoiceFields, String invoiceItemFields, String cloneId) {
+        String query = 'SELECT ' + invoiceFields;
+
+        query += ( invoiceItemFields != '' ?
+            ', ( SELECT ' + invoiceItemFields + ' FROM FieloPRP__InvoiceItems__r ),' :
+            '' ) +
+            '(SELECT Id, Name FROM Attachments) ' +
+            ' FROM FieloPRP__Invoice__c WHERE Id = :cloneId';
+
+        return Database.query(query);
     }
 }

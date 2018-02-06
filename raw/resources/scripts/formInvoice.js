@@ -14,7 +14,8 @@
    * @private
    */
   FieloFormInvoice.prototype.Constant_ = {
-    SUBMIT_METHOD: 'FieloCMSPRP_FormInvoiceCtrl.submit'
+    SUBMIT_METHOD: 'FieloCMSPRP_FormInvoiceCtrl.submit',
+    RETRIEVE_METHOD: 'FieloCMSPRP_FormInvoiceCtrl.getInvoice'
 
   };
 
@@ -176,6 +177,36 @@
     }
   };
 
+  FieloFormInvoice.prototype.retrieve_ = function() {
+    this.invoiceFields =
+      this.element_.getAttribute('data-invoice-fields');
+    this.invoiceItemFields =
+      this.element_.getAttribute('data-invoiceitem-fields');
+    this.productFields =
+      this.element_.getAttribute('data-product-fields');
+    try {
+      fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
+      Visualforce.remoting.Manager.invokeAction( // eslint-disable-line no-undef
+        this.Constant_.RETRIEVE_METHOD,
+        this.invoiceFields,
+        this.invoiceItemFields ? this.invoiceItemFields : '',
+        this.cloneId_,
+        this.retrieveCallback.bind(this),
+        {
+          escape: false
+        }
+      );
+    } catch (e) {
+      console.log(e);
+      fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
+    }
+  };
+
+  FieloFormInvoice.prototype.retrieveCallback = function(result) {
+    console.log(result);
+    fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
+  };
+
   /**
    * Inicializa el elemento
    */
@@ -196,6 +227,14 @@
         this.element_.querySelector('form');
       this.form_
         .addEventListener('keypress', this.disableSubmit.bind(this));
+      this.cloneId_ =
+        this.element_.getAttribute('data-clone-id');
+      if (this.cloneId_ !== undefined &&
+        this.cloneId_ !== null &&
+        this.cloneId_ !== '') {
+        console.log('Cloned From: ' + this.cloneId_);
+        this.retrieve_();
+      }
     }
   };
 
