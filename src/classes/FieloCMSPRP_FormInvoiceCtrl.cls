@@ -126,6 +126,23 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             if (submitMode == 'Close') {
                 submittedInvoice = FieloPRP.InvoiceService.closeInvoice(submittedInvoice.Id);
             }
+
+            if (!attachments.isEmpty()) {
+                List<Attachment> existingAttachments = [SELECT Id, Name, Body, ContentType FROM Attachment WHERE Id in :new Map<Id,Attachment>(attachments).keySet()];
+                List<Attachment> newAttachments = new List<Attachment>();
+                for (Attachment att: existingAttachments) {
+                    newAttachments.add(
+                        new Attachment(
+                            ParentId = submittedInvoice.Id,
+                            Name = att.Name,
+                            Body = att.Body,
+                            ContentType = att.ContentType
+                        )
+                    );
+                }
+                insert newAttachments;
+            }
+
             return new Map<String, Object>{
                 'object' => submittedInvoice,
                 'status' => 'OK'
