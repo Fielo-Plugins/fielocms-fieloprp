@@ -134,6 +134,14 @@
     this.inputField.focus();
   };
 
+  FieloLookupField.prototype.preQueryById = function(id) {
+    fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
+    this.filter.Id =
+      id;
+    this.pageNumber = 1;
+    this.getValues(this.preQueryCallbackNoModal.bind(this));
+  };
+
   FieloLookupField.prototype.preQuery = function() {
     fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
     this.filter.Name =
@@ -156,6 +164,21 @@
       this.renderRecords();
       this.showModal();
       this.setLinksStatus_(result.hasNext);
+    }
+    fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
+  };
+
+  FieloLookupField.prototype.preQueryCallbackNoModal = function(result) {
+    this.recordSet =
+      result.Records;
+    if (this.recordSet.length === 1) {
+      this.inputField.setAttribute('data-lookup-id',
+        this.recordSet[0].Id);
+      this.inputField.value =
+        this.recordSet[0].Name;
+    } else {
+      this.inputField
+        .setAttribute('data-lookup-id', '');
     }
     fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
   };

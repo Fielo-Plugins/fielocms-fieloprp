@@ -1,0 +1,6 @@
+<apex:component layout="none">
+	<apex:attribute name="record" type="SObject" description="" />
+    <apex:attribute name="href" type="String" description="" />
+
+	<a class="fielo-button" type="button" href="{!href + record.Id}">{!$Label.FieloCMSPRP_Clone}</a>
+</apex:component>

@@ -103,9 +103,9 @@
   FieloInvoiceItems.prototype.refreshTotalPrice = function(event) {
     if (this.hasAmountFields) {
       var row =
-        event.srcElement.closest('.' + this.CssClasses_.ITEM_RECORD);
+        event.target.closest('.' + this.CssClasses_.ITEM_RECORD);
       var updatedField =
-        event.srcElement.closest('td').getAttribute('data-field-name');
+        event.target.closest('td').getAttribute('data-field-name');
       var unitPriceFieldElement =
         row.querySelector('[data-field-name="FieloPRP__UnitPrice__c"]');
       var quantityFieldElement =
