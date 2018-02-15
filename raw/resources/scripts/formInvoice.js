@@ -144,7 +144,7 @@
               fieldValue -= (new Date().getTimezoneOffset()) * 60000;
               fieldValue += fieloConfig.OFFSET * 60000; // eslint-disable-line no-undef
             } else {
-              fieldValue += (new Date().getTimezoneOffset()) * 60000;
+              fieldValue -= (new Date().getTimezoneOffset()) * 60000;
             }
           } else {
             fieldValue = undefined;
