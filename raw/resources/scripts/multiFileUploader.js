@@ -154,9 +154,15 @@
     this.currentAttachmentRecord
       .querySelector('span')
         .innerHTML = file.name;
-    this.currentAttachmentRecord
-      .setAttribute('data-record-id',
-        Object.keys(this.fileList).length - 1);
+    if (file.Id) {
+      this.currentAttachmentRecord
+        .setAttribute('data-record-id',
+          file.Id);
+    } else {
+      this.currentAttachmentRecord
+        .setAttribute('data-record-id',
+          Object.keys(this.fileList).length - 1);
+    }
     this.currentAttachmentRecord
       .setAttribute('data-has-attachment', 'true');
     this.currentAttachmentRecord
@@ -198,13 +204,15 @@
     if (this.fileList) {
       [].forEach.call(Object.keys(this.fileList), function(fileIndex) {
         file = this.fileList[fileIndex];
-        if (file) {
-          var fr = new FileReader();
-          fr.onloadend = function() {
-            attachmentObject.Body = window.btoa(fr.result);
-            attachmentObject.Name = file.name;
-          };
-          fr.readAsBinaryString(file);
+        if (file instanceof Blob) {
+          if (file) {
+            var fr = new FileReader();
+            fr.onloadend = function() {
+              attachmentObject.Body = window.btoa(fr.result);
+              attachmentObject.Name = file.name;
+            };
+            fr.readAsBinaryString(file);
+          }
         }
         attachments.push(attachmentObject);
       },
@@ -224,12 +232,14 @@
       delete this.fileList[filePtr];
       var self = this;
       if (file) {
-        var fr = new FileReader();
-        fr.onloadend = function() {
-          var fileContents = window.btoa(fr.result);
-          self.upload(parentId, file, fileContents);
-        };
-        fr.readAsBinaryString(file);
+        if (file instanceof Blob) {
+          var fr = new FileReader();
+          fr.onloadend = function() {
+            var fileContents = window.btoa(fr.result);
+            self.upload(parentId, file, fileContents);
+          };
+          fr.readAsBinaryString(file);
+        }
       } else {
         this.throwMessage('You must choose a file before trying to upload it');
       }

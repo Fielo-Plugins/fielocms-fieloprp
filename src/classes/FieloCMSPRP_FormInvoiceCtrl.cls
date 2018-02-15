@@ -35,14 +35,31 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         formInvoice.record = new FieloPRP__Invoice__c();
         formInvoice.itemRecord = new FieloPRP__InvoiceItem__c(FieloPRP__Quantity__c=0);
         formInvoice.productConfig = productComponent;
+        if (ApexPages.CurrentPage().getParameters().containsKey('cloneId')) {
+            formInvoice.cloneId = ApexPages.CurrentPage().getParameters().get('cloneId');
+        }
 
         Set<String> productFields = new Set<String>();
+        Set<String> invoiceFields = new Set<String>();
+        Set<String> invoiceItemFields = new Set<String>();
+
         for(FieloCMSPRP_Field productField: productFieldSet) {
             productFields.add(productField.apiName);
         }
+        for(FieloCMSPRP_Field invoiceField: invoiceFieldSet) {
+            invoiceFields.add(invoiceField.apiName);
+        }
+        for(FieloCMSPRP_Field invoiceItemField: invoiceItemFieldSet) {
+            invoiceItemFields.add(invoiceItemField.apiName);
+        }
+
         if (!productFields.contains('Name')) {
             productFields.add('Name');
         }
+
+        formInvoice.invoiceFields = String.join(new List<String>(invoiceFields), ',');
+        formInvoice.invoiceItemFields = String.join(new List<String>(invoiceItemFields), ',');
+        formInvoice.productFields = String.join(new List<String>(productFields), ',');
 
         formInvoice.recentProducts = Database.query('Select ' + String.join(new List<String>(productFields),',') + ' From ' + formInvoice.productObject + ' ORDER BY LastModifiedDate LIMIT 1');
         
@@ -109,6 +126,23 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             if (submitMode == 'Close') {
                 submittedInvoice = FieloPRP.InvoiceService.closeInvoice(submittedInvoice.Id);
             }
+
+            if (!attachments.isEmpty()) {
+                List<Attachment> existingAttachments = [SELECT Id, Name, Body, ContentType FROM Attachment WHERE Id in :new Map<Id,Attachment>(attachments).keySet()];
+                List<Attachment> newAttachments = new List<Attachment>();
+                for (Attachment att: existingAttachments) {
+                    newAttachments.add(
+                        new Attachment(
+                            ParentId = submittedInvoice.Id,
+                            Name = att.Name,
+                            Body = att.Body,
+                            ContentType = att.ContentType
+                        )
+                    );
+                }
+                insert newAttachments;
+            }
+
             return new Map<String, Object>{
                 'object' => submittedInvoice,
                 'status' => 'OK'
@@ -289,5 +323,33 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             'Records' => (Object) records,
             'hasNext' => (Object) hasNext
         };
+    }
+
+    @RemoteAction
+    global static sObject getInvoice(String invoiceFields, String invoiceItemFields, String cloneId) {
+        if (invoiceItemFields!='') {
+            string productFieldName = 'FieloPRP__Product__c';
+            if (!String.isBlank(FieloPLT__PublicSettings__c.getOrgDefaults().FieloPRP__ProductLookupField__c)) {
+                productFieldName = FieloPLT__PublicSettings__c.getOrgDefaults().FieloPRP__ProductLookupField__c;
+            }
+
+            Map<String,Schema.SObjectField> fieldsDescribeMap = Schema.describeSObjects(new String[]{ 'FieloPRP__InvoiceItem__c' })[0].fields.getMap();
+            
+            String productRelationship = fieldsDescribeMap.get(productFieldName).getDescribe().getRelationshipName();
+    
+            invoiceItemFields += ',';
+            invoiceItemFields += productRelationship + '.Id,';
+            invoiceItemFields += productRelationship + '.Name';
+        }
+
+        String query = 'SELECT ' + invoiceFields;
+
+        query += ( invoiceItemFields != '' ?
+            ', ( SELECT ' + invoiceItemFields + ' FROM FieloPRP__InvoiceItems__r ),' :
+            '' ) +
+            '(SELECT Id, Name FROM Attachments) ' +
+            ' FROM FieloPRP__Invoice__c WHERE Id = :cloneId';
+
+        return Database.query(query);
     }
 }
