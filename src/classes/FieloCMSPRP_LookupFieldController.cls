@@ -10,6 +10,9 @@ public class FieloCMSPRP_LookupFieldController {
 			if (filter.containsKey('Name')) {
 				whereClause = ' WHERE Name LIKE \'%' + filter.get('Name') + '%\'';
 			}
+			if (filter.containsKey('Id')) {
+				whereClause = ' WHERE Id = \'' + filter.get('Id') + '\'';
+			}
 		}
 		
 		if (whereCondition != '' && whereCondition != null) {
