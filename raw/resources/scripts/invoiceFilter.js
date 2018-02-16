@@ -7,8 +7,7 @@
    * {@link https://github.com/jasonmayes/mdl-component-design-pattern}
    *
    * @version 1
-   * @author Alejandro Spinelli <alejandro.spinelli@fielo.com>
-   * @author Hugo Gómez Mac Gregor <hugo.gomez@fielo.com>
+   * @author Tiago Bittencourt Leal <tiago.leal@fielo.com>
    * @param {HTMLElement} element - Element to be upgraded
    * @constructor
    */

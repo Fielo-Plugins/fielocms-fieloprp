@@ -7,8 +7,7 @@
    * {@link https://github.com/jasonmayes/mdl-component-design-pattern}
    *
    * @version 1
-   * @author Tiago Bittencourt Leal <alejandro.spinelli@fielo.com>
-   * @author Hugo Gómez Mac Gregor <hugo.gomez@fielo.com>
+   * @author Tiago Bittencourt Leal <tiago.leal@fielo.com>
    * @param {HTMLElement} element - Element to be upgraded
    * @constructor
    */
@@ -140,6 +139,8 @@
       id;
     this.pageNumber = 1;
     this.getValues(this.preQueryCallbackNoModal.bind(this));
+    this.filter = {};
+    this.executeBlankSearch = true;
   };
 
   FieloLookupField.prototype.preQuery = function() {
@@ -148,6 +149,7 @@
       this.inputField.value;
     this.pageNumber = 1;
     this.getValues(this.preQueryCallback.bind(this));
+    this.filter = {};
   };
 
   FieloLookupField.prototype.preQueryCallback = function(result) {
@@ -268,8 +270,10 @@
     this.showModal();
     if (this.inputField.value !== null &&
       this.inputField.value !== undefined &&
-      this.inputField.value !== '') {
+      this.inputField.value !== '' ||
+      this.executeBlankSearch) {
       this.executeSearch();
+      this.executeBlankSearch = false;
     }
   };
 
@@ -280,9 +284,18 @@
     }
   };
 
+  FieloLookupField.prototype.handleInputChange = function(event) {
+    if (event.target.value === '') {
+      this.inputField
+        .setAttribute('data-lookup-id', '');
+    }
+  };
+
   FieloLookupField.prototype.setElementListeners_ = function() {
     this.inputField
       .addEventListener('keypress', this.handleKeyPress.bind(this));
+    this.inputField
+      .addEventListener('change', this.handleInputChange.bind(this));
     this.lookupBtn
       .addEventListener('click', this.handleLookupBtnClick.bind(this));
     this.lookupSearchBtn
