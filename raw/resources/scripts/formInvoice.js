@@ -52,7 +52,7 @@
           this.Constant_.SUBMIT_METHOD,
           this.invoiceObject,
           this.invoiceItems ? this.invoiceItems : null,
-          this.existingAttachments.length > 0 ? this.existingAttachments : [{}],
+          this.existingAttachments.length > 0 ? this.existingAttachments : [],
           this.element_.getAttribute('data-submit-mode'),
           this.submitCallback.bind(this),
           {
@@ -224,7 +224,6 @@
   };
 
   FieloFormInvoice.prototype.retrieveHandler = function(result) {
-    console.log(result);
     this.fields_ =
       this.element_.querySelector('.' + this.CssClasses_.FIELDSET)
         .querySelectorAll('.' + this.CssClasses_.FIELD);
@@ -311,7 +310,6 @@
             itemField = invoiceItem
               .querySelector('[data-field-name=' + field + ']');
             if (itemField) {
-              console.log(itemField);
               if (itemField.querySelector('.cms-prp-lookup')) {
                 if (item[field] !== '' && item[field] !== null &&
                   item[field] !== undefined) {
@@ -370,7 +368,6 @@
       if (this.cloneId_ !== undefined &&
         this.cloneId_ !== null &&
         this.cloneId_ !== '') {
-        console.log('Cloned From: ' + this.cloneId_);
         this.retrieve_();
       }
     }
