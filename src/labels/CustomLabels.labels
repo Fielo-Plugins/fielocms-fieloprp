@@ -80,4 +80,12 @@
         <shortDescription>Upload Files</shortDescription>
         <value>Upload Files</value>
     </labels>
+    <labels>
+        <fullName>FieloCMSPRP_Clone</fullName>
+        <categories>FieloCMSPRP_CloneInvoice.component</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FieloCMSPRP_Clone</shortDescription>
+        <value>Clone</value>
+    </labels>
 </CustomLabels>
