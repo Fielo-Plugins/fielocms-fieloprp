@@ -2,5 +2,10 @@
 	<apex:attribute name="record" type="SObject" description="" />
     <apex:attribute name="href" type="String" description="" />
 
-	<a class="fielo-button" type="button" href="{!href + record.Id}">{!$Label.FieloCMSPRP_Clone}</a>
+	<a class="fielo-button cms-prp-cloneinvoice-button"
+	type="button"
+	data-page-url="{!href}"
+	data-record-id="{!record.Id}"
+	data-attribute-replace="data-record-id"
+	data-object-property="Id">{!$Label.FieloCMSPRP_Clone}</a>
 </apex:component>

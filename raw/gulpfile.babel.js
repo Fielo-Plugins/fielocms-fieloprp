@@ -69,6 +69,7 @@ var cmsThemeJs = [
       'resources/scripts/invoiceFilter.js',
       'resources/scripts/multiFileUploader.js',
       'resources/scripts/formInvoice.js',
+      'resources/scripts/cloneInvoice.js',
       'resources/scripts/lookupField.js',
       'resources/scripts/invoiceItems.js'
       ],
@@ -81,6 +82,7 @@ var cmsThemeJs = [
       'resources/scripts/invoiceFilter.js',
       'resources/scripts/multiFileUploader.js',
       'resources/scripts/formInvoice.js',
+      'resources/scripts/cloneInvoice.js',
       'resources/scripts/lookupField.js',
       'resources/scripts/invoiceItems.js'
     ],
@@ -93,6 +95,7 @@ var cmsThemeJs = [
       'resources/scripts/invoiceFilter.js',
       'resources/scripts/multiFileUploader.js',
       'resources/scripts/formInvoice.js',
+      'resources/scripts/cloneInvoice.js',
       'resources/scripts/lookupField.js',
       'resources/scripts/invoiceItems.js'
     ],
