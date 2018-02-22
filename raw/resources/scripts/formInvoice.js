@@ -88,7 +88,7 @@
         Object.keys(fileList).length > 0 :
         false;
       var invoiceId = result.object.Id;
-      var url = this.pathPrefix + '/FieloCMS__Page?pageId=' +
+      var url = '/FieloCMS__Page?pageId=' +
         this.element_.getAttribute('data-redirect-page') + '&' +
         this.element_.getAttribute('data-parameter-name') + '=' +
         invoiceId;
@@ -109,7 +109,7 @@
     var result = {message: FrontEndJSSettings.LABELS.InvoiceSavedSuccess}; // eslint-disable-line no-undef
     this.throwMessage(result.message, 'success');
     if (window.redirectURL) {
-      result.redirectURL = window.redirectURL;
+      result.redirectURL = this.pathPrefix + window.redirectURL;
     }
     location.replace(result.redirectURL);
   };
@@ -144,7 +144,7 @@
               fieldValue -= (new Date().getTimezoneOffset()) * 60000;
               fieldValue += fieloConfig.OFFSET * 60000; // eslint-disable-line no-undef
             } else {
-              fieldValue -= (new Date().getTimezoneOffset()) * 60000;
+              fieldValue += (new Date().getTimezoneOffset()) * 60000;
             }
           } else {
             fieldValue = undefined;
