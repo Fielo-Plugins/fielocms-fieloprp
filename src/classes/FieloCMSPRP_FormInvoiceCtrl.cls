@@ -171,6 +171,19 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
 
     }
 
+    public String pathPrefix { get{
+        if (pathPrefix==null) {
+            if (!Test.isRunningTest()) {
+                pathPrefix = Site.getPathPrefix();
+            } else {
+                pathPrefix = '';
+            }
+        }
+        return pathPrefix;
+    }
+        set;
+    }
+
     @RemoteAction
     global static Id saveAttachment(Id parentId, String fileName, String base64Data, String contentType) { 
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');

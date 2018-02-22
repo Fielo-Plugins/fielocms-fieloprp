@@ -88,7 +88,7 @@
         Object.keys(fileList).length > 0 :
         false;
       var invoiceId = result.object.Id;
-      var url = '/FieloCMS__Page?pageId=' +
+      var url = this.pathPrefix + '/FieloCMS__Page?pageId=' +
         this.element_.getAttribute('data-redirect-page') + '&' +
         this.element_.getAttribute('data-parameter-name') + '=' +
         invoiceId;
@@ -369,6 +369,14 @@
         this.cloneId_ !== null &&
         this.cloneId_ !== '') {
         this.retrieve_();
+      }
+      this.pathPrefix = '';
+      if (FrontEndJSSettings) { // eslint-disable-line no-undef
+        if (FrontEndJSSettings.SITE) { // eslint-disable-line no-undef
+          if (FrontEndJSSettings.SITE.pathPrefix) { // eslint-disable-line no-undef
+            this.pathPrefix = FrontEndJSSettings.SITE.pathPrefix; // eslint-disable-line no-undef
+          }
+        }
       }
     }
   };
