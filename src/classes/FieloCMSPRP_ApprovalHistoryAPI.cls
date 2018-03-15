@@ -36,13 +36,13 @@ global without sharing class FieloCMSPRP_ApprovalHistoryAPI implements FieloCMS.
 	                if (pi.Steps != null) {
 	                    if (!pi.Steps.isEmpty()) {
 	                        for (ProcessInstanceStep step: pi.Steps) {
-	                            records.add(new FieloPRP__Invoice__c(FieloPRP__Status__c = statusMap.get(step.StepStatus),FieloPRP__Description__c = step.Comments));
+	                            records.add(new FieloPRP__Invoice__c(FieloPRP__Status__c = statusMap.get(step.StepStatus),FieloPRP__Comments__c = step.Comments));
 	                        }
 	                    }
 	                }
 	            }
             } else {
-            	List<FieloPRP__Invoice__c> invoices = Database.query('SELECT Id, FieloPRP__Status__c FROM FieloPRP__Invoice__c WHERE Id = :recordId');
+            	List<FieloPRP__Invoice__c> invoices = Database.query('SELECT Id, FieloPRP__Status__c, FieloPRP__RejectReason__c, FieloPRP__Comments__c FROM FieloPRP__Invoice__c WHERE Id = :recordId');
             	if (invoices[0].FieloPRP__Status__c == 'Approved' || invoices[0].FieloPRP__Status__c == 'Rejected') {
 					records.add(invoices[0]);
             	}
