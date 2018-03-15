@@ -109,7 +109,7 @@
     var result = {message: FrontEndJSSettings.LABELS.InvoiceSavedSuccess}; // eslint-disable-line no-undef
     this.throwMessage(result.message, 'success');
     if (window.redirectURL) {
-      result.redirectURL = window.redirectURL;
+      result.redirectURL = this.pathPrefix + window.redirectURL;
     }
     location.replace(result.redirectURL);
   };
@@ -224,13 +224,12 @@
   };
 
   FieloFormInvoice.prototype.retrieveHandler = function(result) {
+    console.log(result);
     this.fields_ =
       this.element_.querySelector('.' + this.CssClasses_.FIELDSET)
         .querySelectorAll('.' + this.CssClasses_.FIELD);
     var input;
-    var date;
     var type;
-    var newValue;
     [].forEach.call(this.fields_, function(field) {
       if (result[field.getAttribute('data-field-name')]) {
         if (field.getAttribute('data-field-name') ===
@@ -249,41 +248,33 @@
               if (type === 'date' || type === 'datetime') {
                 input.value =
                   result[field.getAttribute('data-field-name')];
-                if (input.value !== '') {
-                  date = fieloUtils.parseDateFromSF(input.value); // eslint-disable-line no-undef
-                  if (type === 'datetime') {
-                    // al usar Date le agrega el GMT de la pc
-                    // por eso se neutraliza ese efecto con getTimezoneOffset()
-                    // y luego se le agrega el offset propio del perfil
-                    date = new Date(
-                      date +
-                      (new Date().getTimezoneOffset()) * 60000 +
-                      (-fieloConfig.OFFSET * 60000) // eslint-disable-line no-undef
-                    );
-                  } else {
-                    date = new Date(
-                      date + (new Date().getTimezoneOffset()) * 60000
-                    );
+                if (input.value !== 'undefined' && input.value !== '') {
+                  // Parseo los distintos tipos de fechas a UTC
+                  var dateValue = fieloUtils.parseDateFromSF(input.value); // eslint-disable-line no-undef
+
+                  if (type.toLowerCase() === 'datetime') {
+                    // Agrega perfiles definido en SF
+                    dateValue -= fieloConfig.OFFSET * 60000; // eslint-disable-line no-undef
                   }
-                }
-                if (typeof input._flatpickr === 'undefined') {
-                  var config = {};
-                  if (input.value !== '') {
-                    config.defaultDate = date.valueOf();
-                  }
-                  config.dateFormat =
-                    fieloUtils.formatDate(fieloUtils.dateFormat); // eslint-disable-line no-undef
-                  if (type === 'datetime') {
+
+                  // compenso el new date
+                  // Transforma la fecha a un string iso
+                  if (typeof input._flatpickr === 'undefined') {
+                    var config = {};
+                    if (input.value !== '') {
+                      config.defaultDate = dateValue.valueOf();
+                    }
                     config.dateFormat =
-                      fieloUtils.formatDate(fieloUtils.dateTimeFormat); // eslint-disable-line no-undef
-                    config.enableTime = true;
+                      fieloUtils.formatDate(fieloUtils.dateFormat); // eslint-disable-line no-undef
+                    if (type === 'datetime') {
+                      config.dateFormat =
+                        fieloUtils.formatDate(fieloUtils.dateTimeFormat); // eslint-disable-line no-undef
+                      config.enableTime = true;
+                    }
+                    flatpickr(input, config); // eslint-disable-line no-undef
                   }
-                  flatpickr(input, config); // eslint-disable-line no-undef
+                  input._flatpickr.setDate(dateValue);
                 }
-                newValue =
-                  new Date(date + (new Date().getTimezoneOffset()) * 60000);
-                input._flatpickr.setDate(newValue);
-                input.value = newValue.toLocaleDateString(this.locale_);
               } else {
                 field.querySelector('input').value =
                   result[field.getAttribute('data-field-name')];
@@ -369,6 +360,14 @@
         this.cloneId_ !== null &&
         this.cloneId_ !== '') {
         this.retrieve_();
+      }
+      this.pathPrefix = '';
+      if (FrontEndJSSettings) { // eslint-disable-line no-undef
+        if (FrontEndJSSettings.SITE) { // eslint-disable-line no-undef
+          if (FrontEndJSSettings.SITE.pathPrefix) { // eslint-disable-line no-undef
+            this.pathPrefix = FrontEndJSSettings.SITE.pathPrefix; // eslint-disable-line no-undef
+          }
+        }
       }
     }
   };
