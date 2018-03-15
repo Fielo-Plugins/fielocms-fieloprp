@@ -100,6 +100,11 @@
         this.redirect();
       }
     } else {
+      if (this.existingAttachments) {
+        [].forEach.call(this.existingAttachments, function(attachment) {
+          this.attachmentsComp.fileList[attachment.Id] = attachment;
+        }, this);
+      }
       fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
       this.throwMessage(result.message, '#', 2, 'ERROR');
     }
