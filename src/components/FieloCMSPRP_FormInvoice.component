@@ -299,9 +299,12 @@
 	    if(typeof FrontEndJSSettings.LABELS == 'undefined') {
 	      FrontEndJSSettings.LABELS = {};
 	    }
-	    // TODO: Put Frontend Labels to use in JS
+	    if(typeof FrontEndJSSettings.SITE == 'undefined') {
+		 	FrontEndJSSettings.SITE = {};
+		}
 	    FrontEndJSSettings.LABELS.InvoiceSavedSuccess = '{!$Label.FieloCMSPRP_InvoiceSavedSuccess}';
 	    FrontEndJSSettings.LABELS.MaxFileSize = '{!$Label.FieloCMSPRP_MaxFileSize}';
 	    FrontEndJSSettings.LABELS.AttachmentsMissing = '{!$Label.FieloCMSPRP_AttachmentsMissing}';
+	    FrontEndJSSettings.SITE.pathPrefix = '{!pathPrefix}';
     </script>
 </apex:component>
