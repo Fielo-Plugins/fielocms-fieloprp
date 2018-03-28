@@ -128,19 +128,7 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             }
 
             if (!attachments.isEmpty()) {
-                List<Attachment> existingAttachments = [SELECT Id, Name, Body, ContentType FROM Attachment WHERE Id in :new Map<Id,Attachment>(attachments).keySet()];
-                List<Attachment> newAttachments = new List<Attachment>();
-                for (Attachment att: existingAttachments) {
-                    newAttachments.add(
-                        new Attachment(
-                            ParentId = submittedInvoice.Id,
-                            Name = att.Name,
-                            Body = att.Body,
-                            ContentType = att.ContentType
-                        )
-                    );
-                }
-                insert newAttachments;
+                FieloCMSPRP_FileService.cloneFiles(submittedInvoice.Id, new Map<Id, Attachment>(attachments).keySet());
             }
 
             return new Map<String, Object>{
@@ -188,16 +176,34 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
     global static Id saveAttachment(Id parentId, String fileName, String base64Data, String contentType) { 
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
         
-        Attachment a = new Attachment();
-        a.parentId = parentId;
- 
-        a.Body = EncodingUtil.base64Decode(base64Data);
-        a.Name = fileName;
-        a.ContentType = contentType;
-        
-        insert a;
-        
-        return a.Id;
+        ContentVersion cv = new ContentVersion();
+        if (Schema.sObjectType.ContentVersion.fields.Title.isCreateable()) {
+            cv.Title = fileName;
+        }
+        if (Schema.sObjectType.ContentVersion.fields.PathOnClient.isCreateable()) {
+            cv.PathOnClient = fileName;
+        }
+        if (Schema.sObjectType.ContentVersion.fields.VersionData.isCreateable()) {
+            cv.VersionData = EncodingUtil.base64Decode(base64Data);
+        }
+        if (Schema.sObjectType.ContentVersion.fields.IsMajorVersion.isCreateable()) {
+            cv.IsMajorVersion = true;
+        }
+        insert cv;
+
+        ContentDocumentLink cdl = new ContentDocumentLink();
+        if (Schema.sObjectType.ContentDocumentLink.fields.ContentDocumentId.isCreateable()) {
+            cdl.ContentDocumentId = [SELECT Id, ContentDocumentId FROM ContentVersion WHERE Id =: cv.Id].ContentDocumentId;
+        }
+        if (Schema.sObjectType.ContentDocumentLink.fields.LinkedEntityId.isCreateable()) {
+            cdl.LinkedEntityId = parentId;
+        }
+        if (Schema.sObjectType.ContentDocumentLink.fields.ShareType.isCreateable()) {
+            cdl.ShareType = 'V';
+        }
+        insert cdl;
+
+        return cv.Id;
     }
 
     @RemoteAction
@@ -214,36 +220,18 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
     private static void appendToFile(Id fileId, String base64Data) {
         base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
         
-        Attachment a = [
-            SELECT Id, Body
-            FROM Attachment
+        ContentVersion cv = [
+            SELECT Id, VersionData
+            FROM ContentVersion
             WHERE Id = :fileId
         ];
         
-        String existingBody = EncodingUtil.base64Encode(a.Body);
-        a.Body = EncodingUtil.base64Decode(existingBody + base64Data); 
+        String existingBody = EncodingUtil.base64Encode(cv.VersionData);
+        if (Schema.sObjectType.ContentVersion.fields.VersionData.isUpdateable()) {
+            cv.VersionData = EncodingUtil.base64Decode(existingBody + base64Data); 
+        }
         
-        update a;
-    }
-
-    @RemoteAction
-    global static Boolean deleteAttachments(List<String> attachmentIds){
-        Boolean result = false;
-        Set<Id> attachmentIdsSet = new Set<Id>();
-        for(String singleId: attachmentIds) {
-            try {
-                attachmentIdsSet.add((Id)singleId);
-            } catch (Exception e) {
-                continue;
-            }
-        }
-        if(!attachmentIdsSet.isEmpty()) {
-            String query = 'Select Id, Name From Attachment Where Id in :attachmentIdsSet';
-            List<Attachment> attachments = Database.query(query);
-            delete attachments;
-            result = true;
-        }
-        return result;
+        update cv;
     }
 
     @RemoteAction
@@ -360,7 +348,8 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         query += ( invoiceItemFields != '' ?
             ', ( SELECT ' + invoiceItemFields + ' FROM FieloPRP__InvoiceItems__r ),' :
             '' ) +
-            '(SELECT Id, Name FROM Attachments) ' +
+            '(SELECT Id, Name FROM Attachments), ' +
+            '(Select Id, ContentDocument.Title From ContentDocumentLinks)' +
             ' FROM FieloPRP__Invoice__c WHERE Id = :cloneId';
 
         return Database.query(query);

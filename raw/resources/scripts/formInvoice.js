@@ -333,6 +333,11 @@
           {name: attachment.Name, Id: attachment.Id};
         this.addFileRecord(this.fileList[attachment.Id]);
       }, this.attachmentsComp);
+      [].forEach.call(result.ContentDocumentLinks, function(cdl) {
+        this.fileList[cdl.ContentDocument.Id] =
+          {name: cdl.ContentDocument.Title, Id: cdl.ContentDocument.Id};
+        this.addFileRecord(this.fileList[cdl.ContentDocument.Id]);
+      }, this.attachmentsComp);
     }
     fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
   };
