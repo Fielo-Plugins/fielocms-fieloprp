@@ -328,16 +328,20 @@
       if (!this.attachmentsComp.fileList) {
         this.attachmentsComp.fileList = {};
       }
-      [].forEach.call(result.Attachments, function(attachment) {
-        this.fileList[attachment.Id] =
-          {name: attachment.Name, Id: attachment.Id};
-        this.addFileRecord(this.fileList[attachment.Id]);
-      }, this.attachmentsComp);
-      [].forEach.call(result.ContentDocumentLinks, function(cdl) {
-        this.fileList[cdl.ContentDocument.Id] =
-          {name: cdl.ContentDocument.Title, Id: cdl.ContentDocument.Id};
-        this.addFileRecord(this.fileList[cdl.ContentDocument.Id]);
-      }, this.attachmentsComp);
+      if (result.Attachments) {
+        [].forEach.call(result.Attachments, function(attachment) {
+          this.fileList[attachment.Id] =
+            {name: attachment.Name, Id: attachment.Id};
+          this.addFileRecord(this.fileList[attachment.Id]);
+        }, this.attachmentsComp);
+      }
+      if (result.ContentDocumentLinks) {
+        [].forEach.call(result.ContentDocumentLinks, function(cdl) {
+          this.fileList[cdl.ContentDocument.Id] =
+            {name: cdl.ContentDocument.Title, Id: cdl.ContentDocument.Id};
+          this.addFileRecord(this.fileList[cdl.ContentDocument.Id]);
+        }, this.attachmentsComp);
+      }
     }
     fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
   };
