@@ -28,19 +28,18 @@ private class FieloCMSPRP_FormInvoiceCtrlTest{
 
         FieloCMSPRP_FormInvoiceCtrl instance = new FieloCMSPRP_FormInvoiceCtrl();
         instance.getComponent( component1 );
-	    //FieloCMSPRP_FormInvoiceCtrl.getFieldsStructure(component1, 'FieloPRP__Invoice__c');
-	    
+        //FieloCMSPRP_FormInvoiceCtrl.getFieldsStructure(component1, 'FieloPRP__Invoice__c');
+        
         FieloCMSPRP_Field field3 = new FieloCMSPRP_Field(Account.Name.getDescribe(), 'Record-Edit');
         List<FieloCMSPRP_Field> elements = new List<FieloCMSPRP_Field>{field3};
-	    FieloCMSPRP_FormInvoiceCtrl.addItemsRequiredFields(elements);
-		
-		FieloCMSPRP_FormInvoiceCtrl.submit(invoice, null, new List<Attachment>{at}, 'submit');
-		String test = instance.currencyCode;
-		FieloPLT__Program__c programTest = instance.currentProgram;
+        FieloCMSPRP_FormInvoiceCtrl.addItemsRequiredFields(elements);
+        
+        FieloCMSPRP_FormInvoiceCtrl.submit(invoice, null, new List<Attachment>{at}, 'submit');
+        String test = instance.currencyCode;
+        FieloPLT__Program__c programTest = instance.currentProgram;
 
-		FieloCMSPRP_FormInvoiceCtrl.saveAttachment(invoice.Id, 'Test', 'test', 'jpeg');
-		FieloCMSPRP_FormInvoiceCtrl.saveTheChunk(invoice.Id, 'Test', 'test', 'jpeg', at.Id); 
-		FieloCMSPRP_FormInvoiceCtrl.deleteAttachments(new List<String>{at.Id});
-		FieloCMSPRP_FormInvoiceCtrl.queryRecords('FieloPRP__Invoice__c', new List<String>{'Name'}, null, 5, 2, null, null);
-	}
+        FieloCMSPRP_FormInvoiceCtrl.saveAttachment(invoice.Id, 'Test', 'test', 'jpeg');
+        FieloCMSPRP_FormInvoiceCtrl.saveTheChunk(invoice.Id, 'Test', 'test', 'jpeg', at.Id); 
+        FieloCMSPRP_FormInvoiceCtrl.queryRecords('FieloPRP__Invoice__c', new List<String>{'Name'}, null, 5, 2, null, null);
+    }
 }
