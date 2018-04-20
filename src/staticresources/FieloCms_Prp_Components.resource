@@ -2,7 +2,7 @@
 {
   "plugins" : [ {
     "Name" : "PrpPlugin",
-    "FieloCMS__Version__c" : 1.04,
+    "FieloCMS__Version__c" : 1.05,
     "components" : [
       {
         "FieloCMS__AdditionalFields__c": "FieloCMSPRP_CustomDetailParameter__c,FieloCMS__ParametersMap__c",
@@ -151,20 +151,20 @@
       {
         "FieloCMS__AdditionalFields__c": "",
         "FieloCMS__ControlClass__c": "FieloCMS.StandardAPI",
-        "FieloCMS__CssClasses__c": "fielo-filter",
-        "FieloCMS__DataClass__c": "FieloCMS.StandardAPI",
-        "FieloCMS__DefaultFields__c": "FieloPRP__Status__c,FieloPRP__Amount__c,FieloPRP__Date__c",
-        "FieloCMS__DeveloperName__c": "PrpPlugin.FilterInvoices",
-        "FieloCMS__ExcludeFields__c": "Id,IsDeleted,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp",
+        "FieloCMS__CssClasses__c": "",
+        "FieloCMS__DataClass__c": "FieloCMSPRP_ApprovalHistoryAPI",
+        "FieloCMS__DefaultFields__c": "FieloPRP__Status__c,FieloPRP__Description__c",
+        "FieloCMS__DeveloperName__c": "PrpPlugin.ApprovalHistory",
+        "FieloCMS__ExcludeFields__c": "Id,CreatedDate,CreatedById,SystemModstamp",
         "FieloCMS__Icon__c": "fa-puzzle-piece",
-        "FieloCMS__Layouts__c": "Edit",
-        "FieloCMS__RecordType__c": "Record",
+        "FieloCMS__Layouts__c": "",
+        "FieloCMS__RecordType__c": "List",
         "FieloCMS__Subcomponents__c": "",
         "FieloCMS__ViewClass__c": "",
-        "FieloCMS__Visibility__c": "Private",
+        "FieloCMS__Visibility__c": "Both",
         "FieloCMS__sObject__c": "FieloPRP__Invoice__c",
-        "Name": "Filter Invoices",
-        "recordTypeName": "Record"
+        "Name": "Approval History",
+        "recordTypeName": "List"
       },
       {
         "FieloCMS__AdditionalFields__c": "",
@@ -183,6 +183,60 @@
         "FieloCMS__sObject__c": "Product2",
         "Name": "Product Record",
         "recordTypeName": "Record"
+      },
+      {
+        "FieloCMS__AdditionalFields__c": "",
+        "FieloCMS__ControlClass__c": "FieloCMS.StandardAPI",
+        "FieloCMS__CssClasses__c": "fielo-filter",
+        "FieloCMS__DataClass__c": "FieloCMS.StandardAPI",
+        "FieloCMS__DefaultFields__c": "FieloPRP__Status__c,FieloPRP__Amount__c,FieloPRP__Date__c",
+        "FieloCMS__DeveloperName__c": "PrpPlugin.FilterInvoices",
+        "FieloCMS__ExcludeFields__c": "Id,IsDeleted,CreatedDate,CreatedById,LastModifiedDate,LastModifiedById,SystemModstamp",
+        "FieloCMS__Icon__c": "fa-puzzle-piece",
+        "FieloCMS__Layouts__c": "Edit",
+        "FieloCMS__RecordType__c": "Record",
+        "FieloCMS__Subcomponents__c": "",
+        "FieloCMS__ViewClass__c": "",
+        "FieloCMS__Visibility__c": "Private",
+        "FieloCMS__sObject__c": "FieloPRP__Invoice__c",
+        "Name": "Filter Invoices",
+        "recordTypeName": "Record"
+      },
+      {
+        "FieloCMS__AdditionalFields__c": "FieloCMSPRP_CustomDetailParameter__c,FieloCMS__ParametersMap__c",
+        "FieloCMS__ControlClass__c": "FieloCMS.StandardAPI",
+        "FieloCMS__CssClasses__c": "",
+        "FieloCMS__DataClass__c": "FieloCMSPRP_ContentDocumentAPI",
+        "FieloCMS__DefaultFields__c": "",
+        "FieloCMS__DeveloperName__c": "PrpPlugin.FilesView",
+        "FieloCMS__ExcludeFields__c": "Id,CreatedById,CreatedDate,LastModifiedById,LastModifiedDate,IsDeleted,OwnerId,SystemModstamp",
+        "FieloCMS__Icon__c": "fa-puzzle-piece",
+        "FieloCMS__Layouts__c": "Grid;Slider;Table",
+        "FieloCMS__RecordType__c": "List",
+        "FieloCMS__Subcomponents__c": "[{\"apiName\": \"ViewImage\",\"label\": \"ViewImage\", \"reflectionClass\": \"Subcomponents.ImageView\", \"type\": \"Subcomponent\", \"fieldName\":\"Description\"  } ]",
+        "FieloCMS__ViewClass__c": "",
+        "FieloCMS__Visibility__c": "Both",
+        "FieloCMS__sObject__c": "ContentDocument",
+        "Name": "Files View",
+        "recordTypeName": "List"
+      },
+      {
+        "FieloCMS__AdditionalFields__c": "FieloCMSPRP_CustomDetailParameter__c,FieloCMS__ParametersMap__c",
+        "FieloCMS__ControlClass__c": "FieloCMS.StandardAPI",
+        "FieloCMS__CssClasses__c": "",
+        "FieloCMS__DataClass__c": "FieloCMSPRP_ContentDocumentAPI",
+        "FieloCMS__DefaultFields__c": "",
+        "FieloCMS__DeveloperName__c": "PrpPlugin.Files",
+        "FieloCMS__ExcludeFields__c": "Id,CreatedById,CreatedDate,LastModifiedById,LastModifiedDate,IsDeleted,OwnerId,SystemModstamp",
+        "FieloCMS__Icon__c": "fa-puzzle-piece",
+        "FieloCMS__Layouts__c": "Table",
+        "FieloCMS__RecordType__c": "List",
+        "FieloCMS__Subcomponents__c": "",
+        "FieloCMS__ViewClass__c": "",
+        "FieloCMS__Visibility__c": "Both",
+        "FieloCMS__sObject__c": "ContentDocument",
+        "Name": "Files",
+        "recordTypeName": "List"
       }
     ],
     "models" : [ {
@@ -196,7 +250,7 @@
       "FieloCMS__Category__c" : "Miscelaneas",
       "FieloCMS__Icon__c" : "fielosf-icon-content",
       "FieloCMS__Type__c" : "Page",
-      "FieloCMS__XMLReference__c" : "{\n  \"pages\" : [ {\n    \"reference\" : \"a0o1I000000LODlQAO\",\n    \"recordTypeName\" : \"Page\",\n    \"Name\" : \"Invoice Detail\",\n    \"FieloCMS__Icon__c\" : \"fielo-icon-content\",\n    \"FieloCMS__ExternalName__c\" : \"InvoiceDetailPage\",\n    \"sections\" : [ {\n      \"FieloCMS__Order__c\" : 22,\n      \"FieloCMS__Width__c\" : \"12\",\n      \"subsections\" : [ {\n        \"FieloCMS__Order__c\" : 23,\n        \"FieloCMS__Width__c\" : \"12\",\n        \"components\" : [ {\n          \"reference\" : \"a0i1I000000dDL7QAM\",\n          \"recordTypeName\" : \"Record\",\n          \"componentLibrary\" : \"PrpPlugin.InvoiceRecord\",\n          \"Name\" : \"Invoice Record\",\n          \"FieloCMS__CSSClasses__c\" : \"fielo-form-view\",\n          \"FieloCMS__Columns__c\" : 2,\n          \"FieloCMS__Delay__c\" : 2500,\n          \"FieloCMS__DetailParameter__c\" : \"id\",\n          \"FieloCMS__FieldSet__c\" : \"[{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"STRING\\\",\\\"apiName\\\":\\\"Name\\\",\\\"label\\\":\\\"Invoice\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"STRING\\\",\\\"apiName\\\":\\\"FieloPRP__InvoiceNumber__c\\\",\\\"label\\\":\\\"Invoice Number\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"CURRENCY\\\",\\\"apiName\\\":\\\"FieloPRP__Amount__c\\\",\\\"label\\\":\\\"Amount\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"DATE\\\",\\\"apiName\\\":\\\"FieloPRP__Date__c\\\",\\\"label\\\":\\\"Date\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"showLabel\\\":true,\\\"label\\\":\\\"Description\\\",\\\"apiName\\\":\\\"FieloPRP__Description__c\\\",\\\"type\\\":\\\"STRING\\\"},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"REFERENCE\\\",\\\"apiName\\\":\\\"FieloPRP__Distributor__c\\\",\\\"label\\\":\\\"Distributor\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"PICKLIST\\\",\\\"apiName\\\":\\\"FieloPRP__Status__c\\\",\\\"label\\\":\\\"Status\\\",\\\"showLabel\\\":true},{ \\\"apiName\\\" : \\\"CloneInvoice\\\", \\\"label\\\": \\\"Clone\\\", \\\"type\\\": \\\"Subcomponent\\\" , \\\"linkToDetail\\\": false, \\\"showLabel\\\": false, \\\"cloneRedirectPage\\\": \\\"InvoiceUploadPage\\\" , \\\"reflectionClass\\\": \\\"FieloCMSPRP_CloneInvoiceButtonAPI\\\" }]]\",\n          \"FieloCMS__LayoutMode__c\" : \"Post\",\n          \"FieloCMS__Layout__c\" : \"View\",\n          \"FieloCMS__Limit__c\" : 6,\n          \"FieloCMS__Order__c\" : 1,\n          \"FieloCMS__ParameterName__c\" : \"paginatorBinding\",\n          \"FieloCMS__Rows__c\" : 2,\n          \"FieloCMS__Title__c\" : \"Invoice Record\",\n          \"FieloCMS__Width__c\" : 0\n        }, {\n          \"reference\" : \"a0i1I000000dDL8QAM\",\n          \"recordTypeName\" : \"List\",\n          \"componentLibrary\" : \"PrpPlugin.InvoiceItems\",\n          \"Name\" : \"Invoice Items\",\n          \"FieloCMS__Columns__c\" : 2,\n          \"FieloCMS__Delay__c\" : 2500,\n          \"FieloCMS__DetailParameter__c\" : \"id\",\n          \"FieloCMS__FieldSet__c\" : \"[{\\\"type\\\":\\\"DOUBLE\\\",\\\"apiName\\\":\\\"FieloPRP__Quantity__c\\\",\\\"label\\\":\\\"Quantity\\\",\\\"showLabel\\\":true,\\\"orderBy\\\":\\\"disabled\\\",\\\"linkToDetail\\\":false},{\\\"type\\\":\\\"REFERENCE\\\",\\\"apiName\\\":\\\"FieloPRP__Product__c\\\",\\\"label\\\":\\\"Product\\\",\\\"showLabel\\\":true,\\\"orderBy\\\":\\\"disabled\\\",\\\"linkToDetail\\\":false},{\\\"type\\\":\\\"CURRENCY\\\",\\\"apiName\\\":\\\"FieloPRP__UnitPrice__c\\\",\\\"label\\\":\\\"Unit Price\\\",\\\"showLabel\\\":true,\\\"orderBy\\\":\\\"disabled\\\",\\\"linkToDetail\\\":false},{\\\"type\\\":\\\"CURRENCY\\\",\\\"apiName\\\":\\\"FieloPRP__TotalPrice__c\\\",\\\"label\\\":\\\"Total Price\\\",\\\"showLabel\\\":true,\\\"orderBy\\\":\\\"disabled\\\",\\\"linkToDetail\\\":false}]]\",\n          \"FieloCMS__Layout__c\" : \"Table\",\n          \"FieloCMS__Limit__c\" : 10,\n          \"FieloCMS__Order__c\" : 2,\n          \"FieloCMS__Rows__c\" : 2,\n          \"FieloCMS__Title__c\" : \"Invoice Items\",\n          \"FieloCMS__Width__c\" : 0,\n          \"FieloCMSPRP_CustomDetailParameter__c\" : \"id\",\n          \"FieloCMS__ParametersMap__c\" : \"{\\\"FieloCMSPRP_Invoice__c\\\":\\\"Id\\\"}\"\n        }, {\n          \"reference\" : \"a0i1I000000dDL9QAM\",\n          \"recordTypeName\" : \"List\",\n          \"componentLibrary\" : \"PrpPlugin.Attachments\",\n          \"Name\" : \"Attachments\",\n          \"FieloCMS__Columns__c\" : 2,\n          \"FieloCMS__Delay__c\" : 2500,\n          \"FieloCMS__DetailParameter__c\" : \"id\",\n          \"FieloCMS__FieldSet__c\" : \"[{\\\"apiName\\\":\\\"Name\\\",\\\"label\\\":\\\"File Name\\\",\\\"type\\\":\\\"STRING\\\",\\\"linkToDetail\\\":false,\\\"orderBy\\\":\\\"disabled\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"orderBy\\\":\\\"disabled\\\",\\\"showLabel\\\":false,\\\"type\\\":\\\"TEXTAREA\\\",\\\"label\\\":\\\"Description\\\",\\\"apiName\\\":\\\"Description\\\"}]]\",\n          \"FieloCMS__Layout__c\" : \"Table\",\n          \"FieloCMS__Limit__c\" : 1,\n          \"FieloCMS__Order__c\" : 3,\n          \"FieloCMS__ParameterName__c\" : \"paginatorBinding\",\n          \"FieloCMS__Rows__c\" : 2,\n          \"FieloCMS__Title__c\" : \"Attachments\",\n          \"FieloCMS__Width__c\" : 0,\n          \"FieloCMSPRP_CustomDetailParameter__c\" : \"id\",\n          \"FieloCMS__ParametersMap__c\" : \"{\\\"FieloCMSPRP_Invoice__c\\\":\\\"Id\\\"}\"\n        }, {\n          \"reference\" : \"a0i1I000000dDLAQA2\",\n          \"recordTypeName\" : \"List\",\n          \"componentLibrary\" : \"PrpPlugin.AttachmentsView\",\n          \"Name\" : \"Attachments View\",\n          \"FieloCMS__Columns__c\" : 3,\n          \"FieloCMS__Delay__c\" : 2500,\n          \"FieloCMS__DetailParameter__c\" : \"id\",\n          \"FieloCMS__FieldSet__c\" : \"[{\\\"reflectionClass\\\":\\\"Subcomponents.ImageView\\\",\\\"fieldName\\\":\\\"Description\\\",\\\"showLabel\\\":false,\\\"type\\\":\\\"Subcomponent\\\",\\\"label\\\":\\\"ViewImage\\\",\\\"apiName\\\":\\\"ViewImage\\\",\\\"linkToDetail\\\":false}]]\",\n          \"FieloCMS__Layout__c\" : \"Grid\",\n          \"FieloCMS__Limit__c\" : 15,\n          \"FieloCMS__Order__c\" : 4,\n          \"FieloCMS__ParameterName__c\" : \"paginatorBinding\",\n          \"FieloCMS__Rows__c\" : 5,\n          \"FieloCMS__Title__c\" : \"Attachments View\",\n          \"FieloCMS__Width__c\" : 0,\n          \"FieloCMSPRP_CustomDetailParameter__c\" : \"id\"\n        } ]\n      } ]\n    } ]\n  } ]\n}"
+      "FieloCMS__XMLReference__c" : "{\n  \"pages\" : [ {\n    \"reference\" : \"a0o1I000000LODlQAO\",\n    \"recordTypeName\" : \"Page\",\n    \"Name\" : \"Invoice Detail\",\n    \"FieloCMS__Icon__c\" : \"fielo-icon-content\",\n    \"FieloCMS__ExternalName__c\" : \"InvoiceDetailPage\",\n    \"sections\" : [ {\n      \"FieloCMS__Order__c\" : 22,\n      \"FieloCMS__Width__c\" : \"12\",\n      \"subsections\" : [ {\n        \"FieloCMS__Order__c\" : 23,\n        \"FieloCMS__Width__c\" : \"12\",\n        \"components\" : [ {\n          \"reference\" : \"a0i1I000000dDL7QAM\",\n          \"recordTypeName\" : \"Record\",\n          \"componentLibrary\" : \"PrpPlugin.InvoiceRecord\",\n          \"Name\" : \"Invoice Record\",\n          \"FieloCMS__CSSClasses__c\" : \"fielo-form-view\",\n          \"FieloCMS__Columns__c\" : 2,\n          \"FieloCMS__Delay__c\" : 2500,\n          \"FieloCMS__DetailParameter__c\" : \"id\",\n          \"FieloCMS__FieldSet__c\" : \"[{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"STRING\\\",\\\"apiName\\\":\\\"Name\\\",\\\"label\\\":\\\"Invoice\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"STRING\\\",\\\"apiName\\\":\\\"FieloPRP__InvoiceNumber__c\\\",\\\"label\\\":\\\"Invoice Number\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"CURRENCY\\\",\\\"apiName\\\":\\\"FieloPRP__Amount__c\\\",\\\"label\\\":\\\"Amount\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"DATE\\\",\\\"apiName\\\":\\\"FieloPRP__Date__c\\\",\\\"label\\\":\\\"Date\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"showLabel\\\":true,\\\"label\\\":\\\"Description\\\",\\\"apiName\\\":\\\"FieloPRP__Description__c\\\",\\\"type\\\":\\\"STRING\\\"},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"REFERENCE\\\",\\\"apiName\\\":\\\"FieloPRP__Distributor__c\\\",\\\"label\\\":\\\"Distributor\\\",\\\"showLabel\\\":true},{\\\"linkToDetail\\\":false,\\\"type\\\":\\\"PICKLIST\\\",\\\"apiName\\\":\\\"FieloPRP__Status__c\\\",\\\"label\\\":\\\"Status\\\",\\\"showLabel\\\":true},{\\\"required\\\":false,\\\"readOnly\\\":false,\\\"inlineHelpText\\\":\\\"\\\",\\\"placeholder\\\":\\\"\\\",\\\"autocomplete\\\":\\\"\\\",\\\"showLabel\\\":true,\\\"label\\\":\\\"Reject Reason\\\",\\\"apiName\\\":\\\"FieloPRP__RejectReason__c\\\",\\\"type\\\":\\\"PICKLIST\\\"},{\\\"apiName\\\":\\\"CloneInvoice\\\",\\\"label\\\":\\\"Clone\\\",\\\"type\\\":\\\"Subcomponent\\\",\\\"linkToDetail\\\":false,\\\"showLabel\\\":false,\\\"cloneRedirectPage\\\":\\\"InvoiceUploadPage\\\",\\\"reflectionClass\\\":\\\"FieloCMSPRP_CloneInvoiceButtonAPI\\\"}]]\",\n          \"FieloCMS__LayoutMode__c\" : \"Post\",\n          \"FieloCMS__Layout__c\" : \"View\",\n          \"FieloCMS__Limit__c\" : 6,\n          \"FieloCMS__Order__c\" : 1,\n          \"FieloCMS__ParameterName__c\" : \"paginatorBinding\",\n          \"FieloCMS__Rows__c\" : 2,\n          \"FieloCMS__Title__c\" : \"Invoice Record\",\n          \"FieloCMS__Width__c\" : 0\n        }, {\n          \"reference\" : \"a0i1I000000dDL8QAM\",\n          \"recordTypeName\" : \"List\",\n          \"componentLibrary\" : \"PrpPlugin.InvoiceItems\",\n          \"Name\" : \"Invoice Items\",\n          \"FieloCMS__Columns__c\" : 2,\n          \"FieloCMS__Delay__c\" : 2500,\n          \"FieloCMS__DetailParameter__c\" : \"id\",\n          \"FieloCMS__FieldSet__c\" : \"[{\\\"linkToDetail\\\":false,\\\"orderBy\\\":\\\"disabled\\\",\\\"showLabel\\\":true,\\\"label\\\":\\\"Quantity\\\",\\\"apiName\\\":\\\"FieloPRP__Quantity__c\\\",\\\"type\\\":\\\"DOUBLE\\\"},{\\\"linkToDetail\\\":false,\\\"orderBy\\\":\\\"disabled\\\",\\\"showLabel\\\":true,\\\"label\\\":\\\"Product\\\",\\\"apiName\\\":\\\"FieloPRP__Product__c\\\",\\\"type\\\":\\\"REFERENCE\\\"},{\\\"linkToDetail\\\":false,\\\"orderBy\\\":\\\"disabled\\\",\\\"showLabel\\\":true,\\\"label\\\":\\\"Unit Price\\\",\\\"apiName\\\":\\\"FieloPRP__UnitPrice__c\\\",\\\"type\\\":\\\"CURRENCY\\\"},{\\\"linkToDetail\\\":false,\\\"orderBy\\\":\\\"disabled\\\",\\\"showLabel\\\":true,\\\"label\\\":\\\"Total Price\\\",\\\"apiName\\\":\\\"FieloPRP__TotalPrice__c\\\",\\\"type\\\":\\\"CURRENCY\\\"}]]\",\n          \"FieloCMS__Layout__c\" : \"Table\",\n          \"FieloCMS__Limit__c\" : 10,\n          \"FieloCMS__Order__c\" : 2,\n          \"FieloCMS__Rows__c\" : 2,\n          \"FieloCMS__Title__c\" : \"Invoice Items\",\n          \"FieloCMS__Width__c\" : 0,\n          \"FieloCMSPRP_CustomDetailParameter__c\" : \"id\",\n          \"FieloCMS__ParametersMap__c\" : \"{\\\"RecordId__c\\\":\\\"id\\\"}\",\n          \"FieloCMS__LookupField__c\" : \"FieloPRP__Invoice__c\"\n        }, {\n          \"reference\" : \"a0i1I000002zVYfQAM\",\n          \"recordTypeName\" : \"List\",\n          \"componentLibrary\" : \"Files\",\n          \"Name\" : \"Files\",\n          \"FieloCMS__Columns__c\" : 2,\n          \"FieloCMS__Delay__c\" : 2500,\n          \"FieloCMS__DetailParameter__c\" : \"id\",\n          \"FieloCMS__FieldSet__c\" : \"[{\\\"type\\\":\\\"STRING\\\",\\\"apiName\\\":\\\"Title\\\",\\\"label\\\":\\\"Title\\\",\\\"showLabel\\\":true,\\\"orderBy\\\":\\\"disabled\\\",\\\"linkToDetail\\\":true},{\\\"showLabel\\\":true,\\\"orderBy\\\":\\\"disabled\\\",\\\"linkToDetail\\\":false,\\\"type\\\":\\\"TEXTAREA\\\",\\\"label\\\":\\\"Description\\\",\\\"apiName\\\":\\\"Description\\\"}]]\",\n          \"FieloCMS__Layout__c\" : \"Table\",\n          \"FieloCMS__Limit__c\" : 6,\n          \"FieloCMS__Order__c\" : 5,\n          \"FieloCMS__Rows__c\" : 2,\n          \"FieloCMS__Title__c\" : \"Files\",\n          \"FieloCMS__Width__c\" : 0,\n          \"FieloCMSPRP_CustomDetailParameter__c\" : \"id\",\n          \"FieloCMS__ParametersMap__c\" : \"{\\\"RecordId__c\\\":\\\"id\\\"}\"\n        }, {\n          \"reference\" : \"a0i1I000002zVVMQA2\",\n          \"recordTypeName\" : \"List\",\n          \"componentLibrary\" : \"Files View\",\n          \"Name\" : \"Files View\",\n          \"FieloCMS__Columns__c\" : 3,\n          \"FieloCMS__Delay__c\" : 2500,\n          \"FieloCMS__DetailParameter__c\" : \"id\",\n          \"FieloCMS__FieldSet__c\" : \"[{\\\"apiName\\\":\\\"ViewImage\\\",\\\"label\\\":\\\"ViewImage\\\",\\\"type\\\":\\\"Subcomponent\\\",\\\"linkToDetail\\\":false,\\\"showLabel\\\":false,\\\"fieldName\\\":\\\"Description\\\",\\\"reflectionClass\\\":\\\"Subcomponents.ImageView\\\"}]]\",\n          \"FieloCMS__Layout__c\" : \"Grid\",\n          \"FieloCMS__Limit__c\" : 3,\n          \"FieloCMS__Order__c\" : 6,\n          \"FieloCMS__Rows__c\" : 1,\n          \"FieloCMS__Title__c\" : \"Files View\",\n          \"FieloCMS__Width__c\" : 0,\n          \"FieloCMSPRP_CustomDetailParameter__c\" : \"id\",\n          \"FieloCMS__ParametersMap__c\" : \"{\\\"RecordId__c\\\":\\\"id\\\"}\"\n        }, {\n          \"reference\" : \"a0i1I0000021TNkQAM\",\n          \"recordTypeName\" : \"List\",\n          \"componentLibrary\" : \"Approval History\",\n          \"Name\" : \"Approval History\",\n          \"FieloCMS__Columns__c\" : 2,\n          \"FieloCMS__Delay__c\" : 2500,\n          \"FieloCMS__DetailParameter__c\" : \"id\",\n          \"FieloCMS__FieldSet__c\" : \"[{\\\"type\\\":\\\"PICKLIST\\\",\\\"apiName\\\":\\\"FieloPRP__Status__c\\\",\\\"label\\\":\\\"Status\\\",\\\"showLabel\\\":true,\\\"orderBy\\\":\\\"disabled\\\",\\\"linkToDetail\\\":false},{\\\"type\\\":\\\"TEXTAREA\\\",\\\"apiName\\\":\\\"FieloPRP__Comments__c\\\",\\\"label\\\":\\\"Comments\\\",\\\"showLabel\\\":true,\\\"orderBy\\\":\\\"disabled\\\",\\\"linkToDetail\\\":false}]]\",\n          \"FieloCMS__LayoutMode__c\" : \"Horizontal\",\n          \"FieloCMS__Layout__c\" : \"Table\",\n          \"FieloCMS__Limit__c\" : 6,\n          \"FieloCMS__Order__c\" : 7,\n          \"FieloCMS__Rows__c\" : 2,\n          \"FieloCMS__Title__c\" : \"Approval History\",\n          \"FieloCMS__Width__c\" : 0\n        } ]\n      } ]\n    } ]\n  } ]\n}"
     }, {
       "Name" : "My Invoices",
       "FieloCMS__Category__c" : "Miscelaneas",
