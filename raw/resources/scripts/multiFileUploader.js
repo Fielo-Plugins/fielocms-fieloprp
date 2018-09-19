@@ -216,9 +216,19 @@
         if (file instanceof Blob) {
           if (file) {
             var fr = new FileReader();
-            fr.onloadend = function() {
-              attachmentObject.Body = window.btoa(fr.result);
-              attachmentObject.Name = file.name;
+            fr.onloadend = function(e) {
+              var data;
+              if (e) {
+                data = e.target.result;
+              } else {
+                data = fr.content;
+              }
+              if (data) {
+                attachmentObject.Body = window.btoa(data);
+                attachmentObject.Name = file.name;
+              } else {
+                console.log('Error loading the file content.');
+              }
             };
             fr.readAsBinaryString(file);
           }
