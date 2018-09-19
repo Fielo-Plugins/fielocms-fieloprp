@@ -165,8 +165,17 @@
     }
     this.currentAttachmentRecord
       .setAttribute('data-has-attachment', 'true');
-    this.currentAttachmentRecord
-      .style.display = null;
+    try {
+      this.currentAttachmentRecord
+      .style.setAttribute('display', '');
+    } catch (e) {
+      try {
+        this.currentAttachmentRecord
+          .style.display = null;
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   FieloMultiFileUploaderPRP.prototype.handleFile = function(event) {

@@ -305,6 +305,26 @@
 	    FrontEndJSSettings.LABELS.InvoiceSavedSuccess = '{!$Label.FieloCMSPRP_InvoiceSavedSuccess}';
 	    FrontEndJSSettings.LABELS.MaxFileSize = '{!$Label.FieloCMSPRP_MaxFileSize}';
 	    FrontEndJSSettings.LABELS.AttachmentsMissing = '{!$Label.FieloCMSPRP_AttachmentsMissing}';
-	    FrontEndJSSettings.SITE.pathPrefix = '{!pathPrefix}';
+		FrontEndJSSettings.SITE.pathPrefix = '{!pathPrefix}';
+		
+		//extend FileReader
+		if (!FileReader.prototype.readAsBinaryString) {
+			FileReader.prototype.readAsBinaryString = function (fileData) {
+			var binary = "";
+			var pt = this;
+			var reader = new FileReader();
+			reader.onload = function (e) {
+				var bytes = new Uint8Array(reader.result);
+				var length = bytes.byteLength;
+				for (var i = 0; i < length; i++) {
+					binary += String.fromCharCode(bytes[i]);
+				}
+				//pt.result  - readonly so assign binary
+				pt.content = binary;
+				pt.dispatchEvent(new Event('onload'));
+			}
+			reader.readAsArrayBuffer(fileData);
+			}
+		}
     </script>
 </apex:component>
