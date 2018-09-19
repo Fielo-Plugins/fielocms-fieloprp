@@ -243,9 +243,19 @@
       if (file) {
         if (file instanceof Blob) {
           var fr = new FileReader();
-          fr.onloadend = function() {
-            var fileContents = window.btoa(fr.result);
-            self.upload(parentId, file, fileContents);
+          fr.onload = function(e) {
+            var data;
+            if (e) {
+              data = e.target.result;
+            } else {
+              data = fr.content;
+            }
+            if (data) {
+              var fileContents = window.btoa(data);
+              self.upload(parentId, file, fileContents);
+            } else {
+              console.log('Error loading the file content.');
+            }
           };
           fr.readAsBinaryString(file);
         }
