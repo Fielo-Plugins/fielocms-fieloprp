@@ -88,4 +88,12 @@
         <shortDescription>FieloCMSPRP_Clone</shortDescription>
         <value>Clone</value>
     </labels>
+    <labels>
+        <fullName>FieloCMSPRP_PermissionOnObject</fullName>
+        <categories>ExceptionMessage</categories>
+        <language>en_US</language>
+        <protected>true</protected>
+        <shortDescription>FieloCMSPRP_PermissionOnObject</shortDescription>
+        <value>You don't have the required permissions on the object {0}</value>
+    </labels>
 </CustomLabels>

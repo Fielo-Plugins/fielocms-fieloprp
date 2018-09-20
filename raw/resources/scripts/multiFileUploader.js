@@ -165,8 +165,17 @@
     }
     this.currentAttachmentRecord
       .setAttribute('data-has-attachment', 'true');
-    this.currentAttachmentRecord
-      .style.display = null;
+    try {
+      this.currentAttachmentRecord
+      .style.setAttribute('display', '');
+    } catch (e) {
+      try {
+        this.currentAttachmentRecord
+          .style.display = null;
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   FieloMultiFileUploaderPRP.prototype.handleFile = function(event) {
@@ -207,9 +216,19 @@
         if (file instanceof Blob) {
           if (file) {
             var fr = new FileReader();
-            fr.onloadend = function() {
-              attachmentObject.Body = window.btoa(fr.result);
-              attachmentObject.Name = file.name;
+            fr.onloadend = function(e) {
+              var data;
+              if (e) {
+                data = e.target.result;
+              } else {
+                data = fr.content;
+              }
+              if (data) {
+                attachmentObject.Body = window.btoa(data);
+                attachmentObject.Name = file.name;
+              } else {
+                console.log('Error loading the file content.');
+              }
             };
             fr.readAsBinaryString(file);
           }
@@ -234,9 +253,19 @@
       if (file) {
         if (file instanceof Blob) {
           var fr = new FileReader();
-          fr.onloadend = function() {
-            var fileContents = window.btoa(fr.result);
-            self.upload(parentId, file, fileContents);
+          fr.onload = function(e) {
+            var data;
+            if (e) {
+              data = e.target.result;
+            } else {
+              data = fr.content;
+            }
+            if (data) {
+              var fileContents = window.btoa(data);
+              self.upload(parentId, file, fileContents);
+            } else {
+              console.log('Error loading the file content.');
+            }
           };
           fr.readAsBinaryString(file);
         }
