@@ -300,7 +300,7 @@
 					}
 					//pt.result  - readonly so assign content to another property
 					pt.content = binary;
-					pt.onload(); // thanks to @Denis comment
+					pt.onload();
 				}
 				reader.readAsArrayBuffer(fileData);
 			}
