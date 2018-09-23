@@ -122,17 +122,45 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
     global static Map<String, Object> submit(FieloPRP__Invoice__c invoice, List<FieloPRP__InvoiceItem__c> items, List<Attachment> attachments, String submitMode) {
         invoice.FieloPRP__Member__c = FieloCMSPLT_MemberService.getCurrentMemberId();
         try{
+            invoice.FieloPRP__Status__c = 'New';
             FieloPRP__Invoice__c submittedInvoice = FieloPRP.InvoiceService.submitInvoice(invoice, items, attachments);
-            if (submitMode == 'Close') {
-                submittedInvoice = FieloPRP.InvoiceService.closeInvoice(submittedInvoice.Id);
-            }
 
             if (!attachments.isEmpty()) {
                 FieloCMSPRP_FileService.cloneFiles(submittedInvoice.Id, new Map<Id, Attachment>(attachments).keySet());
             }
 
             return new Map<String, Object>{
-                'object' => submittedInvoice,
+                'object' => submittedInvoice, 
+                'status' => 'OK'
+            };
+        } catch (DmlException e) {
+            return new Map<String, Object>{
+                'result' => '',
+                'status' => 'NOK',
+                'message' => e.getDmlMessage(0)
+            };
+        }
+    }
+
+    @RemoteAction
+    global static Map<String, Object> changeStatus(FieloPRP__Invoice__c invoice, String submitMode) {
+        invoice.FieloPRP__Member__c = FieloCMSPLT_MemberService.getCurrentMemberId();
+        try{
+            if (!Schema.sObjectType.FieloPRP__Invoice__c.fields.FieloPRP__Status__c.isUpdateable())
+                    throw new FieloPLT.FieloException('Insufficient permission to update invoice status.');
+
+            invoice.FieloPRP__Status__c = 'Open';
+            if(!Schema.sObjectType.FieloPRP__Invoice__c.isUpdateable())
+                throw new FieloPLT.FieloException('Insufficient permission to update invoices.');
+
+            update invoice;
+
+            if (submitMode == 'Close') {
+                invoice = FieloPRP.InvoiceService.closeInvoice(invoice.Id);
+            }
+                
+            return new Map<String, Object>{
+                'object' => invoice,
                 'status' => 'OK'
             };
         } catch (DmlException e) {
@@ -146,18 +174,13 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
 
     public String currencyCode {get{
         return UserInfo.getDefaultCurrency();
-    }
-        set;
-    }
+    }set;}
 
     public FieloPLT__Program__c currentProgram {get{
         Id memberId = FieloCMSPLT_MemberService.getCurrentMemberId();
         FieloPLT__Member__c member = [SELECT Id, Name, FieloPLT__Program__r.Id, FieloPLT__Program__r.Name, FieloPLT__Program__r.FieloPRP__RequestInvoiceProducts__c, FieloPLT__Program__r.FieloPRP__ProductInjectQuery__c FROM FieloPLT__Member__c WHERE Id = :memberId];
         return member.FieloPLT__Program__r;
-    }
-        set;
-
-    }
+    }set;}
 
     public String pathPrefix { get{
         if (pathPrefix==null) {
@@ -168,9 +191,7 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
             }
         }
         return pathPrefix;
-    }
-        set;
-    }
+    }set;}
 
     @RemoteAction
     global static Id saveAttachment(Id parentId, String fileName, String base64Data, String contentType) { 
@@ -215,23 +236,6 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         }
         
         return Id.valueOf(fileId);
-    }
-    
-    private static void oldAppendToFile(Id fileId, String base64Data) {
-        base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
-        
-        ContentVersion cv = [
-            SELECT Id, VersionData
-            FROM ContentVersion
-            WHERE Id = :fileId
-        ];
-        
-        String existingBody = EncodingUtil.base64Encode(cv.VersionData);
-        if (Schema.sObjectType.ContentVersion.fields.VersionData.isUpdateable()) {
-            cv.VersionData = EncodingUtil.base64Decode(existingBody + base64Data); 
-        }
-        
-        update cv;
     }
 
     private static Id appendToFile(Id parentId, Id fileId, String base64Data) {

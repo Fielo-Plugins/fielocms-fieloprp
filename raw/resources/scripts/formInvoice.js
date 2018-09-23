@@ -15,6 +15,7 @@
    */
   FieloFormInvoice.prototype.Constant_ = {
     SUBMIT_METHOD: 'FieloCMSPRP_FormInvoiceCtrl.submit',
+    CHANGE_STATUS_METHOD: 'FieloCMSPRP_FormInvoiceCtrl.changeStatus',
     RETRIEVE_METHOD: 'FieloCMSPRP_FormInvoiceCtrl.getInvoice',
     CURRENCY: {
       uk: 'UAH'
@@ -87,15 +88,15 @@
       this.hasAttachments = fileList ?
         Object.keys(fileList).length > 0 :
         false;
-      var invoiceId = result.object.Id;
+      this.submittedInvoice = result.object;
       var url = '/FieloCMS__Page?pageId=' +
         this.element_.getAttribute('data-redirect-page') + '&' +
         this.element_.getAttribute('data-parameter-name') + '=' +
-        invoiceId;
+        this.submittedInvoice.Id;
       window.redirectURL = url;
       if (this.hasAttachments) {
         this.element_.querySelector('.' + this.CssClasses_.ATTACHMENTS)
-          .FieloMultiFileUploaderPRP.uploadFile(invoiceId);
+          .FieloMultiFileUploaderPRP.uploadFile(this.submittedInvoice.Id);
       } else {
         this.redirect();
       }
@@ -344,6 +345,58 @@
       }
     }
     fieloUtils.spinner.FieloSpinner.hide(); // eslint-disable-line no-undef
+  };
+
+  FieloFormInvoice.prototype.changeStatus = function(callbackOverride) {
+    if (this.validateAttachments()) {
+      try {
+        fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
+        Visualforce.remoting.Manager.invokeAction( // eslint-disable-line no-undef
+          this.Constant_.CHANGE_STATUS_METHOD,
+          this.submittedInvoice,
+          this.element_.getAttribute('data-submit-mode'),
+          callbackOverride ? callbackOverride.bind(this) :
+            this.changeStatusCallback.bind(this),
+          {
+            escape: false
+          }
+        );
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  FieloFormInvoice.prototype.changeStatusCallback = function(result) {
+    if (result.status === 'OK') {
+      if (result.object) {
+        if (result.object.Id) {
+          this.redirectToInvoice(result.object.Id);
+        }
+      }
+    } else if (result.message) {
+      this.throwMessage(result.message, '#', 2);
+    }
+  };
+
+  FieloFormInvoice.prototype.redirectToInvoice = function(invoiceId) {
+    fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
+    var result = {message: FrontEndJSSettings.LABELS.InvoiceSavedSuccess, // eslint-disable-line no-undef
+      redirectURL: '/' + invoiceId};
+    if (window.redirectURL) {
+      result.redirectURL = window.redirectURL;
+    }
+    this.redirectWithMessage(result.message, result.redirectURL, 2);
+  };
+
+  FieloFormInvoice.prototype.redirectWithMessage = function(message, redirect, time) { // eslint-disable-line max-len
+    fieloUtils.message.FieloMessage.clear(); // eslint-disable-line no-undef
+    fieloUtils.message.FieloMessage.addMessages( // eslint-disable-line no-undef
+    fieloUtils.site.FieloSite.getLabel( // eslint-disable-line no-undef
+      message)
+    );
+    fieloUtils.message.FieloMessage.setRedirect(redirect, time); // eslint-disable-line no-undef
+    fieloUtils.message.FieloMessage.show(); // eslint-disable-line no-undef
   };
 
   /**
