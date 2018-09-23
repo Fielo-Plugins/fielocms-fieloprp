@@ -41,5 +41,7 @@ private class FieloCMSPRP_FormInvoiceCtrlTest{
         FieloCMSPRP_FormInvoiceCtrl.saveAttachment(invoice.Id, 'Test', 'test', 'jpeg');
         FieloCMSPRP_FormInvoiceCtrl.saveTheChunk(invoice.Id, 'Test', 'test', 'jpeg', at.Id); 
         FieloCMSPRP_FormInvoiceCtrl.queryRecords('FieloPRP__Invoice__c', new List<String>{'Name'}, null, 5, 2, null, null);
+
+        FieloCMSPRP_FormInvoiceCtrl.changeStatus(invoice, 'close');
     }
 }
