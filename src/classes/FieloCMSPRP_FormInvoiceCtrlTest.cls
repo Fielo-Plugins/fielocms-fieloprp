@@ -38,10 +38,24 @@ private class FieloCMSPRP_FormInvoiceCtrlTest{
         String test = instance.currencyCode;
         FieloPLT__Program__c programTest = instance.currentProgram;
 
-        FieloCMSPRP_FormInvoiceCtrl.saveAttachment(invoice.Id, 'Test', 'test', 'jpeg');
-        FieloCMSPRP_FormInvoiceCtrl.saveTheChunk(invoice.Id, 'Test', 'test', 'jpeg', at.Id); 
-        FieloCMSPRP_FormInvoiceCtrl.queryRecords('FieloPRP__Invoice__c', new List<String>{'Name'}, null, 5, 2, null, null);
+        Id attachmentId = FieloCMSPRP_FormInvoiceCtrl.saveAttachment(invoice.Id, 'Test', 'test', 'jpeg');
+        attachmentId = FieloCMSPRP_FormInvoiceCtrl.saveTheChunk(invoice.Id, 'Test', 'test', 'jpeg', attachmentId); 
+        FieloCMSPRP_FormInvoiceCtrl.queryRecords(
+            'FieloPRP__Invoice__c',
+            new List<String>{'Name','FieloPRP__Status__c'},
+            '{"FieloPRP__Status__c":"Open"}',
+            5,
+            2,
+            null,
+            null
+        );
 
         FieloCMSPRP_FormInvoiceCtrl.changeStatus(invoice, 'close');
+
+        invoice = (FieloPRP__Invoice__c) FieloCMSPRP_FormInvoiceCtrl.getInvoice(
+            'Id,Name,FieloPRP__InvoiceNumber__c',
+            'FieloPRP__Invoice__c,FieloPRP__Quantity__c,FieloPRP__UnitPrice__c,FieloPRP__TotalPrice__c',
+            invoice.Id
+        );
     }
 }

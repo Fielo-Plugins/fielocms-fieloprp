@@ -237,23 +237,6 @@ global class FieloCMSPRP_FormInvoiceCtrl implements FieloCMS.ViewInterface{
         
         return Id.valueOf(fileId);
     }
-    
-    private static void oldAppendToFile(Id fileId, String base64Data) {
-        base64Data = EncodingUtil.urlDecode(base64Data, 'UTF-8');
-        
-        ContentVersion cv = [
-            SELECT Id, VersionData
-            FROM ContentVersion
-            WHERE Id = :fileId
-        ];
-        
-        String existingBody = EncodingUtil.base64Encode(cv.VersionData);
-        if (Schema.sObjectType.ContentVersion.fields.VersionData.isUpdateable()) {
-            cv.VersionData = EncodingUtil.base64Decode(existingBody + base64Data); 
-        }
-        
-        update cv;
-    }
 
     private static Id appendToFile(Id parentId, Id fileId, String base64Data) {
         if (Schema.sObjectType.ContentVersion.isAccessible()) {
