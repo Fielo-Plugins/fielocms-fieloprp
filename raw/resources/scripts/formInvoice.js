@@ -98,7 +98,7 @@
         this.element_.querySelector('.' + this.CssClasses_.ATTACHMENTS)
           .FieloMultiFileUploaderPRP.uploadFile(this.submittedInvoice.Id);
       } else {
-        this.redirect();
+        this.changeStatus();
       }
     } else {
       if (this.existingAttachments) {
