@@ -1,16 +1,22 @@
 public class FieloCMSPRP_InvoiceService {
     
-    public static List<FieloPRP__Invoice__c> getInvoices(Set<String> fields, Id memberId, Integer quantity, Integer offset, String orderBy, String dynamicFilter){
+    public static List<sObject> getInvoices(Set<String> fields, Id memberId, Integer quantity, Integer offset, String orderBy, String dynamicFilter, Boolean translatePicklists){
+        Map<String,Schema.SObjectField> invoiceFieldMap = Schema.SObjectType.FieloPRP__Invoice__c.fields.getMap();
+        
+        Set<String> fieldSet = new Set<String>();
+        fieldSet.add('Id');
 
-        String fieldSet;
-        if(fields == null || fields.isEmpty()){
-            fieldSet = 'Id';
-        }else{
-            fieldSet = String.join(new List<String>(fields), ',');
+        for(String fieldName : fields) {
+            if ( translatePicklists && invoiceFieldMap.containsKey(fieldName) && invoiceFieldMap.get(fieldName).getDescribe().getType().name().toLowerCase() == 'picklist') {
+                fieldSet.add( 'toLabel(' + fieldName + ') ' + fieldName );
+            } else {
+                fieldSet.add(fieldName);
+            }
         }
+        
 
         //writes the query
-        String query = 'SELECT ' + fieldSet;
+        String query = 'SELECT ' + String.join(new List<String>(fieldSet), ',');
 
         //evaluate conditions
         String conditions = '';

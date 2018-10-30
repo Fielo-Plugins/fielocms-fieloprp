@@ -6,7 +6,7 @@ global class FieloCMSPRP_InvoiceAPI implements FieloCMS.DataInterface{
             if(c.FieloCMS__Limit__c == null)
                 c.FieloCMS__Limit__c = 5;
 
-            newMapData.put(c.Id, FieloCMSPRP_InvoiceService.getInvoices(FieloCMSPLT_OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c), FieloCMSPLT_MemberService.getCurrentMemberId(), c.FieloCMS__Limit__c.intValue(), null, null, null));
+            newMapData.put(c.Id, FieloCMSPRP_InvoiceService.getInvoices(FieloCMSPLT_OrganizationUtil.getFieldSet(c.FieloCMS__FieldSet__c), FieloCMSPLT_MemberService.getCurrentMemberId(), c.FieloCMS__Limit__c.intValue(), null, null, null, false));
         }
         return newMapData;
     }
@@ -17,6 +17,6 @@ global class FieloCMSPRP_InvoiceAPI implements FieloCMS.DataInterface{
 
         //Calculate the offset from the Page Number
         Integer offset = Integer.valueOf(component.FieloCMS__Limit__c * (pageNumber - 1));
-        return FieloCMSPRP_InvoiceService.getInvoices(FieloCMSPLT_OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c), FieloCMSPLT_MemberService.getCurrentMemberId(), component.FieloCMS__Limit__c.intValue(), offset, null, filters);
+        return FieloCMSPRP_InvoiceService.getInvoices(FieloCMSPLT_OrganizationUtil.getFieldSet(component.FieloCMS__FieldSet__c), FieloCMSPLT_MemberService.getCurrentMemberId(), component.FieloCMS__Limit__c.intValue(), offset, null, filters, true);
     }
 }
