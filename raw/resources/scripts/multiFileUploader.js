@@ -44,7 +44,8 @@
     CONTAINER: 'cms-prp-attachemnts',
     ATTACHMENT_RECORD: 'cms-prp-attachment-record',
     NEW: 'fielo-button__new-attachment',
-    DELETE: 'cms-prp-button__remove'
+    DELETE: 'cms-prp-button__remove',
+    FORM_INVOICE: 'cms-prp-invoice-form'
 
   };
 
@@ -115,26 +116,6 @@
       }
     }
   };
-
-  /*
-  FieloMultiFileUploaderPRP.prototype.addEmptyFilePill = function(fakeFile) {
-    this.currentPillContainer = this.filePills_[0].cloneNode(true);
-    this.cardBody_ = this.element_.getElementsByClassName(
-      this.CssClasses_.CARD_BODY)[0];
-    this.cardBody_.appendChild(this.currentPillContainer);
-    $(this.currentPillContainer).removeClass('slds-hidden');
-    $(this.currentPillContainer).removeClass('slds-is-collapsed');
-    $(this.currentPillContainer).removeClass('slds-pill__model');
-    this.currentPillLabel =
-      this.currentPillContainer.getElementsByClassName(
-        this.CssClasses_.PILL_LABEL)[0];
-    this.currentPillLabel.innerHTML = fakeFile.Name;
-    this.currentPillLabel.setAttribute('title', fakeFile.Name);
-    this.currentPillLabel.setAttribute('data-record-id',
-      fakeFile.Id);
-    this.initPill(this.currentPillContainer);
-  };
-  */
 
   FieloMultiFileUploaderPRP.prototype.addFileRecord = function(file) {
     this.currentAttachmentRecord =
@@ -273,7 +254,7 @@
         this.throwMessage('You must choose a file before trying to upload it');
       }
     } else {
-      this.redirectToParent(parentId);
+      this.changeInvoiceStatus();
     }
   };
 
@@ -310,25 +291,24 @@
               self.uploadFile(parentId);
             } else {
               FieloMultiFileUploaderPRP.prototype
-                .redirectToParent.call(self, parentId);
+                .changeInvoiceStatus.call(self);
             }
           } else {
             FieloMultiFileUploaderPRP.prototype
-              .redirectToParent.call(self, parentId);
+              .changeInvoiceStatus.call(self);
           }
         },
         {escape: true}
       );
   };
 
-  FieloMultiFileUploaderPRP.prototype.redirectToParent = function(parentId) {
-    fieloUtils.spinner.FieloSpinner.show(); // eslint-disable-line no-undef
-    var result = {message: FrontEndJSSettings.LABELS.InvoiceSavedSuccess, // eslint-disable-line no-undef
-      redirectURL: '/' + parentId};
-    if (window.redirectURL) {
-      result.redirectURL = window.redirectURL;
+  FieloMultiFileUploaderPRP.prototype.changeInvoiceStatus = function() {
+    this.formInvoice_ = document
+      .querySelector('.' + this.CssClasses_.FORM_INVOICE)
+      .FieloFormInvoice;
+    if (this.formInvoice_) {
+      this.formInvoice_.changeStatus();
     }
-    this.redirectWithMessage(result.message, result.redirectURL, 2);
   };
 
   FieloMultiFileUploaderPRP.prototype.throwMessage = function(message) { // eslint-disable-line max-len
@@ -337,16 +317,6 @@
     fieloUtils.site.FieloSite.getLabel( // eslint-disable-line no-undef
       message)
     );
-    fieloUtils.message.FieloMessage.show(); // eslint-disable-line no-undef
-  };
-
-  FieloMultiFileUploaderPRP.prototype.redirectWithMessage = function(message, redirect, time) { // eslint-disable-line max-len
-    fieloUtils.message.FieloMessage.clear(); // eslint-disable-line no-undef
-    fieloUtils.message.FieloMessage.addMessages( // eslint-disable-line no-undef
-    fieloUtils.site.FieloSite.getLabel( // eslint-disable-line no-undef
-      message)
-    );
-    fieloUtils.message.FieloMessage.setRedirect(redirect, time); // eslint-disable-line no-undef
     fieloUtils.message.FieloMessage.show(); // eslint-disable-line no-undef
   };
 
