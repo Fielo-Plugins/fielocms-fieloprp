@@ -134,7 +134,7 @@
   FieloFormInvoice.prototype.getValues = function() {
     this.fields_ =
       this.element_.querySelector('.' + this.CssClasses_.FIELDSET)
-        .querySelectorAll('.' + this.CssClasses_.FIELD);
+      .querySelectorAll('.' + this.CssClasses_.FIELD);
     this.invoiceObject = {};
     var fieldInput;
     var fieldValue;
@@ -146,11 +146,46 @@
           fieldInput.value !== '') {
           if (fieldInput._flatpickr.selectedDates.length > 0) {
             fieldValue = fieldInput._flatpickr.selectedDates[0].valueOf();
+            // gets the offset
+            var offset = new Date().getTimezoneOffset();
+            // check if  we are in DST
+            if (new Date().isDst()) {
+              // We are in DST
+              // So then the computer clock was already forwarded one hour
+              if (
+                new Date(fieldValue).toLocaleDateString('en', {
+                  timeZoneName: 'long'
+                })
+                .indexOf('Summer Time') === -1
+              ) {
+                // Since the selected date isn't summer time
+                // we need to compensate the removed hour by the computer
+                offset += 60;
+              }
+            } else if (
+              new Date(fieldValue).toLocaleDateString('en', {
+                timeZoneName: 'long'
+              })
+              .indexOf('Summer Time') > -1
+            ) {
+              // We aren't in DST
+              // So then the computer clock isn't forwarded
+
+              // Since the selected date is summer time
+              // we need to remove since we aren't in DST and
+              // one hour more since is a summer time date
+              offset -= 60;
+            }
+            // change the offset sign because is inverted
+            offset *= -1;
+            // Add the offset hours needed to standarize the date to 0
+            fieldValue += offset * 60000;
+
+            // if is date time
             if (fieldInput._flatpickr.config.enableTime) {
-              fieldValue -= (new Date().getTimezoneOffset()) * 60000;
+              // reset standard offset
+              fieldValue -= offset * 60000;
               fieldValue += fieloConfig.OFFSET * 60000; // eslint-disable-line no-undef
-            } else {
-              fieldValue -= (new Date().getTimezoneOffset()) * 60000;
             }
           } else {
             fieldValue = undefined;
@@ -161,12 +196,12 @@
       } else if (field.getAttribute('data-field-name') ===
         'FieloPRP__Distributor__c') {
         this.invoiceObject[field.getAttribute('data-field-name')] =
-        field.querySelector('input').getAttribute('data-lookup-id');
+          field.querySelector('input').getAttribute('data-lookup-id');
       } else if (field.querySelector('input')) {
         if (field.getAttribute('data-field-name')) {
           if (field.querySelector('input')) {
             this.invoiceObject[field.getAttribute('data-field-name')] =
-            field.querySelector('input').value;
+              field.querySelector('input').value;
           }
         }
       }
@@ -230,10 +265,9 @@
   };
 
   FieloFormInvoice.prototype.retrieveHandler = function(result) {
-    console.log(result);
     this.fields_ =
       this.element_.querySelector('.' + this.CssClasses_.FIELDSET)
-        .querySelectorAll('.' + this.CssClasses_.FIELD);
+      .querySelectorAll('.' + this.CssClasses_.FIELD);
     var input;
     var type;
     [].forEach.call(this.fields_, function(field) {
@@ -258,13 +292,50 @@
                   // Parseo los distintos tipos de fechas a UTC
                   var dateValue = fieloUtils.parseDateFromSF(input.value); // eslint-disable-line no-undef
 
+                  // gets the offset
+                  var offset = new Date().getTimezoneOffset();
+                  // check if  we are in DST
+                  if (new Date().isDst()) {
+                    // We are in DST
+                    // So then the computer clock was already forwarded one hour
+                    if (
+                      new Date(dateValue).toLocaleDateString('en', {
+                        timeZoneName: 'long'
+                      })
+                      .indexOf('Summer Time') === -1
+                    ) {
+                      // Since the selected date isn't summer time
+                      // we need to compensate the removed hour by the computer
+                      offset += 60;
+                    }
+                  } else if (
+                    new Date(dateValue).toLocaleDateString('en', {
+                      timeZoneName: 'long'
+                    })
+                    .indexOf('Summer Time') > -1
+                  ) {
+                    // We aren't in DST
+                    // So then the computer clock isn't forwarded
+
+                    // Since the selected date is summer time
+                    // we need to remove since we aren't in DST and
+                    // one hour more since is a summer time date
+                    offset -= 60;
+                  }
+                  // change the offset sign because is inverted
+                  offset *= -1;
+                  // Remove the offset since it comes from UTC
+                  // and for the picklist is needed local time
+                  dateValue -= offset * 60000;
+
                   if (type.toLowerCase() === 'datetime') {
+                    // reset standard offset
+                    dateValue += offset * 60000;
                     // Agrega perfiles definido en SF
                     dateValue -= fieloConfig.OFFSET * 60000; // eslint-disable-line no-undef
                   }
 
-                  // compenso el new date
-                  // Transforma la fecha a un string iso
+                  // configs flatpicker
                   if (typeof input._flatpickr === 'undefined') {
                     var config = {};
                     if (input.value !== '') {
@@ -331,15 +402,19 @@
       }
       if (result.Attachments) {
         [].forEach.call(result.Attachments, function(attachment) {
-          this.fileList[attachment.Id] =
-            {name: attachment.Name, Id: attachment.Id};
+          this.fileList[attachment.Id] = {
+            name: attachment.Name,
+            Id: attachment.Id
+          };
           this.addFileRecord(this.fileList[attachment.Id]);
         }, this.attachmentsComp);
       }
       if (result.ContentDocumentLinks) {
         [].forEach.call(result.ContentDocumentLinks, function(cdl) {
-          this.fileList[cdl.ContentDocument.Id] =
-            {name: cdl.ContentDocument.Title, Id: cdl.ContentDocument.Id};
+          this.fileList[cdl.ContentDocument.Id] = {
+            name: cdl.ContentDocument.Title,
+            Id: cdl.ContentDocument.Id
+          };
           this.addFileRecord(this.fileList[cdl.ContentDocument.Id]);
         }, this.attachmentsComp);
       }
